@@ -26,8 +26,12 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter/rendering.dart';
 
+/// [SliverAnimatedPaintExtent] allows for smoothly animating maxPaintExtent changes
 class SliverAnimatedPaintExtent extends StatefulWidget {
+  /// The duration that the animation will take
   final Duration duration;
+
+  /// The child widget that will be rendered
   final Widget child;
 
   const SliverAnimatedPaintExtent({Key key, @required this.duration, @required this.child})
@@ -90,6 +94,7 @@ class _SliverAnimatedPaintExtent extends SingleChildRenderObjectWidget {
   }
 }
 
+/// The RenderObject that handles the animation for [SliverAnimatedPaintExtent]
 class RenderSliverAnimatedPaintExtent extends RenderProxySliver {
   Duration duration;
 

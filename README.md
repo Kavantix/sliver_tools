@@ -2,7 +2,7 @@
 
 A set of useful sliver tools that are missing from the flutter framework.
 
-## multi_sliver
+## [MultiSliver](lib/src/multi_sliver.dart)
 
 The `MultiSliver` widget allows for grouping of multiple slivers together such that they can be returned as a single widget.
 For instance when one wants to wrap a few slivers with some padding or an inherited widget.
@@ -25,10 +25,11 @@ class WidgetThatReturnsASliver extends StatelessWidget {
 ```
 
 The `pushPinnedChildren` parameter allows for achieving a 'sticky header' effect by simply using pinned `SliverPersistentHeader` widgets (or any custom sliver that paints beyond its layoutExtent).
+
 `TODO: insert Gif of a sticky header example`
 
 
-## sliver_animated_paint_extent
+## [SliverAnimatedPaintExtent](lib/src/sliver_animated_paint_extent.dart)
 
 The `SliverAnimatedPaintExtent` widget allows for having a smooth transition when a sliver changes the space it will occupy inside the viewport.
 For instance when using a SliverList with a button below it that loads the next few items.

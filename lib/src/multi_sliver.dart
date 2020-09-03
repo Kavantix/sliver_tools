@@ -25,6 +25,7 @@ import 'dart:math';
 import 'package:flutter/widgets.dart';
 import 'package:flutter/rendering.dart';
 
+/// [MultiSliver] allows for returning multiple slivers from a single build method
 class MultiSliver extends MultiChildRenderObjectWidget {
   MultiSliver({
     Key key,
@@ -32,7 +33,11 @@ class MultiSliver extends MultiChildRenderObjectWidget {
     this.pushPinnedChildren = false,
   }) : super(key: key, children: children);
 
+  /// The children slivers that will be painted
   final List<Widget> children;
+
+  /// If true any children that paint beyond the layoutExtent of the entire [MultiSliver] will
+  /// be pushed off towards the leading edge of the [Viewport]
   final bool pushPinnedChildren;
 
   @override
@@ -46,6 +51,7 @@ class MultiSliver extends MultiChildRenderObjectWidget {
   }
 }
 
+/// The RenderObject that handles laying out and painting the children of [MultiSliver]
 class RenderMultiSliver extends RenderSliver
     with ContainerRenderObjectMixin<RenderSliver, SliverPhysicalContainerParentData> {
   RenderMultiSliver({
@@ -118,7 +124,7 @@ class RenderMultiSliver extends RenderSliver
     }
   }
 
-  /// Almost an exact copy of [ViewportBase] [layoutChildSequence]
+  /// Almost an exact copy of [RenderViewportBase]'s [layoutChildSequence]
   /// just added visualoverflow, maxScrollObstructionExtent and setting of the geometry
   double _layoutChildSequence({
     @required RenderSliver child,
