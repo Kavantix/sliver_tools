@@ -1,3 +1,5 @@
-## [0.0.1] - TODO: Add release date.
+## [0.1.0] - 2020-09-03.
 
-* TODO: Describe initial release.
+Initial release including:
+- [MultiSliver](lib/src/multi_sliver.dart)
+- [SliverAnimatedPaintExtent](lib/src/sliver_animated_paint_extent.dart)
