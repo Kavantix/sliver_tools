@@ -113,12 +113,15 @@ class RenderSliverAnimatedPaintExtent extends RenderProxySliver {
     markNeedsLayout();
   }
 
-  Tween<double> _extentTween;
+  Tween<double> _paintExtentTween;
+  Tween<double> _scrollExtentTween;
   double _lastValue = 0;
 
   void _restartAnimation() {
-    _extentTween.begin = geometry.maxPaintExtent;
-    _extentTween.end = child.geometry.maxPaintExtent;
+    _paintExtentTween.begin = geometry.maxPaintExtent;
+    _paintExtentTween.end = child.geometry.maxPaintExtent;
+    _scrollExtentTween.begin = geometry.scrollExtent;
+    _scrollExtentTween.end = child.geometry.scrollExtent;
     _controller.duration = duration;
     _lastValue = 0;
     _controller.forward(from: 0);
@@ -128,20 +131,33 @@ class RenderSliverAnimatedPaintExtent extends RenderProxySliver {
   void performLayout() {
     _lastValue = controller.value;
     child.layout(constraints, parentUsesSize: true);
-    final extent = _extentTween ??=
+    final extentTween = _paintExtentTween ??=
         Tween<double>(begin: child.geometry.maxPaintExtent, end: child.geometry.maxPaintExtent);
-    if (child.geometry.maxPaintExtent != extent.end) {
+    final scrollExtentTween = _scrollExtentTween ??=
+        Tween<double>(begin: child.geometry.scrollExtent, end: child.geometry.scrollExtent);
+    if (child.geometry.maxPaintExtent != extentTween.end ||
+        child.geometry.scrollExtent != scrollExtentTween.end) {
       _restartAnimation();
     }
-    final maxPaintExtent = extent.evaluate(controller);
-    final paintExtent =
-        max(0.0, min(child.geometry.paintExtent, maxPaintExtent - constraints.scrollOffset));
-    final layoutExtent = min(child.geometry.layoutExtent, child.geometry.paintOrigin + paintExtent);
+    final maxPaintExtent = extentTween.evaluate(controller);
+    final scrollExtent = scrollExtentTween.evaluate(controller);
+    double paintExtent;
+    double layoutExtent;
+    if (extentTween.begin > extentTween.end) {
+      paintExtent =
+          max(0.0, max(child.geometry.paintExtent, maxPaintExtent - constraints.scrollOffset));
+      paintExtent = min(paintExtent, constraints.remainingPaintExtent - child.geometry.paintOrigin);
+      layoutExtent = max(child.geometry.layoutExtent, child.geometry.paintOrigin + paintExtent);
+    } else {
+      paintExtent =
+          max(0.0, min(child.geometry.paintExtent, maxPaintExtent - constraints.scrollOffset));
+      layoutExtent = min(child.geometry.layoutExtent, child.geometry.paintOrigin + paintExtent);
+    }
     final hitTestExtent =
         min(child.geometry.hitTestExtent, child.geometry.paintOrigin + paintExtent);
     geometry = SliverGeometry(
       paintOrigin: child.geometry.paintOrigin,
-      scrollExtent: child.geometry.scrollExtent,
+      scrollExtent: scrollExtent,
       paintExtent: paintExtent,
       layoutExtent: layoutExtent,
       maxPaintExtent: maxPaintExtent,
