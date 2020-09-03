@@ -99,7 +99,6 @@ class RenderMultiSliver extends RenderSliver
     if (_containing != containing) {
       _containing = containing;
       markNeedsLayout();
-      markParentNeedsLayout();
     }
   }
 
@@ -147,7 +146,7 @@ class RenderMultiSliver extends RenderSliver
       cacheOrigin: constraints.cacheOrigin,
     );
 
-    if (correction > 0) {
+    if (correction != null) {
       geometry = SliverGeometry(scrollOffsetCorrection: correction);
       return;
     }
@@ -273,7 +272,7 @@ class RenderMultiSliver extends RenderSliver
       hitTestExtent: maxHitTestExtent,
     );
 
-    return 0;
+    return null;
   }
 
   void _containPinnedSlivers(double usedBounds, double allowedBounds, Axis axis) {
@@ -337,9 +336,6 @@ class RenderMultiSliver extends RenderSliver
 
   @override
   void paint(PaintingContext context, Offset offset) {
-    if (!geometry.visible) {
-      return;
-    }
     for (final child in _childrenInPaintOrder) {
       final parentData = child.parentData as SliverPhysicalContainerParentData;
       if (child.geometry.visible) {
