@@ -2,6 +2,47 @@
 
 A set of useful sliver tools that are missing from the flutter framework.
 
+
+Here is a taste what you can make using this package
+
+![Demo](gifs/demo1.gif)
+
+The structure of this app:
+```dart
+class Section extends State {
+  @override
+  Widget build(BuildContext context) {
+    return MultiSliver(
+      pushPinnedChildren: true,
+      children: <Widget>[
+        SliverPersistentHeader(
+          pinned: true,
+          ...
+        ),
+        if (!infinite)
+          SliverAnimatedPaintExtent(
+            child: SliverList(...),
+          )
+        else
+          SliverList(...),
+      ],
+    );
+  }
+}
+
+class NewsPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return CustomScrollView(
+      slivers: <Widget>[
+        Section(infinite: false),
+        Section(infinite: true),
+      ],
+    );
+  }
+}
+```
+
 ## [MultiSliver](lib/src/multi_sliver.dart)
 
 The `MultiSliver` widget allows for grouping of multiple slivers together such that they can be returned as a single widget.
@@ -13,20 +54,19 @@ For instance when one wants to wrap a few slivers with some padding or an inheri
 class WidgetThatReturnsASliver extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-  	return MultiSliver(
-	  pushPinnedChildren: false, // defaults to false
-	  children: <Widget>[
-	    SliverPersistentHeader(...),
-		 SliverList(...),
-	  ],
-  	);
+    return MultiSliver(
+     pushPinnedChildren: false, // defaults to false
+     children: <Widget>[
+        SliverPersistentHeader(...),
+        SliverList(...),
+      ],
+    );
   }
 }
 ```
 
 The `pushPinnedChildren` parameter allows for achieving a 'sticky header' effect by simply using pinned `SliverPersistentHeader` widgets (or any custom sliver that paints beyond its layoutExtent).
 
-`TODO: insert Gif of a sticky header example`
 
 
 ## [SliverAnimatedPaintExtent](lib/src/sliver_animated_paint_extent.dart)
@@ -40,10 +80,10 @@ For instance when using a SliverList with a button below it that loads the next 
 class WidgetThatReturnsASliver extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-  	return SliverAnimatedPaintExtent(
-	  duration: const Duration(milliseconds: 150),
-	  child: SliverList(...),
-  	);
+    return SliverAnimatedPaintExtent(
+      duration: const Duration(milliseconds: 150),
+      child: SliverList(...),
+    );
   }
 }
 ```
