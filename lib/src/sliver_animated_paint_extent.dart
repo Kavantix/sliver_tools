@@ -31,11 +31,18 @@ class SliverAnimatedPaintExtent extends StatefulWidget {
   /// The duration that the animation will take
   final Duration duration;
 
+  /// The curve for the animation
+  final Curve curve;
+
   /// The child widget that will be rendered
   final Widget child;
 
-  const SliverAnimatedPaintExtent({Key key, @required this.duration, @required this.child})
-      : super(key: key);
+  const SliverAnimatedPaintExtent({
+    Key key,
+    @required this.duration,
+    @required this.child,
+    this.curve = Curves.linear,
+  }) : super(key: key);
 
   @override
   _SliverAnimatedPaintExtentState createState() => _SliverAnimatedPaintExtentState();
@@ -63,18 +70,26 @@ class _SliverAnimatedPaintExtentState extends State<SliverAnimatedPaintExtent>
       controller: _controller,
       duration: widget.duration,
       child: widget.child,
+      curve: widget.curve,
     );
   }
 }
 
 class _SliverAnimatedPaintExtent extends SingleChildRenderObjectWidget {
+  /// The controller in charge of the animation
   final AnimationController controller;
+
+  /// The duration that the animation will take
   final Duration duration;
+
+  /// The curve for the animation
+  final Curve curve;
 
   const _SliverAnimatedPaintExtent({
     Key key,
     @required this.controller,
     @required this.duration,
+    @required this.curve,
     @required Widget child,
   }) : super(key: key, child: child);
 
@@ -82,7 +97,8 @@ class _SliverAnimatedPaintExtent extends SingleChildRenderObjectWidget {
   RenderSliverAnimatedPaintExtent createRenderObject(BuildContext context) {
     return RenderSliverAnimatedPaintExtent()
       ..duration = duration
-      ..controller = controller;
+      ..controller = controller
+      ..curve = curve;
   }
 
   @override
@@ -90,21 +106,28 @@ class _SliverAnimatedPaintExtent extends SingleChildRenderObjectWidget {
       BuildContext context, covariant RenderSliverAnimatedPaintExtent renderObject) {
     renderObject
       ..duration = duration
-      ..controller = controller;
+      ..controller = controller
+      ..curve = curve;
   }
 }
 
 /// The RenderObject that handles the animation for [SliverAnimatedPaintExtent]
 class RenderSliverAnimatedPaintExtent extends RenderProxySliver {
+  /// The duration that the animation will take
   Duration duration;
 
+  /// The curve for the animation
+  Curve curve;
+
   AnimationController _controller;
+
+  /// The controller in charge of the animation
   AnimationController get controller => _controller;
-  set controller(AnimationController controller) {
-    if (controller != _controller) {
-      _controller = controller;
+  set controller(AnimationController value) {
+    if (value != _controller) {
       _controller?.removeListener(_update);
-      controller.addListener(_update);
+      _controller = value;
+      _controller.addListener(_update);
     }
   }
 
@@ -122,9 +145,9 @@ class RenderSliverAnimatedPaintExtent extends RenderProxySliver {
     _paintExtentTween.end = child.geometry.maxPaintExtent;
     _scrollExtentTween.begin = geometry.scrollExtent;
     _scrollExtentTween.end = child.geometry.scrollExtent;
-    _controller.duration = duration;
     _lastValue = 0;
-    _controller.forward(from: 0);
+    _controller.value = 0;
+    _controller.animateTo(1, duration: duration, curve: curve);
   }
 
   @override
