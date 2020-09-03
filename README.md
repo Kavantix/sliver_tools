@@ -5,7 +5,7 @@ A set of useful sliver tools that are missing from the flutter framework.
 
 Here is a taste what you can make using this package
 
-![Demo](gifs/demo1.gif)
+![Demo](https://raw.githubusercontent.com/Kavantix/sliver_tools/master/gifs/demo1.gif)
 
 The structure of this app:
 ```dart
@@ -43,7 +43,7 @@ class NewsPage extends StatelessWidget {
 }
 ```
 
-## [MultiSliver](lib/src/multi_sliver.dart)
+## [MultiSliver](https://github.com/Kavantix/sliver_tools/blob/master/lib/src/multi_sliver.dart)
 
 The `MultiSliver` widget allows for grouping of multiple slivers together such that they can be returned as a single widget.
 For instance when one wants to wrap a few slivers with some padding or an inherited widget.
@@ -69,7 +69,7 @@ The `pushPinnedChildren` parameter allows for achieving a 'sticky header' effect
 
 
 
-## [SliverAnimatedPaintExtent](lib/src/sliver_animated_paint_extent.dart)
+## [SliverAnimatedPaintExtent](https://github.com/Kavantix/sliver_tools/blob/master/lib/src/sliver_animated_paint_extent.dart)
 
 The `SliverAnimatedPaintExtent` widget allows for having a smooth transition when a sliver changes the space it will occupy inside the viewport.
 For instance when using a SliverList with a button below it that loads the next few items.
