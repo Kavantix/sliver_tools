@@ -1,0 +1,93 @@
+analyzer:
+  strong-mode:
+    implicit-casts: false
+    implicit-dynamic: false
+ 
+  errors:
+    missing_required_param: error
+    missing_enum_constant_in_switch: error
+    missing_return: error
+    implicit_dynamic_type: info
+    implicit_dynamic_map_literal: info
+    implicit_dynamic_list_literal: info
+    implicit_dynamic_method: warning
+    implicit_dynamic_function: warning
+    invalid_use_of_protected_member: error
+    unused_local_variable: warning
+    deprecated_member_use: warning
+    unused_element: warning
+    unused_field: warning
+    dead_code: error
+    must_call_super: error
+
+    # linter errors
+    unnecessary_statements: error
+    recursive_getters: error
+    unnecessary_new: error
+    unnecessary_getters_setters: error
+    use_function_type_syntax_for_parameters: error
+    no_duplicate_case_values: error
+    no_adjacent_strings_in_list: error
+    non_constant_identifier_names: error
+    constant_identifier_names: error
+    avoid_returning_this: error
+    prefer_const_constructors_in_immutables: error
+    prefer_const_literals_to_create_immutables: error
+    avoid_equals_and_hash_code_on_mutable_classes: error
+    camel_case_types: error
+    camel_case_extensions: error
+    library_names: error
+    file_names: error
+    library_prefixes: error
+
+    # linter warnings
+    unnecessary_lambdas: warning
+    use_key_in_widget_constructors: warning
+    prefer_final_fields: warning
+    prefer_final_locals: warning
+    prefer_final_in_for_each: warning
+    unnecessary_const: warning
+    prefer_const_constructors: warning
+    unnecessary_brace_in_string_interps: warning
+
+  exclude:
+    - "**/*.chopper.dart"
+    - "**/*.g.dart"
+
+linter:
+  rules:
+    # errors
+    - unnecessary_statements
+    - recursive_getters
+    - unnecessary_new
+    - unnecessary_getters_setters
+    - use_function_type_syntax_for_parameters
+    - no_duplicate_case_values
+    - no_adjacent_strings_in_list
+    - non_constant_identifier_names
+    - constant_identifier_names
+    - avoid_returning_this
+    - prefer_const_constructors_in_immutables
+    - prefer_const_literals_to_create_immutables
+    - avoid_equals_and_hash_code_on_mutable_classes
+    - camel_case_types
+    - camel_case_extensions
+    - library_names
+    - file_names
+    - library_prefixes
+    # warnings
+    - unnecessary_lambdas
+    - use_key_in_widget_constructors
+    - prefer_final_fields
+    - prefer_final_locals
+    - prefer_final_in_for_each
+    - unnecessary_const
+    - prefer_const_constructors
+    - unnecessary_brace_in_string_interps
+    # infos
+    - unawaited_futures
+    - prefer_single_quotes
+    - prefer_interpolation_to_compose_strings
+    - prefer_const_declarations
+    - avoid_positional_boolean_parameters
+
