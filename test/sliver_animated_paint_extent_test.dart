@@ -45,9 +45,10 @@ void main() {
         animationDuration: const Duration(milliseconds: 150),
       ));
       expect(find.byKey(key), findsOneWidget);
-      expect(tester.renderObject(find.byKey(key)), isA<RenderSliverAnimatedPaintExtent>());
-      final renderObject =
-          (tester.renderObject(find.byKey(key)) as RenderSliverAnimatedPaintExtent);
+      expect(tester.renderObject(find.byKey(key)),
+          isA<RenderSliverAnimatedPaintExtent>());
+      final renderObject = (tester.renderObject(find.byKey(key))
+          as RenderSliverAnimatedPaintExtent);
       expect(renderObject.geometry.layoutExtent, startHeight);
       expect(renderObject.geometry.paintExtent, startHeight);
       expect(renderObject.geometry.scrollExtent, startHeight);
@@ -63,8 +64,8 @@ void main() {
         boxHeight: startHeight,
         animationDuration: duration,
       ));
-      final renderObject =
-          (tester.renderObject(find.byKey(key)) as RenderSliverAnimatedPaintExtent);
+      final renderObject = (tester.renderObject(find.byKey(key))
+          as RenderSliverAnimatedPaintExtent);
       expect(renderObject.geometry.layoutExtent, startHeight);
       expect(renderObject.geometry.paintExtent, startHeight);
       expect(renderObject.geometry.scrollExtent, startHeight);
@@ -97,8 +98,8 @@ void main() {
         boxHeight: endHeight,
         animationDuration: duration,
       ));
-      final renderObject =
-          (tester.renderObject(find.byKey(key)) as RenderSliverAnimatedPaintExtent);
+      final renderObject = (tester.renderObject(find.byKey(key))
+          as RenderSliverAnimatedPaintExtent);
       expect(renderObject.geometry.layoutExtent, endHeight);
       expect(renderObject.geometry.paintExtent, endHeight);
       expect(renderObject.geometry.scrollExtent, endHeight);
@@ -125,7 +126,8 @@ void main() {
       const key = ValueKey('animated_paint_extent');
       const duration = Duration(milliseconds: 150);
       const curve = Curves.easeOut;
-      final middleHeight = startHeight + curve.transform(0.5) * (endHeight - startHeight);
+      final middleHeight =
+          startHeight + curve.transform(0.5) * (endHeight - startHeight);
 
       await tester.pumpWidget(animatedPaintExtent(
         key: key,
@@ -133,8 +135,8 @@ void main() {
         animationDuration: duration,
         curve: curve,
       ));
-      final renderObject =
-          (tester.renderObject(find.byKey(key)) as RenderSliverAnimatedPaintExtent);
+      final renderObject = (tester.renderObject(find.byKey(key))
+          as RenderSliverAnimatedPaintExtent);
       expect(renderObject.geometry.layoutExtent, startHeight);
       expect(renderObject.geometry.paintExtent, startHeight);
       expect(renderObject.geometry.scrollExtent, startHeight);

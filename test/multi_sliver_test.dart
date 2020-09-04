@@ -41,10 +41,16 @@ void main() {
         ),
       );
       expect(find.byKey(box1Key), findsOneWidget);
-      expect(tester.getRect(find.byKey(box1Key)), const Rect.fromLTWH(0, 0, 800, 150));
-      expect(tester.getRect(find.byKey(box2Key)), const Rect.fromLTWH(0, 150, 800, 300));
-      expect(tester.renderObject(find.byKey(groupKey)), isA<RenderMultiSliver>());
-      expect((tester.renderObject(find.byKey(groupKey)) as RenderMultiSliver).geometry.scrollExtent,
+      expect(tester.getRect(find.byKey(box1Key)),
+          const Rect.fromLTWH(0, 0, 800, 150));
+      expect(tester.getRect(find.byKey(box2Key)),
+          const Rect.fromLTWH(0, 150, 800, 300));
+      expect(
+          tester.renderObject(find.byKey(groupKey)), isA<RenderMultiSliver>());
+      expect(
+          (tester.renderObject(find.byKey(groupKey)) as RenderMultiSliver)
+              .geometry
+              .scrollExtent,
           750);
     });
   });
