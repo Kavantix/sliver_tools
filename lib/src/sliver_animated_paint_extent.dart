@@ -203,10 +203,6 @@ class RenderSliverAnimatedPaintExtent extends RenderProxySliver {
   }
 
   @override
-  bool get alwaysNeedsCompositing =>
-      _controller?.isAnimating ?? false || super.alwaysNeedsCompositing;
-
-  @override
   void paint(PaintingContext context, Offset offset) {
     if (child == null) {
       layer = null;
@@ -223,7 +219,7 @@ class RenderSliverAnimatedPaintExtent extends RenderProxySliver {
     }
     if (_controller.isAnimating) {
       layer = context.pushClipRect(
-        child.needsCompositing,
+        needsCompositing,
         offset,
         Rect.fromPoints(Offset.zero, bottomRight),
         (context, offset) => super.paint(context, offset),
