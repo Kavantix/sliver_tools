@@ -310,8 +310,7 @@ class RenderMultiSliver extends RenderSliver
   }
 
   void _updateChildPaintOffset(RenderSliver child, double layoutOffset) {
-    final SliverPhysicalParentData childParentData =
-        child.parentData as SliverPhysicalParentData;
+    final childParentData = child.parentData as SliverPhysicalParentData;
     switch (constraints.axis) {
       case Axis.horizontal:
         childParentData.paintOffset = Offset(layoutOffset, 0);
@@ -337,20 +336,21 @@ class RenderMultiSliver extends RenderSliver
   }
 
   @override
-  bool hitTestChildren(HitTestResult result,
-      {@required double mainAxisPosition, @required double crossAxisPosition}) {
+  bool hitTestChildren(
+    SliverHitTestResult result, {
+    @required double mainAxisPosition,
+    @required double crossAxisPosition,
+  }) {
     assert(mainAxisPosition != null);
     assert(crossAxisPosition != null);
-    for (final RenderSliver child in _children) {
-      if (child.geometry.visible &&
-          child.hitTest(
-            SliverHitTestResult.wrap(result),
-            mainAxisPosition:
-                _computeChildMainAxisPosition(child, mainAxisPosition),
-            crossAxisPosition: crossAxisPosition,
-          )) {
-        return true;
-      }
+    for (final child in _children.where((c) => c.geometry.visible)) {
+      final hit = child.hitTest(
+        result,
+        mainAxisPosition:
+            _computeChildMainAxisPosition(child, mainAxisPosition),
+        crossAxisPosition: crossAxisPosition,
+      );
+      if (hit) return true;
     }
     return false;
   }
