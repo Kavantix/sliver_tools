@@ -1,3 +1,10 @@
+## [0.1.2] - 2020-09-07
+
+Added the following widgets:
+- [SliverStack](https://github.com/Kavantix/sliver_tools/blob/master/lib/src/sliver_stack.dart)
+- [SliverClip](https://github.com/Kavantix/sliver_tools/blob/master/lib/src/sliver_clip.dart)
+- [SliverAnimatedSwitcher](https://github.com/Kavantix/sliver_tools/blob/master/lib/src/sliver_animated_switcher.dart)
+
 ## [0.1.1] - 2020-09-03
 
 Updated readme and changelog links

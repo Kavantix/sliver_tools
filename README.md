@@ -55,8 +55,8 @@ class WidgetThatReturnsASliver extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiSliver(
-     pushPinnedChildren: false, // defaults to false
-     children: <Widget>[
+      pushPinnedChildren: false, // defaults to false
+      children: <Widget>[
         SliverPersistentHeader(...),
         SliverList(...),
       ],
@@ -67,6 +67,60 @@ class WidgetThatReturnsASliver extends StatelessWidget {
 
 The `pushPinnedChildren` parameter allows for achieving a 'sticky header' effect by simply using pinned `SliverPersistentHeader` widgets (or any custom sliver that paints beyond its layoutExtent).
 
+## [SliverStack](https://github.com/Kavantix/sliver_tools/blob/master/lib/src/sliver_stack.dart)
+
+The `SliverStack` widget allows for stacking of both slivers and box widgets.
+This can be useful for adding some decoration to a sliver.
+Which is what some of the other widgets in this package use to get their desired effects.
+
+### Example
+```dart
+class WidgetThatReturnsASliver extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return SliverStack(
+      children: <Widget>[
+        SliverPositioned.fill(
+          child: Container(
+            decoration: BoxDecoration(
+              color: Colors.white,
+              boxShadow: const <BoxShadow>[
+                BoxShadow(
+                  offset: Offset(0, 4),
+                  blurRadius: 8,
+                  color: Colors.black26,
+                )
+              ],
+              borderRadius: BorderRadius.circular(8),
+            ),
+          ),
+        )
+        SliverList(...),
+      ],
+    );
+  }
+}
+```
+
+## [SliverClip](https://github.com/Kavantix/sliver_tools/blob/master/lib/src/sliver_clip.dart)
+
+The `SliverClip` widget will add a clip around its child from the child's paintOrigin to its paintExtent.
+
+### Example
+```dart
+class WidgetThatReturnsASliver extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return SliverClip(
+      clipOverlap: true, // defaults to true
+      child: SliverList(...),
+    );
+  }
+}
+```
+
+The `clipOverlap` parameter allows for configuring whether any overlap with the previous child should be clipped.
+This can be useful when one has a SliverPersitentHeader above a SliverList and does not want to give the header an opaque background but also prevent the list from drawing underneath the header.
 
 
 ## [SliverAnimatedPaintExtent](https://github.com/Kavantix/sliver_tools/blob/master/lib/src/sliver_animated_paint_extent.dart)
@@ -87,3 +141,8 @@ class WidgetThatReturnsASliver extends StatelessWidget {
   }
 }
 ```
+
+## [SliverAnimatedSwitcher](https://github.com/Kavantix/sliver_tools/blob/master/lib/src/sliver_animated_switcher.dart)
+
+The `SliverAnimatedSwitcher` widget is simply a pre-configured `AnimatedSwitcher` widget.
+If one needs more options than supplied by this widget a regular `AnimatedSwitcher` can be used by giving it the `defaultLayoutBuilder` and `defaultTransitionBuilder` of `SliverAnimatedSwitcher`.
