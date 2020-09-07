@@ -1,3 +1,7 @@
+## [0.1.2+2] - 2020-09-07
+
+Fixed a small analysis issue
+
 ## [0.1.2] - 2020-09-07
 
 Added the following widgets:

@@ -72,7 +72,7 @@ class _SimpleSliverStackParentData extends StackParentData {
 
   _SimpleSliverStackParentData(this.onOffsetUpdated);
   @override
-  void set offset(Offset _offset) {
+  set offset(Offset _offset) {
     super.offset = _offset;
     onOffsetUpdated(_offset);
   }
