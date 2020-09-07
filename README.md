@@ -5,7 +5,7 @@ A set of useful sliver tools that are missing from the flutter framework.
 
 Here is a taste what you can make using this package
 
-![Demo](https://raw.githubusercontent.com/Kavantix/sliver_tools/master/gifs/demo1.gif)
+![Demo](https://raw.githubusercontent.com/Kavantix/sliver_tools/master/gifs/demo2.gif)
 
 The structure of this app:
 ```dart
