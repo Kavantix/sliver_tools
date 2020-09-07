@@ -26,12 +26,44 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 
+/// A [Stack] widget that can be used as a sliver
+///
+/// Its children can either be slivers or box children that are positioned
+/// using [SliverPositioned] with at least one of its values not null
+/// This means that only the sliver children have an effect on the size of
+/// of this sliver and the box children are meant to follow the slivers
 class SliverStack extends MultiChildRenderObjectWidget {
-  SliverStack({Key key, @required List<Widget> children})
-      : super(key: key, children: children);
+  SliverStack({
+    Key key,
+    @required List<Widget> children,
+    this.positionedAlignment = Alignment.center,
+    this.textDirection,
+  }) : super(key: key, children: children);
+
+  /// The alignment to use on any positioned children that are only partially
+  /// positioned
+  ///
+  /// Defaults to [Alignment.center]
+  final AlignmentGeometry positionedAlignment;
+
+  /// The text direction with which to resolve [positionedAlignment].
+  ///
+  /// Defaults to the ambient [Directionality].
+  final TextDirection textDirection;
+
   @override
   RenderSliverStack createRenderObject(BuildContext context) {
-    return RenderSliverStack();
+    return RenderSliverStack()
+      ..positionedAlignment = positionedAlignment
+      ..textDirection = textDirection ?? Directionality.of(context);
+  }
+
+  @override
+  void updateRenderObject(
+      BuildContext context, covariant RenderSliverStack renderObject) {
+    renderObject
+      ..positionedAlignment = positionedAlignment
+      ..textDirection = textDirection ?? Directionality.of(context);
   }
 }
 
@@ -46,6 +78,12 @@ class _SimpleSliverStackParentData extends StackParentData {
   }
 }
 
+/// A widget that controls where a box child of a [SliverStack] is positioned.
+///
+/// A [SliverPositioned] widget must be a descendant of a [SliverStack], and the path from
+/// the [SliverPositioned] widget to its enclosing [SliverStack] must contain only
+/// [StatelessWidget]s or [StatefulWidget]s (not other kinds of widgets, like
+/// [RenderObjectWidget]s).
 class SliverPositioned extends ParentDataWidget<SliverStackParentData> {
   /// Creates a widget that controls where a child of a [Stack] is positioned.
   ///
@@ -364,6 +402,34 @@ class RenderSliverStack extends RenderSliver
         ContainerRenderObjectMixin<RenderObject,
             ContainerParentDataMixin<RenderObject>>,
         RenderSliverHelpers {
+  /// The alignment to use on any positioned children that are only partially
+  /// positioned
+  /// Defaults to [Alignment.center]
+  AlignmentGeometry get positionedAlignment => _positionedAlignment;
+  AlignmentGeometry _positionedAlignment;
+  set positionedAlignment(AlignmentGeometry value) {
+    if (_positionedAlignment != value) {
+      _positionedAlignment = value;
+      markNeedsLayout();
+    }
+  }
+
+  /// The text direction with which to resolve [alignment].
+  ///
+  /// This may be changed to null, but only after the [alignment] has been changed
+  /// to a value that does not depend on the direction.
+  TextDirection get textDirection => _textDirection;
+  TextDirection _textDirection;
+  set textDirection(TextDirection value) {
+    if (_textDirection != value) {
+      _textDirection = value;
+      _alignment = null;
+      markNeedsLayout();
+    }
+  }
+
+  Alignment _alignment;
+
   Iterable<RenderObject> get _children sync* {
     RenderObject child = firstChild;
     while (child != null) {
@@ -399,36 +465,34 @@ class RenderSliverStack extends RenderSliver
     double maxHitTestExtent = 0;
     double maxScrollObstructionExtent = 0;
     double maxCacheExtent = 0;
-    for (final child in _children) {
-      if (child is RenderSliver) {
-        final parentData = child.parentData as SliverStackParentData;
-        child.layout(constraints, parentUsesSize: true);
-        if (child.geometry.scrollOffsetCorrection != null) {
-          geometry = SliverGeometry(
-              scrollOffsetCorrection: child.geometry.scrollOffsetCorrection);
-          return;
-        }
-        maxScrollExtent = max(maxScrollExtent, child.geometry.scrollExtent);
-        maxPaintExtent = max(maxPaintExtent,
-            child.geometry.paintExtent + child.geometry.paintOrigin);
-        maxMaxPaintExtent = max(maxMaxPaintExtent,
-            child.geometry.maxPaintExtent + child.geometry.paintOrigin);
-        maxLayoutExtent = max(maxLayoutExtent, child.geometry.layoutExtent);
-        maxHitTestExtent = max(maxHitTestExtent, child.geometry.hitTestExtent);
-        maxScrollObstructionExtent = max(maxScrollObstructionExtent,
-            child.geometry.maxScrollObstructionExtent);
-        maxCacheExtent = max(maxCacheExtent, child.geometry.cacheExtent);
-        hasVisualOverflow = hasVisualOverflow ||
-            child.geometry.hasVisualOverflow ||
-            child.geometry.paintOrigin < 0;
-        switch (constraints.axis) {
-          case Axis.vertical:
-            parentData.paintOffset = Offset(0, child.geometry.paintOrigin);
-            break;
-          case Axis.horizontal:
-            parentData.paintOffset = Offset(child.geometry.paintOrigin, 0);
-            break;
-        }
+    for (final child in _children.whereType<RenderSliver>()) {
+      final parentData = child.parentData as SliverStackParentData;
+      child.layout(constraints, parentUsesSize: true);
+      if (child.geometry.scrollOffsetCorrection != null) {
+        geometry = SliverGeometry(
+            scrollOffsetCorrection: child.geometry.scrollOffsetCorrection);
+        return;
+      }
+      maxScrollExtent = max(maxScrollExtent, child.geometry.scrollExtent);
+      maxPaintExtent = max(maxPaintExtent,
+          child.geometry.paintExtent + child.geometry.paintOrigin);
+      maxMaxPaintExtent = max(maxMaxPaintExtent,
+          child.geometry.maxPaintExtent + child.geometry.paintOrigin);
+      maxLayoutExtent = max(maxLayoutExtent, child.geometry.layoutExtent);
+      maxHitTestExtent = max(maxHitTestExtent, child.geometry.hitTestExtent);
+      maxScrollObstructionExtent = max(maxScrollObstructionExtent,
+          child.geometry.maxScrollObstructionExtent);
+      maxCacheExtent = max(maxCacheExtent, child.geometry.cacheExtent);
+      hasVisualOverflow = hasVisualOverflow ||
+          child.geometry.hasVisualOverflow ||
+          child.geometry.paintOrigin < 0;
+      switch (constraints.axis) {
+        case Axis.vertical:
+          parentData.paintOffset = Offset(0, child.geometry.paintOrigin);
+          break;
+        case Axis.horizontal:
+          parentData.paintOffset = Offset(child.geometry.paintOrigin, 0);
+          break;
       }
     }
     geometry = SliverGeometry(
@@ -451,34 +515,32 @@ class RenderSliverStack extends RenderSliver
             geometry.maxPaintExtent,
             constraints.crossAxisExtent - constraints.overlap,
           );
-    for (final child in _children) {
-      if (child is RenderBox) {
-        final parentData = child.parentData as SliverStackParentData;
-        assert(parentData.isPositioned,
-            'All non sliver children should be positioned');
-        if (!parentData.isPositioned) return;
-        child.parentData = parentData.simpleStackParentData;
-        final overflows = RenderStack.layoutPositionedChild(
-          child,
-          child.parentData as StackParentData,
-          size,
-          Alignment.center,
-        );
-        child.parentData = parentData;
-        final paintOffset = min(geometry.maxPaintExtent - geometry.paintExtent,
-            constraints.scrollOffset);
-        switch (constraints.axis) {
-          case Axis.vertical:
-            parentData.paintOffset = parentData.paintOffset -
-                Offset(0, paintOffset - constraints.overlap);
-            break;
-          case Axis.horizontal:
-            parentData.paintOffset =
-                parentData.paintOffset - Offset(paintOffset, 0);
-            break;
-        }
-        hasVisualOverflow = hasVisualOverflow || overflows;
+    for (final child in _children.whereType<RenderBox>()) {
+      final parentData = child.parentData as SliverStackParentData;
+      assert(parentData.isPositioned,
+          'All non sliver children of SliverStack should be positioned');
+      if (!parentData.isPositioned) return;
+      child.parentData = parentData.simpleStackParentData;
+      final overflows = RenderStack.layoutPositionedChild(
+        child,
+        child.parentData as StackParentData,
+        size,
+        _alignment ??= positionedAlignment.resolve(textDirection),
+      );
+      child.parentData = parentData;
+      final paintOffset = min(geometry.maxPaintExtent - geometry.paintExtent,
+          constraints.scrollOffset);
+      switch (constraints.axis) {
+        case Axis.vertical:
+          parentData.paintOffset = parentData.paintOffset -
+              Offset(0, paintOffset - constraints.overlap);
+          break;
+        case Axis.horizontal:
+          parentData.paintOffset =
+              parentData.paintOffset - Offset(paintOffset, 0);
+          break;
       }
+      hasVisualOverflow = hasVisualOverflow || overflows;
     }
   }
 
