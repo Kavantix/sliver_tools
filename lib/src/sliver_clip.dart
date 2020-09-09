@@ -65,31 +65,79 @@ class RenderSliverClip extends RenderProxySliver {
     }
   }
 
-  @override
-  void paint(PaintingContext context, Offset offset) {
+  @visibleForTesting
+  Rect get clipRect => _clipRect;
+  Rect _clipRect;
+
+  Rect calculateClipRect() {
+    final axisDirection = applyGrowthDirectionToAxisDirection(
+        constraints.axisDirection, constraints.growthDirection);
     Rect rect;
-    switch (constraints.axis) {
-      case Axis.horizontal:
+    final double overlapCorrection = (clipOverlap ? constraints.overlap : 0);
+    switch (axisDirection) {
+      case AxisDirection.up:
         rect = Rect.fromLTWH(
-          geometry.paintOrigin + (clipOverlap ? constraints.overlap : 0),
           0,
-          geometry.paintExtent,
+          0,
+          constraints.crossAxisExtent,
+          geometry.paintExtent - overlapCorrection,
+        );
+        break;
+      case AxisDirection.right:
+        rect = Rect.fromLTWH(
+          geometry.paintOrigin + overlapCorrection,
+          0,
+          geometry.paintExtent - overlapCorrection,
           constraints.crossAxisExtent,
         );
         break;
-      case Axis.vertical:
+      case AxisDirection.down:
         rect = Rect.fromLTWH(
           0,
-          geometry.paintOrigin + (clipOverlap ? constraints.overlap : 0),
+          geometry.paintOrigin + overlapCorrection,
           constraints.crossAxisExtent,
-          geometry.paintExtent,
+          geometry.paintExtent - overlapCorrection,
+        );
+        break;
+      case AxisDirection.left:
+        rect = Rect.fromLTWH(
+          0,
+          0,
+          geometry.paintExtent - overlapCorrection,
+          constraints.crossAxisExtent,
         );
         break;
     }
+    return rect;
+  }
+
+  @override
+  bool hitTestChildren(SliverHitTestResult result,
+      {double mainAxisPosition, double crossAxisPosition}) {
+    final double overlapCorrection = (clipOverlap ? constraints.overlap : 0);
+    return child != null &&
+        child.geometry.hitTestExtent > 0 &&
+        mainAxisPosition > (geometry.paintOrigin + overlapCorrection) &&
+        mainAxisPosition <
+            (geometry.paintOrigin +
+                overlapCorrection +
+                (constraints.axis == Axis.vertical
+                    ? clipRect.height
+                    : clipRect.width)) &&
+        child.hitTest(
+          result,
+          mainAxisPosition: mainAxisPosition,
+          crossAxisPosition: crossAxisPosition,
+        );
+  }
+
+  @override
+  void paint(PaintingContext context, Offset offset) {
+    _clipRect = calculateClipRect();
     layer = context.pushClipRect(
       needsCompositing,
       offset,
-      rect,
+      clipRect,
       super.paint,
       oldLayer: layer as ClipRectLayer,
     );
