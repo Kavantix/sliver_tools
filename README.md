@@ -79,6 +79,7 @@ class WidgetThatReturnsASliver extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SliverStack(
+      insetOnOverlap: false, // defaults to false
       children: <Widget>[
         SliverPositioned.fill(
           child: Container(
@@ -102,9 +103,12 @@ class WidgetThatReturnsASliver extends StatelessWidget {
 }
 ```
 
+The `insetOnOverlap` handles whether the positioned children should be inset (made smaller) when the sliver has overlap from a previous sliver.
+
 ## [SliverClip](https://github.com/Kavantix/sliver_tools/blob/master/lib/src/sliver_clip.dart)
 
 The `SliverClip` widget will add a clip around its child from the child's paintOrigin to its paintExtent.
+This is very useful and most likely what you want when using a pinned SliverPersistentHeader as child of the stack.
 
 ### Example
 ```dart

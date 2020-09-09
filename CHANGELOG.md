@@ -1,3 +1,8 @@
+## [0.1.2+3] - 2020-09-07
+
+- Improved handling of reverse scroll direction
+- Added `insetOnOverlap` parameter to `SliverStack`
+
 ## [0.1.2+2] - 2020-09-07
 
 Fixed a small analysis issue
