@@ -38,7 +38,7 @@ class SliverStack extends MultiChildRenderObjectWidget {
     @required List<Widget> children,
     this.positionedAlignment = Alignment.center,
     this.textDirection,
-    this.ignoreOverlap = false,
+    this.insetOnOverlap = false,
   }) : super(key: key, children: children);
 
   /// The alignment to use on any positioned children that are only partially
@@ -52,14 +52,20 @@ class SliverStack extends MultiChildRenderObjectWidget {
   /// Defaults to the ambient [Directionality].
   final TextDirection textDirection;
 
-  final bool ignoreOverlap;
+  /// Whether the positioned children should be inset (made smaller) when the sliver has overlap.
+  ///
+  /// This is very useful and most likely what you want when using a pinned [SliverPersistentHeader]
+  /// as child of the stack
+  ///
+  /// Defaults to false
+  final bool insetOnOverlap;
 
   @override
   RenderSliverStack createRenderObject(BuildContext context) {
     return RenderSliverStack()
       ..positionedAlignment = positionedAlignment
       ..textDirection = textDirection ?? Directionality.of(context)
-      ..ignoreOverlap = ignoreOverlap;
+      ..insetOnOverlap = insetOnOverlap;
   }
 
   @override
@@ -68,7 +74,7 @@ class SliverStack extends MultiChildRenderObjectWidget {
     renderObject
       ..positionedAlignment = positionedAlignment
       ..textDirection = textDirection ?? Directionality.of(context)
-      ..ignoreOverlap = ignoreOverlap;
+      ..insetOnOverlap = insetOnOverlap;
   }
 }
 
@@ -435,15 +441,17 @@ class RenderSliverStack extends RenderSliver
     }
   }
 
-  /// The text direction with which to resolve [alignment].
+  /// Whether the positioned children should be inset (made smaller) when the sliver has overlap.
   ///
-  /// This may be changed to null, but only after the [alignment] has been changed
-  /// to a value that does not depend on the direction.
-  bool get ignoreOverlap => _ignoreOverlap;
-  bool _ignoreOverlap;
-  set ignoreOverlap(bool value) {
-    if (_ignoreOverlap != value) {
-      _ignoreOverlap = value;
+  /// This is very useful and most likely what you want when using a pinned [SliverPersistentHeader]
+  /// as child of the stack
+  ///
+  /// Defaults to false
+  bool get insetOnOverlap => _insetOnOverlap;
+  bool _insetOnOverlap;
+  set insetOnOverlap(bool value) {
+    if (_insetOnOverlap != value) {
+      _insetOnOverlap = value;
       markNeedsLayout();
     }
   }
@@ -480,10 +488,10 @@ class RenderSliverStack extends RenderSliver
 
     final axisDirection = applyGrowthDirectionToAxisDirection(
         constraints.axisDirection, constraints.growthDirection);
-    final double overlapAndScroll = ignoreOverlap
-        ? 0
-        : max(0.0, constraints.overlap + constraints.scrollOffset);
-    final overlap = ignoreOverlap ? 0 : max(0.0, constraints.overlap);
+    final double overlapAndScroll = insetOnOverlap
+        ? max(0.0, constraints.overlap + constraints.scrollOffset)
+        : 0;
+    final overlap = insetOnOverlap ? max(0.0, constraints.overlap) : 0;
 
     bool hasVisualOverflow = false;
     double maxScrollExtent = 0;

@@ -321,7 +321,6 @@ class RenderMultiSliver extends RenderSliver
   void _containPinnedSlivers(
       double usedBounds, double allowedBounds, Axis axis) {
     final diff = usedBounds - allowedBounds;
-    int count = 0;
     for (final child in _children) {
       if (!child.geometry.visible) continue;
       final childParentData =

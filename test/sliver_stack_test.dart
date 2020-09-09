@@ -59,7 +59,7 @@ void main() {
                 ),
               SliverStack(
                 key: stackKey,
-                ignoreOverlap: ignoreOverlap,
+                insetOnOverlap: !ignoreOverlap,
                 children: <Widget>[
                   SliverPositioned.fill(
                     child: box(positionedKey),
