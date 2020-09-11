@@ -3,15 +3,15 @@ import 'dart:math';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 
-/// Constraints and centers the child [sliver] to a maximum cross axis extent
+/// Constraints and centers the [child] sliver to a maximum cross axis extent
 ///  specified by [maxCrossAxisExtent].
 class SliverCrossAxisConstrained extends SingleChildRenderObjectWidget {
   const SliverCrossAxisConstrained({
     @required this.maxCrossAxisExtent,
     Key key,
-    Widget sliver,
+    Widget child,
   })  : assert(maxCrossAxisExtent != null),
-        super(key: key, child: sliver);
+        super(key: key, child: child);
 
   /// Max allowed limit of the cross axis
   final double maxCrossAxisExtent;

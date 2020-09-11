@@ -11,7 +11,7 @@ void main() {
         slivers: [
           SliverCrossAxisConstrained(
             maxCrossAxisExtent: maxCrossAxisExtend,
-            sliver: sliver,
+            child: sliver,
           ),
         ],
       ),
