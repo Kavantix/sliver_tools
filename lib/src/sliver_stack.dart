@@ -513,8 +513,7 @@ class RenderSliverStack extends RenderSliver
       minPaintOrigin =
           min(minPaintOrigin ?? double.infinity, child.geometry.paintOrigin);
       maxScrollExtent = max(maxScrollExtent, child.geometry.scrollExtent);
-      maxPaintExtent = max(maxPaintExtent,
-          child.geometry.paintExtent + child.geometry.paintOrigin);
+      maxPaintExtent = max(maxPaintExtent, child.geometry.paintExtent);
       maxMaxPaintExtent = max(maxMaxPaintExtent, child.geometry.maxPaintExtent);
       maxLayoutExtent = max(maxLayoutExtent, child.geometry.layoutExtent);
       maxHitTestExtent = max(maxHitTestExtent, child.geometry.hitTestExtent);

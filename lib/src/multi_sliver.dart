@@ -302,13 +302,14 @@ class RenderMultiSliver extends RenderSliver
     final totalPaintExtent = (minPaintOrigin + paintExtent)
         .clamp(0.0, constraints.remainingPaintExtent)
         .toDouble();
+    final layoutExtent =
+        max(0.0, min(layoutOffset, totalPaintExtent - minPaintOrigin));
     geometry = SliverGeometry(
       paintOrigin: minPaintOrigin,
       scrollExtent: precedingScrollExtent,
       paintExtent: totalPaintExtent - minPaintOrigin,
       maxPaintExtent: maxPaintExtent - minPaintOrigin,
-      layoutExtent:
-          max(0.0, min(layoutOffset - minPaintOrigin, totalPaintExtent)),
+      layoutExtent: layoutExtent,
       cacheExtent: constraints.remainingCacheExtent - remainingCacheExtent,
       hasVisualOverflow: hasVisualOverflow,
       maxScrollObstructionExtent: maxScrollObstructionExtent,
