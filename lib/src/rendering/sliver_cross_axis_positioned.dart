@@ -26,6 +26,7 @@ mixin RenderSliverCrossAxisPositionedMixin
   @override
   @nonVirtual
   @protected
+  @visibleForTesting
   void performLayout() {
     final positionData = createCrossAxisPositionData(constraints);
     child.layout(

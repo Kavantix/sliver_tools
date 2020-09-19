@@ -170,6 +170,21 @@ void main() {
             crossAxisExtent - paddingStart - paddingEnd);
         expect(positionData.crossAxisPosition, paddingStart);
       });
+
+      test(
+          'throws assertion error if total padding is more than crossAxisExtent',
+          () {
+        final renderObject = setup(
+            paddingStart: crossAxisExtent / 2 + 1,
+            paddingEnd: crossAxisExtent / 2);
+
+        // Make sure errors caught by flutter bubble up
+        FlutterError.onError = (error) => throw error.exception;
+        expect(
+          () => renderObject.layout(constraints, parentUsesSize: true),
+          throwsAssertionError,
+        );
+      });
     });
   });
 }
