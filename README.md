@@ -1,4 +1,5 @@
 # sliver_tools
+[![pub package](https://img.shields.io/pub/v/sliver_tools.svg)](https://pub.dartlang.org/packages/sliver_tools)
 
 A set of useful sliver tools that are missing from the flutter framework.
 
@@ -171,6 +172,27 @@ class WidgetThatReturnsASliver extends StatelessWidget {
 }
 ```
 
+## [SliverCrossAxisPadded]
+
+The [SliverCrossAxisPadded] widget allows for adding padding to the cross axis of a sliver.
+This can be done either by passing a `paddingStart` and/or `paddingEnd` or by using the `symmetric` constructor which takes a single padding value.
+When using `paddingStart` and `paddingEnd` in a vertical sliver it will depend on the `TextDirection` whether start is left or right.
+
+### Example
+```dart
+class WidgetThatReturnsASliver extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return SliverCrossAxisPadded(
+      paddingStart: 24,
+      paddingEnd: 48,
+		textDirection: TextDirection.ltr, // optional, defaults to the Directionality specified by the context
+      child: SliverList(...),
+    );
+  }
+}
+```
+
 
 
 
@@ -180,3 +202,4 @@ class WidgetThatReturnsASliver extends StatelessWidget {
 [SliverClip]: https://github.com/Kavantix/sliver_tools/blob/master/lib/src/sliver_clip.dart
 [SliverAnimatedSwitcher]: https://github.com/Kavantix/sliver_tools/blob/master/lib/src/sliver_animated_switcher.dart
 [SliverCrossAxisConstrained]: https://github.com/Kavantix/sliver_tools/blob/master/lib/src/sliver_cross_axis_constrained.dart
+[SliverCrossAxisPadded]: https://github.com/Kavantix/sliver_tools/blob/master/lib/src/sliver_cross_axis_padded.dart

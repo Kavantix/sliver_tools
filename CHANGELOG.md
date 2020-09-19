@@ -1,3 +1,7 @@
+## [0.1.4] - 2020-09-19
+
+Added [SliverCrossAxisPadded]
+
 ## [0.1.3] - 2020-09-11
 
 Added [SliverCrossAxisConstrained] with thanks to @remonh87
@@ -34,3 +38,4 @@ Initial release including:
 [SliverClip]: https://github.com/Kavantix/sliver_tools/blob/master/lib/src/sliver_clip.dart
 [SliverAnimatedSwitcher]: https://github.com/Kavantix/sliver_tools/blob/master/lib/src/sliver_animated_switcher.dart
 [SliverCrossAxisConstrained]: https://github.com/Kavantix/sliver_tools/blob/master/lib/src/sliver_cross_axis_constrained.dart
+[SliverCrossAxisPadded]: https://github.com/Kavantix/sliver_tools/blob/master/lib/src/sliver_cross_axis_padded.dart
