@@ -87,6 +87,33 @@ void main() {
       );
     });
 
+    test('directly passes the exact geometry of the child on', () {
+      var renderObject = setup();
+      renderObject.layout(constraints, parentUsesSize: true);
+      expect(
+        identical(renderObject.geometry, renderObject.child.geometry),
+        true,
+        reason: 'geometry was not identical to the geometry of the child',
+      );
+
+      const double crossAxisPosition = 214;
+      const double _crossAxisExtent = crossAxisExtent - crossAxisPosition - 111;
+      renderObject = setup(
+        crossAxisPosition: crossAxisPosition,
+        crossAxisExtent: _crossAxisExtent,
+      );
+      renderObject.layout(constraints, parentUsesSize: true);
+      expect(
+        renderObject.child.constraints,
+        constraints.copyWith(crossAxisExtent: _crossAxisExtent),
+      );
+      expect(
+        identical(renderObject.geometry, renderObject.child.geometry),
+        true,
+        reason: 'geometry was not identical to the geometry of the child',
+      );
+    });
+
     test('correctly calls paint', () {
       var renderObject = setup();
       renderObject.layout(constraints, parentUsesSize: true);
