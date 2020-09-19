@@ -1,3 +1,7 @@
+## [0.1.4+1] - 2020-09-19
+
+Fixes small layoutExtent issue in [MultiSliver]
+
 ## [0.1.4] - 2020-09-19
 
 Added [SliverCrossAxisPadded]
