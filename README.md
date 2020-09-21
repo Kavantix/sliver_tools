@@ -194,6 +194,13 @@ class WidgetThatReturnsASliver extends StatelessWidget {
 ```
 
 
+## [SliverPinnedHeader]
+
+The [SliverPinnedHeader] widget allows for easily making a pinned header.
+It will size itself to the size of the child and when it reaches the leading edge of the viewport stay there instead of scrolling off the screen.
+
+
+
 
 
 [MultiSliver]: https://github.com/Kavantix/sliver_tools/blob/master/lib/src/multi_sliver.dart
@@ -203,3 +210,4 @@ class WidgetThatReturnsASliver extends StatelessWidget {
 [SliverAnimatedSwitcher]: https://github.com/Kavantix/sliver_tools/blob/master/lib/src/sliver_animated_switcher.dart
 [SliverCrossAxisConstrained]: https://github.com/Kavantix/sliver_tools/blob/master/lib/src/sliver_cross_axis_constrained.dart
 [SliverCrossAxisPadded]: https://github.com/Kavantix/sliver_tools/blob/master/lib/src/sliver_cross_axis_padded.dart
+[SliverPinnedHeader]: https://github.com/Kavantix/sliver_tools/blob/master/lib/src/sliver_pinned_header.dart

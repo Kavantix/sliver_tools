@@ -1,3 +1,7 @@
+## [0.1.5] - 2020-09-19
+
+Added [SliverPinnedHeader]
+
 ## [0.1.4+1] - 2020-09-19
 
 Fixes small layoutExtent issue in [MultiSliver]
@@ -43,3 +47,4 @@ Initial release including:
 [SliverAnimatedSwitcher]: https://github.com/Kavantix/sliver_tools/blob/master/lib/src/sliver_animated_switcher.dart
 [SliverCrossAxisConstrained]: https://github.com/Kavantix/sliver_tools/blob/master/lib/src/sliver_cross_axis_constrained.dart
 [SliverCrossAxisPadded]: https://github.com/Kavantix/sliver_tools/blob/master/lib/src/sliver_cross_axis_padded.dart
+[SliverPinnedHeader]: https://github.com/Kavantix/sliver_tools/blob/master/lib/src/sliver_pinned_header.dart
