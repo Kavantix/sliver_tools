@@ -7,11 +7,6 @@ analyzer:
     missing_required_param: error
     missing_enum_constant_in_switch: error
     missing_return: error
-    implicit_dynamic_type: info
-    implicit_dynamic_map_literal: info
-    implicit_dynamic_list_literal: info
-    implicit_dynamic_method: warning
-    implicit_dynamic_function: warning
     invalid_use_of_protected_member: error
     unused_local_variable: warning
     deprecated_member_use: warning

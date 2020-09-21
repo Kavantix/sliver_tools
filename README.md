@@ -186,7 +186,7 @@ class WidgetThatReturnsASliver extends StatelessWidget {
     return SliverCrossAxisPadded(
       paddingStart: 24,
       paddingEnd: 48,
-		textDirection: TextDirection.ltr, // optional, defaults to the Directionality specified by the context
+      textDirection: TextDirection.ltr, // optional, defaults to the Directionality specified by the context
       child: SliverList(...),
     );
   }
