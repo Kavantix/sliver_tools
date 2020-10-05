@@ -1,3 +1,7 @@
+## [0.1.6] - 2020-10-05
+
+Fixed issue where hit testing of a pinned [SliverPinnedHeader] failed.
+
 ## [0.1.5] - 2020-09-19
 
 Added [SliverPinnedHeader]
