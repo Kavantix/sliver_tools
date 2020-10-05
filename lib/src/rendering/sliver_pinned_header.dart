@@ -29,4 +29,9 @@ class RenderSliverPinnedHeader extends RenderSliverSingleBoxAdapter {
       hasVisualOverflow: paintedChildExtent < childExtent,
     );
   }
+
+  @override
+  double childMainAxisPosition(RenderBox child) {
+    return 0;
+  }
 }
