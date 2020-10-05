@@ -127,6 +127,36 @@ void main() {
         expect(renderObject.geometry.paintExtent, 4);
         expect(renderObject.geometry.layoutExtent, 4);
       });
+
+      test('has mainAxisPosition of 0 even when pinned', () {
+        double scrollOffset = 0;
+        final renderObject = setup();
+        renderObject.layout(
+          constraints.copyWith(
+            scrollOffset: scrollOffset,
+          ),
+          parentUsesSize: true,
+        );
+        expect(renderObject.childMainAxisPosition(renderObject.child), 0);
+
+        scrollOffset = 40;
+        renderObject.layout(
+          constraints.copyWith(
+            scrollOffset: scrollOffset,
+          ),
+          parentUsesSize: true,
+        );
+        expect(renderObject.childMainAxisPosition(renderObject.child), 0);
+
+        scrollOffset = childHeight + 2;
+        renderObject.layout(
+          constraints.copyWith(
+            scrollOffset: scrollOffset,
+          ),
+          parentUsesSize: true,
+        );
+        expect(renderObject.childMainAxisPosition(renderObject.child), 0);
+      });
     });
 
     group('in a vertical viewport', () {
