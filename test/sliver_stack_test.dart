@@ -31,6 +31,8 @@ void main() {
     const boxInListKey = ValueKey('box in list');
     const stackKey = ValueKey('stack');
     const positionedKey = ValueKey('positioned');
+    const topPositionedSize = 1.0;
+    const topPositionedKey = ValueKey('top_positioned');
     const pinnedKey = ValueKey('pinned');
     const childSize = 300.0;
     const pinnedSize = 150.0;
@@ -42,6 +44,7 @@ void main() {
       bool ignoreOverlap = false,
       bool includePinned = false,
       int childCount = 2,
+      SliverPositioned Function(Widget child) topPositionedBuilder,
     }) async {
       await tester.pumpWidget(
         Directionality(
@@ -78,6 +81,9 @@ void main() {
                       childCount: childCount,
                     ),
                   ),
+                  if (topPositionedBuilder != null)
+                    topPositionedBuilder(
+                        box(topPositionedKey, size: topPositionedSize)),
                 ],
               ),
               const SliverToBoxAdapter(
@@ -278,6 +284,156 @@ void main() {
         tester,
         size: Size(800, totalSize),
       );
+    });
+
+    group('positioned child can be tapped', () {
+      Future<void> testPositionedTap(
+        WidgetTester tester, {
+        @required double mainAxisPosition,
+        @required double crossAxisPosition,
+        double left,
+        double right,
+        double top,
+        double bottom,
+        Axis scrollDirection = Axis.vertical,
+        bool reverse = false,
+      }) async {
+        int tapped = 0;
+        final key = UniqueKey();
+        await setupStack(
+          tester,
+          reverse: reverse,
+          scrollDirection: scrollDirection,
+          topPositionedBuilder: (child) => SliverPositioned(
+            key: key,
+            child: GestureDetector(
+              behavior: HitTestBehavior.opaque,
+              onTap: () => tapped++,
+              child: child,
+            ),
+            left: left,
+            top: top,
+            right: right,
+            bottom: bottom,
+          ),
+        );
+        final renderStack =
+            tester.renderObject(find.byKey(stackKey)) as RenderSliverStack;
+        expect(renderStack, isNotNull);
+        final renderChild = tester.renderObject(find.byKey(key));
+        expect(renderChild, isNotNull);
+        expect(
+            renderStack.childMainAxisPosition(renderChild), mainAxisPosition);
+        expect(
+            renderStack.childCrossAxisPosition(renderChild), crossAxisPosition);
+        expect(tapped, 0);
+        expect(find.byKey(topPositionedKey), findsOneWidget);
+        await tester.tap(find.byKey(topPositionedKey));
+        expect(tapped, 1);
+      }
+
+      testWidgets('when positioned on the left and scrollDirection is vertical',
+          (tester) async {
+        await testPositionedTap(
+          tester,
+          top: 70,
+          left: 30,
+          mainAxisPosition: 70,
+          crossAxisPosition: 30,
+        );
+      });
+
+      testWidgets(
+          'when positioned on the right and scrollDirection is vertical',
+          (tester) async {
+        await testPositionedTap(
+          tester,
+          top: 70,
+          right: 30,
+          mainAxisPosition: 70,
+          crossAxisPosition: 800 - topPositionedSize - 30,
+        );
+      });
+
+      testWidgets(
+          'when positioned on the left and scrollDirection is horizontal',
+          (tester) async {
+        await testPositionedTap(
+          tester,
+          top: 70,
+          left: 30,
+          mainAxisPosition: 30,
+          crossAxisPosition: 70,
+          scrollDirection: Axis.horizontal,
+        );
+      });
+
+      testWidgets(
+          'when positioned on the right and scrollDirection is horizontal',
+          (tester) async {
+        await testPositionedTap(
+          tester,
+          top: 70,
+          right: 30,
+          mainAxisPosition: 600 - topPositionedSize - 30,
+          crossAxisPosition: 70,
+          scrollDirection: Axis.horizontal,
+        );
+      });
+
+      testWidgets(
+          'when positioned on the left and scrollDirection is vertical (reversed)',
+          (tester) async {
+        await testPositionedTap(
+          tester,
+          top: 70,
+          left: 30,
+          mainAxisPosition: 600 - topPositionedSize - 70,
+          crossAxisPosition: 30,
+          reverse: true,
+        );
+      });
+
+      testWidgets(
+          'when positioned on the right and scrollDirection is vertical (reversed)',
+          (tester) async {
+        await testPositionedTap(
+          tester,
+          top: 70,
+          right: 30,
+          mainAxisPosition: 600 - topPositionedSize - 70,
+          crossAxisPosition: 800 - topPositionedSize - 30,
+          reverse: true,
+        );
+      });
+
+      testWidgets(
+          'when positioned on the left and scrollDirection is horizontal (reversed)',
+          (tester) async {
+        await testPositionedTap(
+          tester,
+          top: 70,
+          left: 30,
+          mainAxisPosition: 600 - topPositionedSize - 30,
+          crossAxisPosition: 70,
+          scrollDirection: Axis.horizontal,
+          reverse: true,
+        );
+      });
+
+      testWidgets(
+          'when positioned on the right and scrollDirection is horizontal (reversed)',
+          (tester) async {
+        await testPositionedTap(
+          tester,
+          top: 70,
+          right: 30,
+          mainAxisPosition: 30,
+          crossAxisPosition: 70,
+          scrollDirection: Axis.horizontal,
+          reverse: true,
+        );
+      });
     });
 
     // testWidgets('shows all positioned children', (tester) async {
