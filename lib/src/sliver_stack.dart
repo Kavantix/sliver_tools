@@ -592,38 +592,41 @@ class RenderSliverStack extends RenderSliver
       final paintOffset = constraints.scrollOffset - overlapAndScroll;
       switch (axisDirection) {
         case AxisDirection.up:
-          parentData.mainAxisPosition = geometry.paintExtent -
+          parentData.mainAxisPosition = geometry.maxPaintExtent -
               child.size.height -
               parentData.paintOffset.dy;
+          parentData.crossAxisPosition = parentData.paintOffset.dx;
           parentData.paintOffset = Offset(
-            0,
-            geometry.paintExtent -
-                child.size.height +
-                parentData.paintOffset.dy +
-                paintOffset,
+            parentData.paintOffset.dx,
+            -geometry.maxPaintExtent +
+                min(geometry.maxPaintExtent,
+                    geometry.paintExtent + constraints.scrollOffset) +
+                parentData.paintOffset.dy,
           );
           break;
         case AxisDirection.right:
           parentData.mainAxisPosition = parentData.paintOffset.dx;
+          parentData.crossAxisPosition = parentData.paintOffset.dy;
           parentData.paintOffset =
               parentData.paintOffset - Offset(paintOffset, 0);
           break;
         case AxisDirection.down:
           parentData.mainAxisPosition = parentData.paintOffset.dy;
+          parentData.crossAxisPosition = parentData.paintOffset.dx;
           parentData.paintOffset =
               parentData.paintOffset - Offset(0, paintOffset);
           break;
         case AxisDirection.left:
-          parentData.mainAxisPosition = geometry.paintExtent -
+          parentData.mainAxisPosition = geometry.maxPaintExtent -
               child.size.width -
               parentData.paintOffset.dx;
+          parentData.crossAxisPosition = parentData.paintOffset.dy;
           parentData.paintOffset = Offset(
-            geometry.paintExtent -
-                child.size.width +
-                parentData.paintOffset.dx +
-                paintOffset,
-            0,
-          );
+              -geometry.maxPaintExtent +
+                  min(geometry.maxPaintExtent,
+                      geometry.paintExtent + constraints.scrollOffset) +
+                  parentData.paintOffset.dx,
+              parentData.paintOffset.dy);
           break;
       }
       hasVisualOverflow = hasVisualOverflow || overflows;
@@ -659,7 +662,10 @@ class RenderSliverStack extends RenderSliver
 
   @override
   double childMainAxisPosition(covariant RenderObject child) {
-    return _computeChildMainAxisPosition(child, constraints.scrollOffset);
+    final childParentData = child.parentData as SliverStackParentData;
+    return childParentData.mainAxisPosition;
+  }
+
   @override
   double childCrossAxisPosition(covariant RenderObject child) {
     final childParentData = child.parentData as SliverStackParentData;
