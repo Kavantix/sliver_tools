@@ -1,3 +1,7 @@
+## [0.1.7] - 2020-10-09
+
+Fixed issue where hit testing of positioned children in [SliverStack] failed.
+
 ## [0.1.6] - 2020-10-05
 
 Fixed issue where hit testing of a pinned [SliverPinnedHeader] failed.
