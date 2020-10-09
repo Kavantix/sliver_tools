@@ -369,6 +369,7 @@ class SliverStackParentData extends ParentData
   Offset paintOffset;
 
   double mainAxisPosition;
+  double crossAxisPosition = 0;
 
   /// Whether this child is considered positioned.
   ///
@@ -659,6 +660,10 @@ class RenderSliverStack extends RenderSliver
   @override
   double childMainAxisPosition(covariant RenderObject child) {
     return _computeChildMainAxisPosition(child, constraints.scrollOffset);
+  @override
+  double childCrossAxisPosition(covariant RenderObject child) {
+    final childParentData = child.parentData as SliverStackParentData;
+    return childParentData.crossAxisPosition;
   }
 
   @override
