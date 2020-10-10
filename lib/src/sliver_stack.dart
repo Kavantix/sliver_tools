@@ -599,14 +599,22 @@ class RenderSliverStack extends RenderSliver
                     geometry.paintExtent + constraints.scrollOffset) +
                 parentData.paintOffset.dy,
           );
+          parentData.mainAxisPosition = geometry.paintExtent -
+              parentData.paintOffset.dy -
+              child.size.height;
+          parentData.crossAxisPosition = parentData.paintOffset.dx;
           break;
         case AxisDirection.right:
           parentData.paintOffset =
               parentData.paintOffset - Offset(paintOffset, 0);
+          parentData.mainAxisPosition = parentData.paintOffset.dx;
+          parentData.crossAxisPosition = parentData.paintOffset.dy;
           break;
         case AxisDirection.down:
           parentData.paintOffset =
               parentData.paintOffset - Offset(0, paintOffset);
+          parentData.mainAxisPosition = parentData.paintOffset.dy;
+          parentData.crossAxisPosition = parentData.paintOffset.dx;
           break;
         case AxisDirection.left:
           parentData.paintOffset = Offset(
@@ -615,6 +623,10 @@ class RenderSliverStack extends RenderSliver
                       geometry.paintExtent + constraints.scrollOffset) +
                   parentData.paintOffset.dx,
               parentData.paintOffset.dy);
+          parentData.mainAxisPosition = geometry.paintExtent -
+              parentData.paintOffset.dx -
+              child.size.width;
+          parentData.crossAxisPosition = parentData.paintOffset.dy;
           break;
       }
       hasVisualOverflow = hasVisualOverflow || overflows;
@@ -685,42 +697,5 @@ class RenderSliverStack extends RenderSliver
       }
     }
     return false;
-  }
-
-  bool hitTestBoxChild(BoxHitTestResult result, RenderBox child,
-      {double mainAxisPosition, double crossAxisPosition}) {
-    final paintOffset = (child.parentData as SliverStackParentData).paintOffset;
-    Offset transformedPosition;
-    final direction = applyGrowthDirectionToAxisDirection(
-        constraints.axisDirection, constraints.growthDirection);
-    switch (direction) {
-      case AxisDirection.up:
-        transformedPosition = Offset(
-          crossAxisPosition - paintOffset.dx,
-          geometry.maxPaintExtent -
-              mainAxisPosition -
-              constraints.scrollOffset -
-              paintOffset.dy,
-        );
-        break;
-      case AxisDirection.down:
-        transformedPosition = Offset(crossAxisPosition - paintOffset.dx,
-            mainAxisPosition - paintOffset.dy);
-        break;
-      case AxisDirection.right:
-        transformedPosition = Offset(mainAxisPosition - paintOffset.dx,
-            crossAxisPosition - paintOffset.dy);
-        break;
-      case AxisDirection.left:
-        transformedPosition = Offset(
-          geometry.maxPaintExtent -
-              mainAxisPosition -
-              constraints.scrollOffset -
-              paintOffset.dx,
-          crossAxisPosition - paintOffset.dy,
-        );
-        break;
-    }
-    return child.hitTest(result, position: transformedPosition);
   }
 }
