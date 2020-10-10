@@ -368,7 +368,7 @@ class SliverStackParentData extends ParentData
 
   Offset paintOffset;
 
-  double mainAxisPosition;
+  double mainAxisPosition = 0;
   double crossAxisPosition = 0;
 
   /// Whether this child is considered positioned.
@@ -592,10 +592,6 @@ class RenderSliverStack extends RenderSliver
       final paintOffset = constraints.scrollOffset - overlapAndScroll;
       switch (axisDirection) {
         case AxisDirection.up:
-          parentData.mainAxisPosition = geometry.maxPaintExtent -
-              child.size.height -
-              parentData.paintOffset.dy;
-          parentData.crossAxisPosition = parentData.paintOffset.dx;
           parentData.paintOffset = Offset(
             parentData.paintOffset.dx,
             -geometry.maxPaintExtent +
@@ -605,22 +601,14 @@ class RenderSliverStack extends RenderSliver
           );
           break;
         case AxisDirection.right:
-          parentData.mainAxisPosition = parentData.paintOffset.dx;
-          parentData.crossAxisPosition = parentData.paintOffset.dy;
           parentData.paintOffset =
               parentData.paintOffset - Offset(paintOffset, 0);
           break;
         case AxisDirection.down:
-          parentData.mainAxisPosition = parentData.paintOffset.dy;
-          parentData.crossAxisPosition = parentData.paintOffset.dx;
           parentData.paintOffset =
               parentData.paintOffset - Offset(0, paintOffset);
           break;
         case AxisDirection.left:
-          parentData.mainAxisPosition = geometry.maxPaintExtent -
-              child.size.width -
-              parentData.paintOffset.dx;
-          parentData.crossAxisPosition = parentData.paintOffset.dy;
           parentData.paintOffset = Offset(
               -geometry.maxPaintExtent +
                   min(geometry.maxPaintExtent,
@@ -697,5 +685,42 @@ class RenderSliverStack extends RenderSliver
       }
     }
     return false;
+  }
+
+  bool hitTestBoxChild(BoxHitTestResult result, RenderBox child,
+      {double mainAxisPosition, double crossAxisPosition}) {
+    final paintOffset = (child.parentData as SliverStackParentData).paintOffset;
+    Offset transformedPosition;
+    final direction = applyGrowthDirectionToAxisDirection(
+        constraints.axisDirection, constraints.growthDirection);
+    switch (direction) {
+      case AxisDirection.up:
+        transformedPosition = Offset(
+          crossAxisPosition - paintOffset.dx,
+          geometry.maxPaintExtent -
+              mainAxisPosition -
+              constraints.scrollOffset -
+              paintOffset.dy,
+        );
+        break;
+      case AxisDirection.down:
+        transformedPosition = Offset(crossAxisPosition - paintOffset.dx,
+            mainAxisPosition - paintOffset.dy);
+        break;
+      case AxisDirection.right:
+        transformedPosition = Offset(mainAxisPosition - paintOffset.dx,
+            crossAxisPosition - paintOffset.dy);
+        break;
+      case AxisDirection.left:
+        transformedPosition = Offset(
+          geometry.maxPaintExtent -
+              mainAxisPosition -
+              constraints.scrollOffset -
+              paintOffset.dx,
+          crossAxisPosition - paintOffset.dy,
+        );
+        break;
+    }
+    return child.hitTest(result, position: transformedPosition);
   }
 }
