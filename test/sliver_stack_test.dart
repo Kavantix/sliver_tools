@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/gestures.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -45,6 +46,7 @@ void main() {
       bool includePinned = false,
       int childCount = 2,
       SliverPositioned Function(Widget child) topPositionedBuilder,
+      ScrollController controller,
     }) async {
       await tester.pumpWidget(
         Directionality(
@@ -54,6 +56,7 @@ void main() {
             dragStartBehavior: DragStartBehavior.start,
             reverse: reverse,
             scrollDirection: scrollDirection,
+            controller: controller,
             slivers: [
               if (includePinned)
                 const PinnedHeader(
@@ -64,9 +67,10 @@ void main() {
                 key: stackKey,
                 insetOnOverlap: !ignoreOverlap,
                 children: <Widget>[
-                  SliverPositioned.fill(
-                    child: box(positionedKey),
-                  ),
+                  if (topPositionedBuilder == null)
+                    SliverPositioned.fill(
+                      child: box(positionedKey),
+                    ),
                   SliverToBoxAdapter(
                     child: box(box1Key, size: 150),
                   ),
@@ -93,7 +97,8 @@ void main() {
           ),
         ),
       );
-      expect(find.byKey(positionedKey), findsOneWidget);
+      if (topPositionedBuilder == null)
+        expect(find.byKey(positionedKey), findsOneWidget);
       expect(find.byKey(box1Key), findsOneWidget);
       expect(find.byKey(boxInListKey), findsOneWidget);
       expect(find.byKey(stackKey), findsOneWidget);
@@ -291,6 +296,7 @@ void main() {
         WidgetTester tester, {
         @required double mainAxisPosition,
         @required double crossAxisPosition,
+        double mainAxisPositionWithoutOverlap,
         double left,
         double right,
         double top,
@@ -298,38 +304,52 @@ void main() {
         Axis scrollDirection = Axis.vertical,
         bool reverse = false,
       }) async {
-        int tapped = 0;
-        final key = UniqueKey();
-        await setupStack(
-          tester,
-          reverse: reverse,
-          scrollDirection: scrollDirection,
-          topPositionedBuilder: (child) => SliverPositioned(
-            key: key,
-            child: GestureDetector(
-              behavior: HitTestBehavior.opaque,
-              onTap: () => tapped++,
-              child: child,
+        const ignoreOverlaps = [true, false];
+        for (final ignoreOverlap in ignoreOverlaps) {
+          int tapped = 0;
+          final key = UniqueKey();
+          final controller = ScrollController();
+          await tester.pumpWidget(const SizedBox.shrink());
+          await setupStack(
+            tester,
+            controller: controller,
+            reverse: reverse,
+            scrollDirection: scrollDirection,
+            ignoreOverlap: ignoreOverlap,
+            topPositionedBuilder: (child) => SliverPositioned(
+              key: key,
+              child: GestureDetector(
+                behavior: HitTestBehavior.opaque,
+                onTap: () => tapped++,
+                child: child,
+              ),
+              left: left,
+              top: top,
+              right: right,
+              bottom: bottom,
             ),
-            left: left,
-            top: top,
-            right: right,
-            bottom: bottom,
-          ),
-        );
-        final renderStack =
-            tester.renderObject(find.byKey(stackKey)) as RenderSliverStack;
-        expect(renderStack, isNotNull);
-        final renderChild = tester.renderObject(find.byKey(key));
-        expect(renderChild, isNotNull);
-        expect(
-            renderStack.childMainAxisPosition(renderChild), mainAxisPosition);
-        expect(
-            renderStack.childCrossAxisPosition(renderChild), crossAxisPosition);
-        expect(tapped, 0);
-        expect(find.byKey(topPositionedKey), findsOneWidget);
-        await tester.tap(find.byKey(topPositionedKey));
-        expect(tapped, 1);
+          );
+          final renderStack =
+              tester.renderObject(find.byKey(stackKey)) as RenderSliverStack;
+          expect(renderStack, isNotNull,
+              reason: 'ignoreOverlap: $ignoreOverlap');
+          final renderChild = tester.renderObject(find.byKey(key));
+          expect(renderChild, isNotNull,
+              reason: 'ignoreOverlap: $ignoreOverlap');
+          expect(tapped, 0, reason: 'ignoreOverlap: $ignoreOverlap');
+          expect(find.byKey(topPositionedKey), findsOneWidget,
+              reason: 'ignoreOverlap: $ignoreOverlap');
+          await tester.tap(find.byKey(topPositionedKey));
+          expect(tapped, 1,
+              reason:
+                  'could not tap positioned widget, ignoreOverlap: $ignoreOverlap');
+          controller.jumpTo(5);
+          await tester.pump();
+          await tester.tap(find.byKey(topPositionedKey));
+          expect(tapped, 2,
+              reason:
+                  'could not tap positioned widget that was scrolled, ignoreOverlap: $ignoreOverlap');
+        }
       }
 
       testWidgets('when positioned on the left and scrollDirection is vertical',
