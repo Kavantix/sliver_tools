@@ -1,3 +1,7 @@
+## [0.1.8] - 2020-10-26
+
+Improved hit testing of positioned children in [SliverStack].
+
 ## [0.1.7] - 2020-10-09
 
 Fixed issue where hit testing of positioned children in [SliverStack] failed.
