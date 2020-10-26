@@ -368,7 +368,7 @@ class SliverStackParentData extends ParentData
 
   Offset paintOffset;
 
-  double mainAxisPosition;
+  double mainAxisPosition = 0;
   double crossAxisPosition = 0;
 
   /// Whether this child is considered positioned.
@@ -592,10 +592,6 @@ class RenderSliverStack extends RenderSliver
       final paintOffset = constraints.scrollOffset - overlapAndScroll;
       switch (axisDirection) {
         case AxisDirection.up:
-          parentData.mainAxisPosition = geometry.maxPaintExtent -
-              child.size.height -
-              parentData.paintOffset.dy;
-          parentData.crossAxisPosition = parentData.paintOffset.dx;
           parentData.paintOffset = Offset(
             parentData.paintOffset.dx,
             -geometry.maxPaintExtent +
@@ -603,30 +599,34 @@ class RenderSliverStack extends RenderSliver
                     geometry.paintExtent + constraints.scrollOffset) +
                 parentData.paintOffset.dy,
           );
+          parentData.mainAxisPosition = geometry.paintExtent -
+              parentData.paintOffset.dy -
+              child.size.height;
+          parentData.crossAxisPosition = parentData.paintOffset.dx;
           break;
         case AxisDirection.right:
-          parentData.mainAxisPosition = parentData.paintOffset.dx;
-          parentData.crossAxisPosition = parentData.paintOffset.dy;
           parentData.paintOffset =
               parentData.paintOffset - Offset(paintOffset, 0);
+          parentData.mainAxisPosition = parentData.paintOffset.dx;
+          parentData.crossAxisPosition = parentData.paintOffset.dy;
           break;
         case AxisDirection.down:
-          parentData.mainAxisPosition = parentData.paintOffset.dy;
-          parentData.crossAxisPosition = parentData.paintOffset.dx;
           parentData.paintOffset =
               parentData.paintOffset - Offset(0, paintOffset);
+          parentData.mainAxisPosition = parentData.paintOffset.dy;
+          parentData.crossAxisPosition = parentData.paintOffset.dx;
           break;
         case AxisDirection.left:
-          parentData.mainAxisPosition = geometry.maxPaintExtent -
-              child.size.width -
-              parentData.paintOffset.dx;
-          parentData.crossAxisPosition = parentData.paintOffset.dy;
           parentData.paintOffset = Offset(
               -geometry.maxPaintExtent +
                   min(geometry.maxPaintExtent,
                       geometry.paintExtent + constraints.scrollOffset) +
                   parentData.paintOffset.dx,
               parentData.paintOffset.dy);
+          parentData.mainAxisPosition = geometry.paintExtent -
+              parentData.paintOffset.dx -
+              child.size.width;
+          parentData.crossAxisPosition = parentData.paintOffset.dy;
           break;
       }
       hasVisualOverflow = hasVisualOverflow || overflows;
