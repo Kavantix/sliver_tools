@@ -1,9 +1,8 @@
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
-import '../lib/src/sliver_pinned_header.dart';
-
-import '../lib/src/rendering/sliver_pinned_header.dart';
+import 'package:sliver_tools/sliver_tools.dart';
+import 'package:sliver_tools/src/rendering/sliver_pinned_header.dart';
 
 const constraints = SliverConstraints(
   overlap: 0,

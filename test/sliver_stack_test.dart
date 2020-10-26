@@ -5,11 +5,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
-import '../lib/src/sliver_stack.dart';
+import 'package:sliver_tools/sliver_tools.dart';
 import 'helpers/pinned_header.dart';
 
 class _UnconstrainedScollPhysics extends ScrollPhysics {
   const _UnconstrainedScollPhysics();
+
+  @override
   ScrollPhysics applyTo(ScrollPhysics ancestor) {
     return this;
   }
@@ -97,8 +99,9 @@ void main() {
           ),
         ),
       );
-      if (topPositionedBuilder == null)
+      if (topPositionedBuilder == null) {
         expect(find.byKey(positionedKey), findsOneWidget);
+      }
       expect(find.byKey(box1Key), findsOneWidget);
       expect(find.byKey(boxInListKey), findsOneWidget);
       expect(find.byKey(stackKey), findsOneWidget);

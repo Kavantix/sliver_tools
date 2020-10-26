@@ -1,7 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
-
-import '../lib/src/sliver_cross_axis_constrained.dart';
+import 'package:sliver_tools/sliver_tools.dart';
 
 void main() {
   Widget _createSut(Widget sliver, double maxCrossAxisExtend) {

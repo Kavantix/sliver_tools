@@ -58,12 +58,9 @@ import 'package:flutter/rendering.dart';
 class MultiSliver extends MultiChildRenderObjectWidget {
   MultiSliver({
     Key key,
-    @required this.children,
+    @required List<Widget> children,
     this.pushPinnedChildren = false,
   }) : super(key: key, children: children);
-
-  /// The children slivers that will be painted
-  final List<Widget> children;
 
   /// If true any children that paint beyond the layoutExtent of the entire [MultiSliver] will
   /// be pushed off towards the leading edge of the [Viewport]
@@ -97,8 +94,9 @@ class RenderMultiSliver extends RenderSliver
 
   @override
   void setupParentData(RenderObject child) {
-    if (child.parentData is! MultiSliverParentData)
+    if (child.parentData is! MultiSliverParentData) {
       child.parentData = MultiSliverParentData();
+    }
   }
 
   bool _containing;
@@ -220,8 +218,9 @@ class RenderMultiSliver extends RenderSliver
       assert(child.geometry.debugAssertIsValid());
 
       // If there is a correction to apply, we'll have to start over.
-      if (child.geometry.scrollOffsetCorrection != null)
+      if (child.geometry.scrollOffsetCorrection != null) {
         return child.geometry.scrollOffsetCorrection;
+      }
 
       // We use the child's paint origin in our coordinate system as the
       // layoutOffset we store in the child's parent data.

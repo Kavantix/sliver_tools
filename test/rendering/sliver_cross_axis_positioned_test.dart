@@ -1,7 +1,6 @@
 import 'package:flutter/rendering.dart';
 import 'package:flutter_test/flutter_test.dart';
-
-import '../../lib/src/rendering/sliver_cross_axis_positioned.dart';
+import 'package:sliver_tools/src/rendering/sliver_cross_axis_positioned.dart';
 
 const double crossAxisExtent = 800;
 const constraints = SliverConstraints(
@@ -34,6 +33,8 @@ class _MockPaintContext implements PaintingContext {
   final Offset expectedOffset;
 
   const _MockPaintContext(this.expectedOffset);
+
+  @override
   dynamic noSuchMethod(Invocation invocation) {
     expect(invocation.memberName, const Symbol('paintChild'));
     expect(invocation.positionalArguments[1] as Offset, expectedOffset);

@@ -19,8 +19,9 @@ mixin RenderSliverCrossAxisPositionedMixin
     on RenderSliver, RenderObjectWithChildMixin<RenderSliver> {
   @override
   void setupParentData(RenderObject child) {
-    if (child.parentData is! _SliverCrossAxisPositionedParentData)
+    if (child.parentData is! _SliverCrossAxisPositionedParentData) {
       child.parentData = _SliverCrossAxisPositionedParentData();
+    }
   }
 
   @override
