@@ -418,10 +418,35 @@ class RenderMultiSliver extends RenderSliver
   }
 
   @override
-  void applyPaintTransform(RenderObject child, Matrix4 transform) {
+  void applyPaintTransform(covariant RenderSliver child, Matrix4 transform) {
     assert(child != null);
     final childParentData = child.parentData as SliverPhysicalParentData;
-    childParentData.applyPaintTransform(transform);
+    switch (applyGrowthDirectionToAxisDirection(
+        constraints.axisDirection, constraints.growthDirection)) {
+      case AxisDirection.down:
+      case AxisDirection.right:
+        transform.translate(
+          childParentData.paintOffset.dx,
+          childParentData.paintOffset.dy,
+        );
+        break;
+      case AxisDirection.up:
+        transform.translate(
+          childParentData.paintOffset.dx,
+          geometry.paintExtent -
+              child.geometry.paintExtent -
+              childParentData.paintOffset.dy,
+        );
+        break;
+      case AxisDirection.left:
+        transform.translate(
+          geometry.paintExtent -
+              child.geometry.paintExtent -
+              childParentData.paintOffset.dx,
+          childParentData.paintOffset.dy,
+        );
+        break;
+    }
   }
 
   @override
@@ -429,9 +454,9 @@ class RenderMultiSliver extends RenderSliver
     final parentData = child.parentData as SliverPhysicalContainerParentData;
     switch (constraints.axis) {
       case Axis.horizontal:
-        return parentData.paintOffset.dx;
+        return parentData.paintOffset.dx + constraints.scrollOffset;
       case Axis.vertical:
-        return parentData.paintOffset.dy;
+        return parentData.paintOffset.dy + constraints.scrollOffset;
     }
     throw FallThroughError();
   }
