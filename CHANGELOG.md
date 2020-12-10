@@ -1,4 +1,4 @@
-## [0.1.10] - 2020-12-10
+## [0.1.10+1] - 2020-12-10
 
 Further improved `childScrollOffset` of [MultiSliver]
 

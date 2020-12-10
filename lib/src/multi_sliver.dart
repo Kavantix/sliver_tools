@@ -285,8 +285,7 @@ class RenderMultiSliver extends RenderSliver
     }
 
     if (containing) {
-      final allowedBounds =
-          max(0.0, scrollExtent - constraints.scrollOffset);
+      final allowedBounds = max(0.0, scrollExtent - constraints.scrollOffset);
       if (maxPaintOffset > allowedBounds) {
         _containPinnedSlivers(maxPaintOffset, allowedBounds, constraints.axis);
         maxPaintOffset = allowedBounds;
@@ -453,7 +452,8 @@ class RenderMultiSliver extends RenderSliver
 
   @override
   double childScrollOffset(covariant RenderSliver child) {
-    return child.constraints.precedingScrollExtent - constraints.precedingScrollExtent;
+    return child.constraints.precedingScrollExtent -
+        constraints.precedingScrollExtent;
   }
 
   @override
