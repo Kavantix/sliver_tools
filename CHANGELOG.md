@@ -1,3 +1,7 @@
+## [0.1.10] - 2020-12-10
+
+Further improved `childScrollOffset` of [MultiSliver]
+
 ## [0.1.9] - 2020-11-11
 
 Fixed edge cases for `applyPaintTransform` and `childScrollOffset` of [MultiSliver]

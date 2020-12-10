@@ -29,9 +29,10 @@ void main() {
     }
 
     const box1Key = ValueKey('1');
-    const box2Key = ValueKey('list');
+    const box2Key = ValueKey('2');
     const groupKey = ValueKey('group');
     const pinnedKey = ValueKey('pinned');
+    const listKey = ValueKey('list');
     const childSize = 300.0;
     const pinnedSize = 150.0;
 
@@ -39,11 +40,13 @@ void main() {
       WidgetTester tester, {
       int childCount = 2,
       bool includePinned = false,
+      ScrollController controller,
     }) async {
       await tester.pumpWidget(
         Directionality(
           textDirection: TextDirection.ltr,
           child: CustomScrollView(
+            controller: controller,
             physics: const _UnconstrainedScollPhysics(),
             slivers: [
               MultiSliver(
@@ -58,6 +61,7 @@ void main() {
                     child: box(box1Key, '1', height: 150),
                   ),
                   SliverList(
+                    key: listKey,
                     delegate: SliverChildBuilderDelegate(
                       (context, index) {
                         return box(
@@ -177,6 +181,23 @@ void main() {
       await tester.pump();
       expect(multiSliver.geometry.maxPaintExtent, totalSize);
       expect(multiSliver.geometry.paintOrigin, 0);
+    });
+
+    testWidgets('correctly sets childScrollOffset', (tester) async {
+      final controller = ScrollController();
+      double totalSize = await setupMultiSliver(
+        tester,
+        controller: controller,
+      );
+      expect(
+          tester.renderObject(find.byKey(groupKey)), isA<RenderMultiSliver>());
+      final multiSliver =
+          tester.renderObject(find.byKey(groupKey)) as RenderMultiSliver;
+      final list = tester.renderObject(find.byKey(listKey)) as RenderSliver;
+      expect(multiSliver.childScrollOffset(list), 150);
+      controller.jumpTo(200);
+      await tester.pump();
+      expect(multiSliver.childScrollOffset(list), 150);
     });
   });
 }

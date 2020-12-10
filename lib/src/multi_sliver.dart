@@ -176,7 +176,8 @@ class RenderMultiSliver extends RenderSliver
     double maxPaintOffset = layoutOffset + overlap;
     double maxPaintExtent = 0;
     double maxHitTestExtent = 0;
-    double precedingScrollExtent = 0;
+    double scrollExtent = 0;
+    double precedingScrollExtent = constraints.precedingScrollExtent;
     bool hasVisualOverflow = false;
     double maxScrollObstructionExtent = 0;
     bool visible = false;
@@ -250,6 +251,7 @@ class RenderMultiSliver extends RenderSliver
       maxHitTestExtent =
           max(maxHitTestExtent, layoutOffset + child.geometry.hitTestExtent);
       scrollOffset -= child.geometry.scrollExtent;
+      scrollExtent += child.geometry.scrollExtent;
       precedingScrollExtent += child.geometry.scrollExtent;
       layoutOffset += child.geometry.layoutExtent;
       hasVisualOverflow = hasVisualOverflow || child.geometry.hasVisualOverflow;
@@ -284,7 +286,7 @@ class RenderMultiSliver extends RenderSliver
 
     if (containing) {
       final allowedBounds =
-          max(0.0, precedingScrollExtent - constraints.scrollOffset);
+          max(0.0, scrollExtent - constraints.scrollOffset);
       if (maxPaintOffset > allowedBounds) {
         _containPinnedSlivers(maxPaintOffset, allowedBounds, constraints.axis);
         maxPaintOffset = allowedBounds;
@@ -305,7 +307,7 @@ class RenderMultiSliver extends RenderSliver
         max(0.0, min(layoutOffset, totalPaintExtent - minPaintOrigin));
     geometry = SliverGeometry(
       paintOrigin: minPaintOrigin,
-      scrollExtent: precedingScrollExtent,
+      scrollExtent: scrollExtent,
       paintExtent: totalPaintExtent - minPaintOrigin,
       maxPaintExtent: maxPaintExtent - minPaintOrigin,
       layoutExtent: layoutExtent,
@@ -451,14 +453,7 @@ class RenderMultiSliver extends RenderSliver
 
   @override
   double childScrollOffset(covariant RenderSliver child) {
-    final parentData = child.parentData as SliverPhysicalContainerParentData;
-    switch (constraints.axis) {
-      case Axis.horizontal:
-        return parentData.paintOffset.dx + constraints.scrollOffset;
-      case Axis.vertical:
-        return parentData.paintOffset.dy + constraints.scrollOffset;
-    }
-    throw FallThroughError();
+    return child.constraints.precedingScrollExtent - constraints.precedingScrollExtent;
   }
 
   @override
