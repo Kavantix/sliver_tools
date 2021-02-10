@@ -6,7 +6,7 @@ class _SliverCrossAxisPositionedParentData extends SliverPhysicalParentData {
 }
 
 class SliverCrossAxisPositionedData {
-  final double crossAxisPosition;
+  final double/*!*/ crossAxisPosition;
   final double crossAxisExtent;
 
   SliverCrossAxisPositionedData({

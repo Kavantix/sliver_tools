@@ -72,7 +72,7 @@ class RenderSliverClip extends RenderProxySliver {
   Rect calculateClipRect() {
     final axisDirection = applyGrowthDirectionToAxisDirection(
         constraints.axisDirection, constraints.growthDirection);
-    Rect rect;
+    Rect/*!*/ rect;
     final double overlapCorrection = (clipOverlap ? constraints.overlap : 0);
     switch (axisDirection) {
       case AxisDirection.up:
@@ -113,7 +113,7 @@ class RenderSliverClip extends RenderProxySliver {
 
   @override
   bool hitTestChildren(SliverHitTestResult result,
-      {double mainAxisPosition, double crossAxisPosition}) {
+      {double/*!*/ mainAxisPosition, double/*!*/ crossAxisPosition}) {
     final double overlapCorrection = (clipOverlap ? constraints.overlap : 0);
     return child != null &&
         child.geometry.hitTestExtent > 0 &&

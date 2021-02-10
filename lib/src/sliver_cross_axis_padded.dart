@@ -73,7 +73,7 @@ class RenderSliverCrossAxisPadded extends RenderSliver
   /// The text direction with which to resolve the padding when axis is vertical.
   TextDirection get textDirection => _textDirection;
   TextDirection _textDirection;
-  set textDirection(TextDirection value) {
+  set textDirection(TextDirection /*!*/ value) {
     if (_textDirection != value) {
       _textDirection = value;
       markNeedsLayout();
@@ -108,20 +108,20 @@ class RenderSliverCrossAxisPadded extends RenderSliver
   SliverCrossAxisPositionedData createCrossAxisPositionData(
     SliverConstraints constraints,
   ) {
-    assert(constraints.crossAxisExtent - _paddingStart - _paddingEnd > 0,
+    assert(constraints.crossAxisExtent - paddingStart - paddingEnd > 0,
         'The total padding exceeds the crossAxisExtent of this sliver');
     final crossAxisExtent = max(
       0.0,
-      constraints.crossAxisExtent - _paddingStart - paddingEnd,
+      constraints.crossAxisExtent - paddingStart - paddingEnd,
     );
-    double crossAxisPosition;
+    double /*!*/ crossAxisPosition; // TODO: remove late after migration
     switch (constraints.axis) {
       case Axis.vertical:
         crossAxisPosition =
-            textDirection == TextDirection.ltr ? _paddingStart : _paddingEnd;
+            textDirection == TextDirection.ltr ? paddingStart : paddingEnd;
         break;
       case Axis.horizontal:
-        crossAxisPosition = _paddingStart;
+        crossAxisPosition = paddingStart;
         break;
     }
     return SliverCrossAxisPositionedData(
