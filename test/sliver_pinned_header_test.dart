@@ -4,6 +4,8 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:sliver_tools/sliver_tools.dart';
 import 'package:sliver_tools/src/rendering/sliver_pinned_header.dart';
 
+import 'helpers/empty_build_context.dart';
+
 const constraints = SliverConstraints(
   overlap: 0,
   cacheOrigin: 0,
@@ -32,8 +34,9 @@ void main() {
 
     RenderSliverPinnedHeader setup() {
       final widget = createWidget();
-      return widget.createRenderObject(null)
-        ..child = (widget.child as SizedBox).createRenderObject(null);
+      return widget.createRenderObject(EmptyBuildContext())
+        ..child =
+            (widget.child as SizedBox).createRenderObject(EmptyBuildContext());
     }
 
     group('always', () {

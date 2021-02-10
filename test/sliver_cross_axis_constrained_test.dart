@@ -1,3 +1,4 @@
+// @dart = 2.12
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sliver_tools/sliver_tools.dart';
@@ -18,9 +19,9 @@ void main() {
   }
 
   group('SliverCrossAxisConstrained', () {
-    double maxCrossAxisExtent;
-    Widget sut;
-    Size windowSize;
+    late double maxCrossAxisExtent;
+    late Widget sut;
+    late Size windowSize;
     setUp(() {
       maxCrossAxisExtent = 300;
       sut = _createSut(

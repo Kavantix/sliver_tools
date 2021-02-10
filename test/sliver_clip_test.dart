@@ -9,7 +9,7 @@ import 'helpers/pinned_header.dart';
 
 void main() {
   group('SliverClip', () {
-    Widget box(Key key, {double size}) {
+    Widget box(Key key, {@required double size}) {
       return Container(
         key: key,
         alignment: Alignment.center,
