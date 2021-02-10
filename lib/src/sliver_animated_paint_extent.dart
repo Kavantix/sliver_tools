@@ -20,8 +20,6 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-// @dart = 2.12
-
 import 'dart:math';
 
 import 'package:flutter/foundation.dart';
