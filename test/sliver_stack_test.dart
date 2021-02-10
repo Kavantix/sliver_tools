@@ -12,7 +12,7 @@ class _UnconstrainedScollPhysics extends ScrollPhysics {
   const _UnconstrainedScollPhysics();
 
   @override
-  ScrollPhysics applyTo(ScrollPhysics ancestor) {
+  ScrollPhysics applyTo(ScrollPhysics? ancestor) {
     return this;
   }
 
@@ -22,7 +22,7 @@ class _UnconstrainedScollPhysics extends ScrollPhysics {
 
 void main() {
   group('SliverStack', () {
-    Widget box(Key key, {double size}) {
+    Widget box(Key? key, {double? size}) {
       return Container(
         key: key,
         height: size,
@@ -47,8 +47,8 @@ void main() {
       bool ignoreOverlap = false,
       bool includePinned = false,
       int childCount = 2,
-      SliverPositioned Function(Widget child) topPositionedBuilder,
-      ScrollController controller,
+      SliverPositioned Function(Widget child)? topPositionedBuilder,
+      ScrollController? controller,
     }) async {
       await tester.pumpWidget(
         Directionality(
@@ -110,27 +110,27 @@ void main() {
 
     void expectAllExtents(RenderSliver sliver, double expected) {
       expect(
-        sliver.geometry.scrollExtent,
+        sliver.geometry!.scrollExtent,
         expected,
         reason: 'scrollExtent is incorrect',
       );
       expect(
-        sliver.geometry.paintExtent,
+        sliver.geometry!.paintExtent,
         min(sliver.constraints.remainingPaintExtent, expected),
         reason: 'paintExtent is incorrect',
       );
       expect(
-        sliver.geometry.maxPaintExtent,
+        sliver.geometry!.maxPaintExtent,
         expected,
         reason: 'maxPaintExtent is incorrect',
       );
       expect(
-        sliver.geometry.layoutExtent,
+        sliver.geometry!.layoutExtent,
         min(sliver.constraints.remainingPaintExtent, expected),
         reason: 'layoutExtent is incorrect',
       );
       expect(
-        sliver.geometry.hitTestExtent,
+        sliver.geometry!.hitTestExtent,
         min(sliver.constraints.remainingPaintExtent, expected),
         reason: 'hitTestExtent is incorrect',
       );
@@ -194,8 +194,8 @@ void main() {
 
     Future<void> checkAllScrolledPositions(
       WidgetTester tester, {
-      @required Size size,
-      @required Offset pinnedOffset,
+      required Size size,
+      required Offset pinnedOffset,
     }) async {
       expect(
         tester.getRect(find.byKey(positionedKey)),
@@ -246,7 +246,7 @@ void main() {
 
     Future<void> checkAllScrolledPositionsWithoutOverlap(
       WidgetTester tester, {
-      Size size,
+      required Size size,
     }) async {
       expect(
         tester.getRect(find.byKey(positionedKey)),
@@ -297,13 +297,13 @@ void main() {
     group('positioned child can be tapped', () {
       Future<void> testPositionedTap(
         WidgetTester tester, {
-        @required double mainAxisPosition,
-        @required double crossAxisPosition,
-        double mainAxisPositionWithoutOverlap,
-        double left,
-        double right,
-        double top,
-        double bottom,
+        required double mainAxisPosition,
+        required double crossAxisPosition,
+        double? mainAxisPositionWithoutOverlap,
+        double? left,
+        double? right,
+        double? top,
+        double? bottom,
         Axis scrollDirection = Axis.vertical,
         bool reverse = false,
       }) async {

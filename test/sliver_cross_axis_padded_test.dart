@@ -52,11 +52,11 @@ void main() {
       }
 
       SliverCrossAxisPositionedData positionedDataForUpdatedWidget({
-        @required RenderSliverCrossAxisPadded renderObject,
-        @required double paddingStart,
-        @required double paddingEnd,
-        @required TextDirection textDirection,
-        SliverConstraints updatedConstraints,
+        required RenderSliverCrossAxisPadded renderObject,
+        required double paddingStart,
+        required double paddingEnd,
+        required TextDirection textDirection,
+        SliverConstraints? updatedConstraints,
       }) {
         createWidget(
           paddingStart: paddingStart,

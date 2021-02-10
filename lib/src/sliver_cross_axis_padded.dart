@@ -9,18 +9,18 @@ import 'rendering/sliver_cross_axis_positioned.dart';
 /// specified by [paddingStart].
 class SliverCrossAxisPadded extends SingleChildRenderObjectWidget {
   const SliverCrossAxisPadded({
-    Key key,
+    Key? key,
     this.paddingStart = 0.0,
     this.paddingEnd = 0.0,
     this.textDirection,
-    @required Widget child,
+    required Widget child,
   })  : assert(paddingStart != null && paddingEnd != null),
         super(key: key, child: child);
 
   factory SliverCrossAxisPadded.symmetric({
-    Key key,
-    @required double padding,
-    @required Widget child,
+    Key? key,
+    required double padding,
+    required Widget child,
   }) =>
       SliverCrossAxisPadded(
         key: key,
@@ -38,7 +38,7 @@ class SliverCrossAxisPadded extends SingleChildRenderObjectWidget {
   final double paddingEnd;
 
   /// The text direction with which to resolve the padding when axis is vertical.
-  final TextDirection textDirection;
+  final TextDirection? textDirection;
 
   @override
   RenderSliverCrossAxisPadded createRenderObject(BuildContext context) =>
@@ -71,9 +71,9 @@ class RenderSliverCrossAxisPadded extends RenderSliver
         RenderObjectWithChildMixin<RenderSliver>,
         RenderSliverCrossAxisPositionedMixin {
   /// The text direction with which to resolve the padding when axis is vertical.
-  TextDirection get textDirection => _textDirection;
-  TextDirection _textDirection;
-  set textDirection(TextDirection /*!*/ value) {
+  TextDirection get textDirection => _textDirection!;
+  TextDirection? _textDirection;
+  set textDirection(TextDirection value) {
     if (_textDirection != value) {
       _textDirection = value;
       markNeedsLayout();
@@ -82,8 +82,8 @@ class RenderSliverCrossAxisPadded extends RenderSliver
 
   /// The padding for the start of the cross axis
   /// For a horizontal layout this means the top, vertical layout it depends on the [TextDirection]
-  double get paddingStart => _paddingStart;
-  double _paddingStart;
+  double get paddingStart => _paddingStart!;
+  double? _paddingStart;
   set paddingStart(double value) {
     assert(value != null);
     assert(value >= 0);
@@ -94,8 +94,8 @@ class RenderSliverCrossAxisPadded extends RenderSliver
 
   /// The padding for the end of the cross axis
   /// For a horizontal layout this means the bottom, vertical layout it depends on the [TextDirection]
-  double get paddingEnd => _paddingEnd;
-  double _paddingEnd;
+  double get paddingEnd => _paddingEnd!;
+  double? _paddingEnd;
   set paddingEnd(double value) {
     assert(value != null);
     assert(value >= 0);
@@ -114,7 +114,7 @@ class RenderSliverCrossAxisPadded extends RenderSliver
       0.0,
       constraints.crossAxisExtent - paddingStart - paddingEnd,
     );
-    double /*!*/ crossAxisPosition; // TODO: remove late after migration
+    late double crossAxisPosition; // TODO: remove late after migration
     switch (constraints.axis) {
       case Axis.vertical:
         crossAxisPosition =

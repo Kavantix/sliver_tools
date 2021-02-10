@@ -27,8 +27,8 @@ import 'package:flutter/widgets.dart';
 /// Also clips off any overlap if [clipOverlap] is `true`
 class SliverClip extends SingleChildRenderObjectWidget {
   const SliverClip({
-    Key key,
-    @required Widget child,
+    Key? key,
+    required Widget child,
     this.clipOverlap = true,
   }) : super(key: key, child: child);
 
@@ -50,7 +50,7 @@ class SliverClip extends SingleChildRenderObjectWidget {
 
 class RenderSliverClip extends RenderProxySliver {
   RenderSliverClip({
-    @required bool clipOverlap,
+    required bool clipOverlap,
   }) : _clipOverlap = clipOverlap;
 
   bool _clipOverlap;
@@ -66,13 +66,13 @@ class RenderSliverClip extends RenderProxySliver {
   }
 
   @visibleForTesting
-  Rect get clipRect => _clipRect;
-  Rect _clipRect;
+  Rect? get clipRect => _clipRect;
+  Rect? _clipRect;
 
   Rect calculateClipRect() {
     final axisDirection = applyGrowthDirectionToAxisDirection(
         constraints.axisDirection, constraints.growthDirection);
-    Rect /*!*/ rect;
+    Rect rect;
     final double overlapCorrection = (clipOverlap ? constraints.overlap : 0);
     switch (axisDirection) {
       case AxisDirection.up:
@@ -80,30 +80,30 @@ class RenderSliverClip extends RenderProxySliver {
           0,
           0,
           constraints.crossAxisExtent,
-          geometry.paintExtent - overlapCorrection,
+          geometry!.paintExtent - overlapCorrection,
         );
         break;
       case AxisDirection.right:
         rect = Rect.fromLTWH(
-          geometry.paintOrigin + overlapCorrection,
+          geometry!.paintOrigin + overlapCorrection,
           0,
-          geometry.paintExtent - overlapCorrection,
+          geometry!.paintExtent - overlapCorrection,
           constraints.crossAxisExtent,
         );
         break;
       case AxisDirection.down:
         rect = Rect.fromLTWH(
           0,
-          geometry.paintOrigin + overlapCorrection,
+          geometry!.paintOrigin + overlapCorrection,
           constraints.crossAxisExtent,
-          geometry.paintExtent - overlapCorrection,
+          geometry!.paintExtent - overlapCorrection,
         );
         break;
       case AxisDirection.left:
         rect = Rect.fromLTWH(
           0,
           0,
-          geometry.paintExtent - overlapCorrection,
+          geometry!.paintExtent - overlapCorrection,
           constraints.crossAxisExtent,
         );
         break;
@@ -113,18 +113,18 @@ class RenderSliverClip extends RenderProxySliver {
 
   @override
   bool hitTestChildren(SliverHitTestResult result,
-      {double /*!*/ mainAxisPosition, double /*!*/ crossAxisPosition}) {
+      {required double mainAxisPosition, required double crossAxisPosition}) {
     final double overlapCorrection = (clipOverlap ? constraints.overlap : 0);
     return child != null &&
-        child.geometry.hitTestExtent > 0 &&
-        mainAxisPosition > (geometry.paintOrigin + overlapCorrection) &&
+        child!.geometry!.hitTestExtent > 0 &&
+        mainAxisPosition > (geometry!.paintOrigin + overlapCorrection) &&
         mainAxisPosition <
-            (geometry.paintOrigin +
+            (geometry!.paintOrigin +
                 overlapCorrection +
                 (constraints.axis == Axis.vertical
-                    ? clipRect.height
-                    : clipRect.width)) &&
-        child.hitTest(
+                    ? clipRect!.height
+                    : clipRect!.width)) &&
+        child!.hitTest(
           result,
           mainAxisPosition: mainAxisPosition,
           crossAxisPosition: crossAxisPosition,
@@ -137,9 +137,9 @@ class RenderSliverClip extends RenderProxySliver {
     layer = context.pushClipRect(
       needsCompositing,
       offset,
-      clipRect,
+      clipRect!,
       super.paint,
-      oldLayer: layer as ClipRectLayer,
+      oldLayer: layer as ClipRectLayer?,
     );
   }
 }

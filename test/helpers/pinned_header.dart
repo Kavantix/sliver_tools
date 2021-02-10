@@ -2,10 +2,10 @@ import 'package:flutter/widgets.dart';
 
 class PinnedDelegate extends SliverPersistentHeaderDelegate {
   final double size;
-  final Key boxKey;
+  final Key? boxKey;
 
   const PinnedDelegate({
-    @required this.size,
+    required this.size,
     this.boxKey,
   });
 
@@ -33,11 +33,11 @@ class PinnedDelegate extends SliverPersistentHeaderDelegate {
 
 class PinnedHeader extends StatelessWidget {
   final double size;
-  final Key boxKey;
+  final Key? boxKey;
 
   const PinnedHeader({
-    Key key,
-    @required this.size,
+    Key? key,
+    required this.size,
     this.boxKey,
   }) : super(key: key);
 

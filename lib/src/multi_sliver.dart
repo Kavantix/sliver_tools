@@ -57,8 +57,8 @@ import 'package:flutter/rendering.dart';
 /// [MultiSliver] allows for returning multiple slivers from a single build method
 class MultiSliver extends MultiChildRenderObjectWidget {
   MultiSliver({
-    Key key,
-    @required List<Widget> children,
+    Key? key,
+    required List<Widget> children,
     this.pushPinnedChildren = false,
   }) : super(key: key, children: children);
 
@@ -80,7 +80,7 @@ class MultiSliver extends MultiChildRenderObjectWidget {
 }
 
 class MultiSliverParentData extends SliverPhysicalContainerParentData {
-  double mainAxisPosition;
+  late double mainAxisPosition;
 }
 
 /// The RenderObject that handles laying out and painting the children of [MultiSliver]
@@ -89,7 +89,7 @@ class RenderMultiSliver extends RenderSliver
         ContainerRenderObjectMixin<RenderSliver,
             SliverPhysicalContainerParentData> {
   RenderMultiSliver({
-    @required bool containing,
+    required bool containing,
   }) : _containing = containing;
 
   @override
@@ -109,7 +109,7 @@ class RenderMultiSliver extends RenderSliver
   }
 
   Iterable<RenderSliver> get _children sync* {
-    RenderSliver child = firstChild;
+    RenderSliver? child = firstChild;
     while (child != null) {
       yield child;
       child = childAfter(child);
@@ -117,7 +117,7 @@ class RenderMultiSliver extends RenderSliver
   }
 
   Iterable<RenderSliver> get _childrenInPaintOrder sync* {
-    RenderSliver child = lastChild;
+    RenderSliver? child = lastChild;
     while (child != null) {
       yield child;
       child = childBefore(child);
@@ -153,18 +153,18 @@ class RenderMultiSliver extends RenderSliver
 
   /// Almost an exact copy of [RenderViewportBase]'s [layoutChildSequence]
   /// just added visualoverflow, maxScrollObstructionExtent and setting of the geometry
-  double _layoutChildSequence({
-    @required RenderSliver child,
-    @required double scrollOffset,
-    @required double overlap,
-    @required double layoutOffset,
-    @required double remainingPaintExtent,
-    @required double mainAxisExtent,
-    @required double crossAxisExtent,
-    @required GrowthDirection growthDirection,
-    @required RenderSliver Function(RenderSliver child) advance,
-    @required double remainingCacheExtent,
-    @required double cacheOrigin,
+  double? _layoutChildSequence({
+    required RenderSliver? child,
+    required double scrollOffset,
+    required double overlap,
+    required double layoutOffset,
+    required double remainingPaintExtent,
+    required double mainAxisExtent,
+    required double crossAxisExtent,
+    required GrowthDirection growthDirection,
+    required RenderSliver? Function(RenderSliver child) advance,
+    required double remainingCacheExtent,
+    required double cacheOrigin,
   }) {
     assert(scrollOffset.isFinite);
     assert(scrollOffset >= 0.0);
@@ -181,7 +181,7 @@ class RenderMultiSliver extends RenderSliver
     bool hasVisualOverflow = false;
     double maxScrollObstructionExtent = 0;
     bool visible = false;
-    double minPaintOrigin;
+    double? minPaintOrigin;
 
     while (child != null) {
       final double sliverScrollOffset =
@@ -216,52 +216,52 @@ class RenderMultiSliver extends RenderSliver
           ),
           parentUsesSize: true);
 
-      assert(child.geometry.debugAssertIsValid());
+      assert(child.geometry!.debugAssertIsValid());
 
       // If there is a correction to apply, we'll have to start over.
-      if (child.geometry.scrollOffsetCorrection != null) {
-        return child.geometry.scrollOffsetCorrection;
+      if (child.geometry!.scrollOffsetCorrection != null) {
+        return child.geometry!.scrollOffsetCorrection;
       }
 
       // We use the child's paint origin in our coordinate system as the
       // layoutOffset we store in the child's parent data.
       final double effectiveLayoutOffset =
-          layoutOffset + child.geometry.paintOrigin;
+          layoutOffset + child.geometry!.paintOrigin;
 
       // `effectiveLayoutOffset` becomes meaningless once we moved past the trailing edge
       // because `child.geometry.layoutExtent` is zero. Using the still increasing
       // 'scrollOffset` to roughly position these invisible slivers in the right order.
-      if (child.geometry.visible || scrollOffset > 0) {
+      if (child.geometry!.visible || scrollOffset > 0) {
         _updateChildPaintOffset(child, effectiveLayoutOffset);
       } else {
         _updateChildPaintOffset(child, -scrollOffset + initialLayoutOffset);
       }
 
       minPaintOrigin =
-          min(minPaintOrigin ?? double.infinity, child.geometry.paintOrigin);
+          min(minPaintOrigin ?? double.infinity, child.geometry!.paintOrigin);
       maxPaintOffset = max(
-          effectiveLayoutOffset + child.geometry.paintExtent, maxPaintOffset);
+          effectiveLayoutOffset + child.geometry!.paintExtent, maxPaintOffset);
       maxPaintExtent = max(
         maxPaintExtent,
         layoutOffset +
-            child.geometry.maxPaintExtent +
+            child.geometry!.maxPaintExtent +
             constraints.scrollOffset -
             child.constraints.scrollOffset,
       );
       maxHitTestExtent =
-          max(maxHitTestExtent, layoutOffset + child.geometry.hitTestExtent);
-      scrollOffset -= child.geometry.scrollExtent;
-      scrollExtent += child.geometry.scrollExtent;
-      precedingScrollExtent += child.geometry.scrollExtent;
-      layoutOffset += child.geometry.layoutExtent;
-      hasVisualOverflow = hasVisualOverflow || child.geometry.hasVisualOverflow;
-      maxScrollObstructionExtent = child.geometry.maxScrollObstructionExtent;
-      visible = visible || child.geometry.visible;
-      if (child.geometry.cacheExtent != 0.0) {
+          max(maxHitTestExtent, layoutOffset + child.geometry!.hitTestExtent);
+      scrollOffset -= child.geometry!.scrollExtent;
+      scrollExtent += child.geometry!.scrollExtent;
+      precedingScrollExtent += child.geometry!.scrollExtent;
+      layoutOffset += child.geometry!.layoutExtent;
+      hasVisualOverflow = hasVisualOverflow || child.geometry!.hasVisualOverflow;
+      maxScrollObstructionExtent = child.geometry!.maxScrollObstructionExtent;
+      visible = visible || child.geometry!.visible;
+      if (child.geometry!.cacheExtent != 0.0) {
         remainingCacheExtent -=
-            child.geometry.cacheExtent - cacheExtentCorrection;
+            child.geometry!.cacheExtent - cacheExtentCorrection;
         cacheOrigin =
-            min(correctedCacheOrigin + child.geometry.cacheExtent, 0.0);
+            min(correctedCacheOrigin + child.geometry!.cacheExtent, 0.0);
       }
 
       // updateOutOfBandData(growthDirection, child.geometry);
@@ -271,15 +271,15 @@ class RenderMultiSliver extends RenderSliver
     }
 
     for (final child in _children) {
-      final parentData = child.parentData as MultiSliverParentData /*!*/;
+      final parentData = child.parentData as MultiSliverParentData;
       switch (constraints.axis) {
         case Axis.horizontal:
           parentData.paintOffset =
-              Offset(parentData.mainAxisPosition - minPaintOrigin, 0);
+              Offset(parentData.mainAxisPosition - minPaintOrigin!, 0);
           break;
         case Axis.vertical:
           parentData.paintOffset =
-              Offset(0, parentData.mainAxisPosition - minPaintOrigin);
+              Offset(0, parentData.mainAxisPosition - minPaintOrigin!);
           break;
       }
     }
@@ -297,7 +297,7 @@ class RenderMultiSliver extends RenderSliver
     }
     final paintExtent = max(
         0.0,
-        min(maxPaintOffset - minPaintOrigin,
+        min(maxPaintOffset - minPaintOrigin!,
             constraints.remainingPaintExtent - minPaintOrigin));
     final totalPaintExtent = (minPaintOrigin + paintExtent)
         .clamp(0.0, constraints.remainingPaintExtent)
@@ -323,9 +323,9 @@ class RenderMultiSliver extends RenderSliver
       double usedBounds, double allowedBounds, Axis axis) {
     final diff = usedBounds - allowedBounds;
     for (final child in _children) {
-      if (!child.geometry.visible) continue;
+      if (!child.geometry!.visible) continue;
       final childParentData =
-          child.parentData as SliverPhysicalParentData /*!*/;
+          child.parentData as SliverPhysicalParentData;
       switch (axis) {
         case Axis.horizontal:
           childParentData.paintOffset =
@@ -356,7 +356,7 @@ class RenderMultiSliver extends RenderSliver
       RenderSliver child, double parentMainAxisPosition) {
     assert(child != null);
     assert(child.constraints != null);
-    final childParentData = child.parentData as SliverPhysicalParentData /*!*/;
+    final childParentData = child.parentData as SliverPhysicalParentData;
     switch (constraints.axis) {
       case Axis.vertical:
         return parentMainAxisPosition - childParentData.paintOffset.dy;
@@ -369,12 +369,12 @@ class RenderMultiSliver extends RenderSliver
   @override
   bool hitTestChildren(
     SliverHitTestResult result, {
-    @required double mainAxisPosition,
-    @required double crossAxisPosition,
+    required double mainAxisPosition,
+    required double crossAxisPosition,
   }) {
     assert(mainAxisPosition != null);
     assert(crossAxisPosition != null);
-    for (final child in _children.where((c) => c.geometry.visible)) {
+    for (final child in _children.where((c) => c.geometry!.visible)) {
       final hit = child.hitTest(
         result,
         mainAxisPosition:
@@ -389,8 +389,8 @@ class RenderMultiSliver extends RenderSliver
   @override
   void paint(PaintingContext context, Offset offset) {
     for (final child in _childrenInPaintOrder) {
-      final parentData = child.parentData as SliverPhysicalParentData /*!*/;
-      if (child.geometry.visible) {
+      final parentData = child.parentData as SliverPhysicalParentData;
+      if (child.geometry!.visible) {
         switch (applyGrowthDirectionToAxisDirection(
             constraints.axisDirection, constraints.growthDirection)) {
           case AxisDirection.down:
@@ -401,7 +401,7 @@ class RenderMultiSliver extends RenderSliver
             context.paintChild(
               child,
               offset +
-                  Offset(0, geometry.paintExtent - child.geometry.paintExtent) -
+                  Offset(0, geometry!.paintExtent - child.geometry!.paintExtent) -
                   parentData.paintOffset,
             );
             break;
@@ -409,7 +409,7 @@ class RenderMultiSliver extends RenderSliver
             context.paintChild(
               child,
               offset +
-                  Offset(geometry.paintExtent - child.geometry.paintExtent, 0) -
+                  Offset(geometry!.paintExtent - child.geometry!.paintExtent, 0) -
                   parentData.paintOffset,
             );
             break;
@@ -421,7 +421,7 @@ class RenderMultiSliver extends RenderSliver
   @override
   void applyPaintTransform(covariant RenderSliver child, Matrix4 transform) {
     assert(child != null);
-    final childParentData = child.parentData as SliverPhysicalParentData /*!*/;
+    final childParentData = child.parentData as SliverPhysicalParentData;
     switch (applyGrowthDirectionToAxisDirection(
         constraints.axisDirection, constraints.growthDirection)) {
       case AxisDirection.down:
@@ -434,15 +434,15 @@ class RenderMultiSliver extends RenderSliver
       case AxisDirection.up:
         transform.translate(
           childParentData.paintOffset.dx,
-          geometry.paintExtent -
-              child.geometry.paintExtent -
+          geometry!.paintExtent -
+              child.geometry!.paintExtent -
               childParentData.paintOffset.dy,
         );
         break;
       case AxisDirection.left:
         transform.translate(
-          geometry.paintExtent -
-              child.geometry.paintExtent -
+          geometry!.paintExtent -
+              child.geometry!.paintExtent -
               childParentData.paintOffset.dx,
           childParentData.paintOffset.dy,
         );

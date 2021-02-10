@@ -37,15 +37,15 @@ class SliverAnimatedSwitcher extends StatelessWidget {
   final Duration duration;
 
   const SliverAnimatedSwitcher({
-    Key key,
-    @required this.child,
-    @required this.duration,
+    Key? key,
+    required this.child,
+    required this.duration,
   }) : super(key: key);
 
   static Widget defaultLayoutBuilder(
-      Widget currentChild, List<Widget> previousChildren) {
+      Widget? currentChild, List<Widget> previousChildren) {
     return SliverStack(
-      children: <Widget /*!*/ >[
+      children: <Widget >[
         ...previousChildren,
         if (currentChild != null) currentChild,
       ],

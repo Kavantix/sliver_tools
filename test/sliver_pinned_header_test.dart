@@ -49,7 +49,7 @@ void main() {
           ),
           parentUsesSize: true,
         );
-        expect(renderObject.geometry.paintOrigin, overlap);
+        expect(renderObject.geometry!.paintOrigin, overlap);
 
         overlap = 40;
         renderObject.layout(
@@ -58,7 +58,7 @@ void main() {
           ),
           parentUsesSize: true,
         );
-        expect(renderObject.geometry.paintOrigin, overlap);
+        expect(renderObject.geometry!.paintOrigin, overlap);
 
         overlap = -50;
         renderObject.layout(
@@ -67,7 +67,7 @@ void main() {
           ),
           parentUsesSize: true,
         );
-        expect(renderObject.geometry.paintOrigin, overlap);
+        expect(renderObject.geometry!.paintOrigin, overlap);
       });
 
       test('updates its layoutOffset as if it is scrolling away', () {
@@ -80,8 +80,8 @@ void main() {
           parentUsesSize: true,
         );
         expect(
-          renderObject.geometry.layoutExtent,
-          renderObject.geometry.maxPaintExtent - scrollOffset,
+          renderObject.geometry!.layoutExtent,
+          renderObject.geometry!.maxPaintExtent - scrollOffset,
         );
 
         scrollOffset = 40;
@@ -92,8 +92,8 @@ void main() {
           parentUsesSize: true,
         );
         expect(
-          renderObject.geometry.layoutExtent,
-          renderObject.geometry.maxPaintExtent - scrollOffset,
+          renderObject.geometry!.layoutExtent,
+          renderObject.geometry!.maxPaintExtent - scrollOffset,
         );
 
         scrollOffset = childHeight + 2;
@@ -104,7 +104,7 @@ void main() {
           parentUsesSize: true,
         );
         expect(
-          renderObject.geometry.layoutExtent,
+          renderObject.geometry!.layoutExtent,
           0,
         );
       });
@@ -113,7 +113,7 @@ void main() {
         final renderObject = setup();
         renderObject.layout(constraints, parentUsesSize: true);
         final childParentData =
-            renderObject.child.parentData as SliverPhysicalParentData;
+            renderObject.child!.parentData as SliverPhysicalParentData;
         expect(childParentData.paintOffset, Offset.zero);
       });
 
@@ -126,8 +126,8 @@ void main() {
           ),
           parentUsesSize: true,
         );
-        expect(renderObject.geometry.paintExtent, 4);
-        expect(renderObject.geometry.layoutExtent, 4);
+        expect(renderObject.geometry!.paintExtent, 4);
+        expect(renderObject.geometry!.layoutExtent, 4);
       });
 
       test('has mainAxisPosition of 0 even when pinned', () {
@@ -139,7 +139,7 @@ void main() {
           ),
           parentUsesSize: true,
         );
-        expect(renderObject.childMainAxisPosition(renderObject.child), 0);
+        expect(renderObject.childMainAxisPosition(renderObject.child!), 0);
 
         scrollOffset = 40;
         renderObject.layout(
@@ -148,7 +148,7 @@ void main() {
           ),
           parentUsesSize: true,
         );
-        expect(renderObject.childMainAxisPosition(renderObject.child), 0);
+        expect(renderObject.childMainAxisPosition(renderObject.child!), 0);
 
         scrollOffset = childHeight + 2;
         renderObject.layout(
@@ -157,7 +157,7 @@ void main() {
           ),
           parentUsesSize: true,
         );
-        expect(renderObject.childMainAxisPosition(renderObject.child), 0);
+        expect(renderObject.childMainAxisPosition(renderObject.child!), 0);
       });
     });
 
@@ -173,7 +173,7 @@ void main() {
           ),
           parentUsesSize: true,
         );
-        expect(renderObject.geometry.paintExtent, childHeight);
+        expect(renderObject.geometry!.paintExtent, childHeight);
 
         scrollOffset = 40;
         renderObject.layout(
@@ -182,7 +182,7 @@ void main() {
           ),
           parentUsesSize: true,
         );
-        expect(renderObject.geometry.paintExtent, childHeight);
+        expect(renderObject.geometry!.paintExtent, childHeight);
 
         scrollOffset = 200;
         renderObject.layout(
@@ -191,7 +191,7 @@ void main() {
           ),
           parentUsesSize: true,
         );
-        expect(renderObject.geometry.paintExtent, childHeight);
+        expect(renderObject.geometry!.paintExtent, childHeight);
       });
     });
 
@@ -209,7 +209,7 @@ void main() {
           ),
           parentUsesSize: true,
         );
-        expect(renderObject.geometry.paintExtent, childWidth);
+        expect(renderObject.geometry!.paintExtent, childWidth);
 
         scrollOffset = 40;
         renderObject.layout(
@@ -220,7 +220,7 @@ void main() {
           ),
           parentUsesSize: true,
         );
-        expect(renderObject.geometry.paintExtent, childWidth);
+        expect(renderObject.geometry!.paintExtent, childWidth);
 
         scrollOffset = 200;
         renderObject.layout(
@@ -231,7 +231,7 @@ void main() {
           ),
           parentUsesSize: true,
         );
-        expect(renderObject.geometry.paintExtent, childWidth);
+        expect(renderObject.geometry!.paintExtent, childWidth);
       });
     });
   });

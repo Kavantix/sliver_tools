@@ -9,9 +9,9 @@ import 'rendering/sliver_cross_axis_positioned.dart';
 /// specified by [maxCrossAxisExtent].
 class SliverCrossAxisConstrained extends SingleChildRenderObjectWidget {
   const SliverCrossAxisConstrained({
-    @required this.maxCrossAxisExtent,
-    Key key,
-    Widget child,
+    required this.maxCrossAxisExtent,
+    Key? key,
+    Widget? child,
   })  : assert(maxCrossAxisExtent != null),
         super(key: key, child: child);
 
@@ -41,15 +41,15 @@ class RenderSliverCrossAxisConstrained extends RenderSliver
         RenderObjectWithChildMixin<RenderSliver>,
         RenderSliverCrossAxisPositionedMixin {
   RenderSliverCrossAxisConstrained({
-    double maxCrossAxisExtent,
-    RenderSliver child,
+    double? maxCrossAxisExtent,
+    RenderSliver? child,
   }) : _maxCrossAxisExtent = maxCrossAxisExtent {
     this.child = child;
   }
 
   /// Max allowed limit of the cross axis
-  double get maxCrossAxisExtent => _maxCrossAxisExtent;
-  double _maxCrossAxisExtent;
+  double get maxCrossAxisExtent => _maxCrossAxisExtent!;
+  double? _maxCrossAxisExtent;
   set maxCrossAxisExtent(double value) {
     assert(value != null);
     assert(value > 0);
@@ -63,7 +63,7 @@ class RenderSliverCrossAxisConstrained extends RenderSliver
     SliverConstraints constraints,
   ) {
     final crossAxisExtent =
-        min(constraints.crossAxisExtent, _maxCrossAxisExtent);
+        min(constraints.crossAxisExtent, _maxCrossAxisExtent!);
     return SliverCrossAxisPositionedData(
       crossAxisExtent: crossAxisExtent,
       crossAxisPosition: (constraints.crossAxisExtent - crossAxisExtent) / 2,
