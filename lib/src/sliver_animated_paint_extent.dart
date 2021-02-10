@@ -20,6 +20,8 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+// @dart = 2.12
+
 import 'dart:math';
 
 import 'package:flutter/foundation.dart';
@@ -38,9 +40,9 @@ class SliverAnimatedPaintExtent extends StatefulWidget {
   final Widget child;
 
   const SliverAnimatedPaintExtent({
-    Key key,
-    @required this.duration,
-    @required this.child,
+    Key? key,
+    required this.duration,
+    required this.child,
     this.curve = Curves.linear,
   }) : super(key: key);
 
@@ -51,7 +53,7 @@ class SliverAnimatedPaintExtent extends StatefulWidget {
 
 class _SliverAnimatedPaintExtentState extends State<SliverAnimatedPaintExtent>
     with SingleTickerProviderStateMixin {
-  AnimationController _controller;
+  late AnimationController _controller;
 
   @override
   void initState() {
@@ -87,11 +89,11 @@ class _SliverAnimatedPaintExtent extends SingleChildRenderObjectWidget {
   final Curve curve;
 
   const _SliverAnimatedPaintExtent({
-    Key key,
-    @required this.controller,
-    @required this.duration,
-    @required this.curve,
-    @required Widget child,
+    Key? key,
+    required this.controller,
+    required this.duration,
+    required this.curve,
+    required Widget child,
   }) : super(key: key, child: child);
 
   @override
@@ -115,20 +117,20 @@ class _SliverAnimatedPaintExtent extends SingleChildRenderObjectWidget {
 /// The RenderObject that handles the animation for [SliverAnimatedPaintExtent]
 class RenderSliverAnimatedPaintExtent extends RenderProxySliver {
   /// The duration that the animation will take
-  Duration duration;
+  late Duration duration;
 
   /// The curve for the animation
-  Curve curve;
+  late Curve curve;
 
-  AnimationController _controller;
+  AnimationController? _controller;
 
   /// The controller in charge of the animation
-  AnimationController get controller => _controller;
+  AnimationController get controller => _controller!;
   set controller(AnimationController value) {
     if (value != _controller) {
       _controller?.removeListener(_update);
       _controller = value;
-      _controller.addListener(_update);
+      value.addListener(_update);
     }
   }
 
@@ -137,68 +139,69 @@ class RenderSliverAnimatedPaintExtent extends RenderProxySliver {
     markNeedsLayout();
   }
 
-  Tween<double> _paintExtentTween;
-  Tween<double> _scrollExtentTween;
+  Tween<double>? _paintExtentTween;
+  Tween<double>? _scrollExtentTween;
   double _lastValue = 0;
 
   void _restartAnimation() {
-    _paintExtentTween.begin = geometry.maxPaintExtent;
-    _paintExtentTween.end = child.geometry.maxPaintExtent;
-    _scrollExtentTween.begin = geometry.scrollExtent;
-    _scrollExtentTween.end = child.geometry.scrollExtent;
+    _paintExtentTween!.begin = geometry!.maxPaintExtent;
+    _paintExtentTween!.end = child!.geometry!.maxPaintExtent;
+    _scrollExtentTween!.begin = geometry!.scrollExtent;
+    _scrollExtentTween!.end = child!.geometry!.scrollExtent;
     _lastValue = 0;
-    _controller.value = 0;
-    _controller.animateTo(1, duration: duration, curve: curve);
+    controller.value = 0;
+    controller.animateTo(1, duration: duration, curve: curve);
   }
 
   @override
   void performLayout() {
     _lastValue = controller.value;
-    child.layout(constraints, parentUsesSize: true);
+    child!.layout(constraints, parentUsesSize: true);
     final extentTween = _paintExtentTween ??= Tween<double>(
-        begin: child.geometry.maxPaintExtent,
-        end: child.geometry.maxPaintExtent);
+        begin: child!.geometry!.maxPaintExtent,
+        end: child!.geometry!.maxPaintExtent);
     final scrollExtentTween = _scrollExtentTween ??= Tween<double>(
-        begin: child.geometry.scrollExtent, end: child.geometry.scrollExtent);
-    if (child.geometry.maxPaintExtent != extentTween.end ||
-        child.geometry.scrollExtent != scrollExtentTween.end) {
+        begin: child!.geometry!.scrollExtent,
+        end: child!.geometry!.scrollExtent);
+    if (child!.geometry!.maxPaintExtent != extentTween.end ||
+        child!.geometry!.scrollExtent != scrollExtentTween.end) {
       _restartAnimation();
     }
     final maxPaintExtent = extentTween.evaluate(controller);
     final scrollExtent = scrollExtentTween.evaluate(controller);
     double paintExtent;
     double layoutExtent;
-    if (extentTween.begin > extentTween.end) {
+    if (extentTween.begin! > extentTween.end!) {
       paintExtent = max(
           0.0,
-          max(child.geometry.paintExtent,
+          max(child!.geometry!.paintExtent,
               maxPaintExtent - constraints.scrollOffset));
       paintExtent = min(paintExtent,
-          constraints.remainingPaintExtent - child.geometry.paintOrigin);
-      layoutExtent = max(child.geometry.layoutExtent,
-          child.geometry.paintOrigin + paintExtent);
+          constraints.remainingPaintExtent - child!.geometry!.paintOrigin);
+      layoutExtent = max(child!.geometry!.layoutExtent,
+          child!.geometry!.paintOrigin + paintExtent);
     } else {
       paintExtent = max(
           0.0,
-          min(child.geometry.paintExtent,
+          min(child!.geometry!.paintExtent,
               maxPaintExtent - constraints.scrollOffset));
-      layoutExtent = min(child.geometry.layoutExtent,
-          child.geometry.paintOrigin + paintExtent);
+      layoutExtent = min(child!.geometry!.layoutExtent,
+          child!.geometry!.paintOrigin + paintExtent);
     }
-    final hitTestExtent = min(
-        child.geometry.hitTestExtent, child.geometry.paintOrigin + paintExtent);
+    final hitTestExtent = min(child!.geometry!.hitTestExtent,
+        child!.geometry!.paintOrigin + paintExtent);
     geometry = SliverGeometry(
-      paintOrigin: child.geometry.paintOrigin,
+      paintOrigin: child!.geometry!.paintOrigin,
       scrollExtent: scrollExtent,
       paintExtent: paintExtent,
       layoutExtent: layoutExtent,
       maxPaintExtent: maxPaintExtent,
-      cacheExtent: child.geometry.cacheExtent,
-      maxScrollObstructionExtent: child.geometry.maxScrollObstructionExtent,
-      visible: child.geometry.visible,
+      cacheExtent: child!.geometry!.cacheExtent,
+      maxScrollObstructionExtent: child!.geometry!.maxScrollObstructionExtent,
+      visible: child!.geometry!.visible,
       hitTestExtent: hitTestExtent,
-      hasVisualOverflow: child.geometry.hasVisualOverflow,
-      scrollOffsetCorrection: child.geometry.scrollOffsetCorrection,
+      hasVisualOverflow: child!.geometry!.hasVisualOverflow,
+      scrollOffsetCorrection: child!.geometry!.scrollOffsetCorrection,
     );
   }
 
@@ -211,13 +214,15 @@ class RenderSliverAnimatedPaintExtent extends RenderProxySliver {
     Offset bottomRight;
     switch (constraints.axis) {
       case Axis.horizontal:
-        bottomRight = Offset(geometry.paintExtent, constraints.crossAxisExtent);
+        bottomRight =
+            Offset(geometry!.paintExtent, constraints.crossAxisExtent);
         break;
       case Axis.vertical:
-        bottomRight = Offset(constraints.crossAxisExtent, geometry.paintExtent);
+        bottomRight =
+            Offset(constraints.crossAxisExtent, geometry!.paintExtent);
         break;
     }
-    if (_controller.isAnimating) {
+    if (controller.isAnimating) {
       layer = context.pushClipRect(
         needsCompositing,
         offset,
