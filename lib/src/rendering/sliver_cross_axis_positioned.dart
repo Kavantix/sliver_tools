@@ -72,7 +72,6 @@ mixin RenderSliverCrossAxisPositionedMixin
 
   @override
   double childCrossAxisPosition(RenderSliver child) {
-    assert(child != null);
     final childParentData =
         child.parentData as _SliverCrossAxisPositionedParentData;
     return childParentData.crossAxisPosition;
@@ -80,7 +79,6 @@ mixin RenderSliverCrossAxisPositionedMixin
 
   @override
   void applyPaintTransform(RenderObject child, Matrix4 transform) {
-    assert(child != null);
     assert(child == this.child);
     final childParentData = child.parentData as SliverPhysicalParentData;
     childParentData.applyPaintTransform(transform);

@@ -12,8 +12,7 @@ class SliverCrossAxisConstrained extends SingleChildRenderObjectWidget {
     required this.maxCrossAxisExtent,
     Key? key,
     Widget? child,
-  })  : assert(maxCrossAxisExtent != null),
-        super(key: key, child: child);
+  }) : super(key: key, child: child);
 
   /// Max allowed limit of the cross axis
   final double maxCrossAxisExtent;
@@ -51,7 +50,6 @@ class RenderSliverCrossAxisConstrained extends RenderSliver
   double get maxCrossAxisExtent => _maxCrossAxisExtent!;
   double? _maxCrossAxisExtent;
   set maxCrossAxisExtent(double value) {
-    assert(value != null);
     assert(value > 0);
     if (_maxCrossAxisExtent == value) return;
     _maxCrossAxisExtent = value;

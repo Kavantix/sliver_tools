@@ -172,7 +172,6 @@ class RenderMultiSliver extends RenderSliver
     final ScrollDirection adjustedUserScrollDirection =
         applyGrowthDirectionToScrollDirection(
             constraints.userScrollDirection, growthDirection);
-    assert(adjustedUserScrollDirection != null);
     double maxPaintOffset = layoutOffset + overlap;
     double maxPaintExtent = 0;
     double maxHitTestExtent = 0;
@@ -296,9 +295,10 @@ class RenderMultiSliver extends RenderSliver
       }
       hasVisualOverflow = true;
     }
+    minPaintOrigin ??= 0;
     final paintExtent = max(
         0.0,
-        min(maxPaintOffset - minPaintOrigin!,
+        min(maxPaintOffset - minPaintOrigin,
             constraints.remainingPaintExtent - minPaintOrigin));
     final totalPaintExtent = (minPaintOrigin + paintExtent)
         .clamp(0.0, constraints.remainingPaintExtent)
@@ -306,7 +306,7 @@ class RenderMultiSliver extends RenderSliver
     final layoutExtent =
         max(0.0, min(layoutOffset, totalPaintExtent - minPaintOrigin));
     geometry = SliverGeometry(
-      paintOrigin: minPaintOrigin ?? 0,
+      paintOrigin: minPaintOrigin,
       scrollExtent: scrollExtent,
       paintExtent: totalPaintExtent - minPaintOrigin,
       maxPaintExtent: maxPaintExtent - minPaintOrigin,
@@ -354,8 +354,6 @@ class RenderMultiSliver extends RenderSliver
 
   double _computeChildMainAxisPosition(
       RenderSliver child, double parentMainAxisPosition) {
-    assert(child != null);
-    assert(child.constraints != null);
     final childParentData = child.parentData as SliverPhysicalParentData;
     switch (constraints.axis) {
       case Axis.vertical:
@@ -371,8 +369,6 @@ class RenderMultiSliver extends RenderSliver
     required double mainAxisPosition,
     required double crossAxisPosition,
   }) {
-    assert(mainAxisPosition != null);
-    assert(crossAxisPosition != null);
     for (final child in _children.where((c) => c.geometry!.visible)) {
       final hit = child.hitTest(
         result,
@@ -421,7 +417,6 @@ class RenderMultiSliver extends RenderSliver
 
   @override
   void applyPaintTransform(covariant RenderSliver child, Matrix4 transform) {
-    assert(child != null);
     final childParentData = child.parentData as SliverPhysicalParentData;
     switch (applyGrowthDirectionToAxisDirection(
         constraints.axisDirection, constraints.growthDirection)) {

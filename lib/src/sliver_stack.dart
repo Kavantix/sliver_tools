@@ -197,7 +197,6 @@ class SliverPositioned extends ParentDataWidget<SliverStackParentData> {
     double? height,
     required Widget child,
   }) {
-    assert(textDirection != null);
     double? left;
     double? right;
     switch (textDirection) {
@@ -661,7 +660,6 @@ class RenderSliverStack extends RenderSliver
 
   double _computeChildMainAxisPosition(
       RenderObject child, double parentMainAxisPosition) {
-    assert(child != null);
     final childParentData = child.parentData as SliverStackParentData;
     return parentMainAxisPosition - childParentData.mainAxisPosition;
   }
@@ -684,8 +682,6 @@ class RenderSliverStack extends RenderSliver
     required double mainAxisPosition,
     required double crossAxisPosition,
   }) {
-    assert(mainAxisPosition != null);
-    assert(crossAxisPosition != null);
     final boxResult = BoxHitTestResult.wrap(result);
     for (final child in _childrenInHitTestOrder) {
       if (child is RenderSliver && child.geometry!.visible) {

@@ -14,8 +14,7 @@ class SliverCrossAxisPadded extends SingleChildRenderObjectWidget {
     this.paddingEnd = 0.0,
     this.textDirection,
     required Widget child,
-  })   : assert(paddingStart != null && paddingEnd != null),
-        super(key: key, child: child);
+  }) : super(key: key, child: child);
 
   factory SliverCrossAxisPadded.symmetric({
     Key? key,
@@ -85,7 +84,6 @@ class RenderSliverCrossAxisPadded extends RenderSliver
   double get paddingStart => _paddingStart!;
   double? _paddingStart;
   set paddingStart(double value) {
-    assert(value != null);
     assert(value >= 0);
     if (_paddingStart == value) return;
     _paddingStart = value;
@@ -97,7 +95,6 @@ class RenderSliverCrossAxisPadded extends RenderSliver
   double get paddingEnd => _paddingEnd!;
   double? _paddingEnd;
   set paddingEnd(double value) {
-    assert(value != null);
     assert(value >= 0);
     if (_paddingEnd == value) return;
     _paddingEnd = value;
@@ -114,7 +111,7 @@ class RenderSliverCrossAxisPadded extends RenderSliver
       0.0,
       constraints.crossAxisExtent - paddingStart - paddingEnd,
     );
-    late double crossAxisPosition; // TODO: remove late after migration
+    double crossAxisPosition;
     switch (constraints.axis) {
       case Axis.vertical:
         crossAxisPosition =
