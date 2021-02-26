@@ -363,7 +363,6 @@ class RenderMultiSliver extends RenderSliver
       case Axis.horizontal:
         return parentMainAxisPosition - childParentData.paintOffset.dx;
     }
-    throw FallThroughError();
   }
 
   @override
