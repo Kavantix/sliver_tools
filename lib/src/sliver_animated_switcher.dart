@@ -45,7 +45,7 @@ class SliverAnimatedSwitcher extends StatelessWidget {
   static Widget defaultLayoutBuilder(
       Widget? currentChild, List<Widget> previousChildren) {
     return SliverStack(
-      children: <Widget >[
+      children: <Widget>[
         ...previousChildren,
         if (currentChild != null) currentChild,
       ],

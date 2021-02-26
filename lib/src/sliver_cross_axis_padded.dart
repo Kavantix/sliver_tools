@@ -14,7 +14,7 @@ class SliverCrossAxisPadded extends SingleChildRenderObjectWidget {
     this.paddingEnd = 0.0,
     this.textDirection,
     required Widget child,
-  })  : assert(paddingStart != null && paddingEnd != null),
+  })   : assert(paddingStart != null && paddingEnd != null),
         super(key: key, child: child);
 
   factory SliverCrossAxisPadded.symmetric({

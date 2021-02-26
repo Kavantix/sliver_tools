@@ -35,7 +35,7 @@ import 'package:flutter/widgets.dart';
 class SliverStack extends MultiChildRenderObjectWidget {
   SliverStack({
     Key? key,
-    required List<Widget > children,
+    required List<Widget> children,
     this.positionedAlignment = Alignment.center,
     this.textDirection,
     this.insetOnOverlap = false,
@@ -118,7 +118,7 @@ class SliverPositioned extends ParentDataWidget<SliverStackParentData> {
     this.width,
     this.height,
     required Widget child,
-  })  : assert(left == null || right == null || width == null),
+  })   : assert(left == null || right == null || width == null),
         assert(top == null || bottom == null || height == null),
         super(key: key, child: child);
 
@@ -131,7 +131,7 @@ class SliverPositioned extends ParentDataWidget<SliverStackParentData> {
     Key? key,
     required Rect rect,
     required Widget child,
-  })  : left = rect.left,
+  })   : left = rect.left,
         top = rect.top,
         width = rect.width,
         height = rect.height,
@@ -147,7 +147,7 @@ class SliverPositioned extends ParentDataWidget<SliverStackParentData> {
     Key? key,
     required RelativeRect rect,
     required Widget child,
-  })  : left = rect.left,
+  })   : left = rect.left,
         top = rect.top,
         right = rect.right,
         bottom = rect.bottom,
@@ -164,7 +164,7 @@ class SliverPositioned extends ParentDataWidget<SliverStackParentData> {
     this.right = 0.0,
     this.bottom = 0.0,
     required Widget child,
-  })  : width = null,
+  })   : width = null,
         height = null,
         super(key: key, child: child);
 
@@ -502,7 +502,7 @@ class RenderSliverStack extends RenderSliver
     double maxHitTestExtent = 0;
     double maxScrollObstructionExtent = 0;
     double maxCacheExtent = 0;
-    double minPaintOrigin;
+    double? minPaintOrigin;
     for (final child in _children.whereType<RenderSliver>()) {
       final parentData = child.parentData as SliverStackParentData;
       child.layout(constraints, parentUsesSize: true);
@@ -652,7 +652,8 @@ class RenderSliverStack extends RenderSliver
 
   @override
   void applyPaintTransform(covariant RenderObject child, Matrix4 transform) {
-    if (child is RenderSliver && child.geometry!.visible || child is RenderBox) {
+    if (child is RenderSliver && child.geometry!.visible ||
+        child is RenderBox) {
       final parentData = child.parentData as SliverStackParentData;
       transform.translate(parentData.paintOffset.dx, parentData.paintOffset.dy);
     }
