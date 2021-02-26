@@ -365,7 +365,7 @@ class SliverStackParentData extends ParentData
     left = value.left;
   }
 
-  late Offset paintOffset;
+  Offset paintOffset = Offset.zero;
 
   double mainAxisPosition = 0;
   double crossAxisPosition = 0;
