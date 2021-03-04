@@ -1,3 +1,7 @@
+## [0.2.0-nullsafety] - 2020-12-10
+
+Migrated to nullsafety
+
 ## [0.1.10+1] - 2020-12-10
 
 Further improved `childScrollOffset` of [MultiSliver]
