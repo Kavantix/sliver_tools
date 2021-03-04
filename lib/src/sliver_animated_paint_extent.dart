@@ -226,7 +226,7 @@ class RenderSliverAnimatedPaintExtent extends RenderProxySliver {
         offset,
         Rect.fromPoints(Offset.zero, bottomRight),
         (context, offset) => super.paint(context, offset),
-        oldLayer: layer as ClipRectLayer,
+        oldLayer: layer as ClipRectLayer?,
       );
     } else {
       layer = null;

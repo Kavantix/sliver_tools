@@ -185,6 +185,10 @@ void main() {
 
     testWidgets('correctly sets childScrollOffset', (tester) async {
       final controller = ScrollController();
+      await setupMultiSliver(
+        tester,
+        controller: controller,
+      );
       expect(
           tester.renderObject(find.byKey(groupKey)), isA<RenderMultiSliver>());
       final multiSliver =
