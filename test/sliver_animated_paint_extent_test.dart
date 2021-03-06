@@ -1,6 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sliver_tools/sliver_tools.dart';
+import 'package:sliver_tools/src/rendering/sliver_animated_paint_extent.dart';
 
 void main() {
   group('SliverAnimatedPaintExtent', () {
@@ -12,9 +13,9 @@ void main() {
     }
 
     Widget animatedPaintExtent({
-      @required Key key,
-      @required double boxHeight,
-      @required Duration animationDuration,
+      required Key key,
+      required double boxHeight,
+      required Duration animationDuration,
       Curve curve = Curves.linear,
     }) {
       return Directionality(
@@ -49,9 +50,9 @@ void main() {
           isA<RenderSliverAnimatedPaintExtent>());
       final renderObject = (tester.renderObject(find.byKey(key))
           as RenderSliverAnimatedPaintExtent);
-      expect(renderObject.geometry.layoutExtent, startHeight);
-      expect(renderObject.geometry.paintExtent, startHeight);
-      expect(renderObject.geometry.scrollExtent, startHeight);
+      expect(renderObject.geometry!.layoutExtent, startHeight);
+      expect(renderObject.geometry!.paintExtent, startHeight);
+      expect(renderObject.geometry!.scrollExtent, startHeight);
     });
 
     testWidgets('animates child size increase', (tester) async {
@@ -66,26 +67,26 @@ void main() {
       ));
       final renderObject = (tester.renderObject(find.byKey(key))
           as RenderSliverAnimatedPaintExtent);
-      expect(renderObject.geometry.layoutExtent, startHeight);
-      expect(renderObject.geometry.paintExtent, startHeight);
-      expect(renderObject.geometry.scrollExtent, startHeight);
+      expect(renderObject.geometry!.layoutExtent, startHeight);
+      expect(renderObject.geometry!.paintExtent, startHeight);
+      expect(renderObject.geometry!.scrollExtent, startHeight);
 
       await tester.pumpWidget(animatedPaintExtent(
         key: key,
         boxHeight: endHeight,
         animationDuration: duration,
       ));
-      expect(renderObject.geometry.layoutExtent, startHeight);
-      expect(renderObject.geometry.paintExtent, startHeight);
-      expect(renderObject.geometry.scrollExtent, startHeight);
+      expect(renderObject.geometry!.layoutExtent, startHeight);
+      expect(renderObject.geometry!.paintExtent, startHeight);
+      expect(renderObject.geometry!.scrollExtent, startHeight);
       await tester.pump(const Duration(milliseconds: 75));
-      expect(renderObject.geometry.paintExtent, middleHeight);
-      expect(renderObject.geometry.layoutExtent, middleHeight);
-      expect(renderObject.geometry.scrollExtent, middleHeight);
+      expect(renderObject.geometry!.paintExtent, middleHeight);
+      expect(renderObject.geometry!.layoutExtent, middleHeight);
+      expect(renderObject.geometry!.scrollExtent, middleHeight);
       await tester.pump(const Duration(milliseconds: 75));
-      expect(renderObject.geometry.layoutExtent, endHeight);
-      expect(renderObject.geometry.paintExtent, endHeight);
-      expect(renderObject.geometry.scrollExtent, endHeight);
+      expect(renderObject.geometry!.layoutExtent, endHeight);
+      expect(renderObject.geometry!.paintExtent, endHeight);
+      expect(renderObject.geometry!.scrollExtent, endHeight);
     });
 
     testWidgets('animates child size decrease', (tester) async {
@@ -100,26 +101,26 @@ void main() {
       ));
       final renderObject = (tester.renderObject(find.byKey(key))
           as RenderSliverAnimatedPaintExtent);
-      expect(renderObject.geometry.layoutExtent, endHeight);
-      expect(renderObject.geometry.paintExtent, endHeight);
-      expect(renderObject.geometry.scrollExtent, endHeight);
+      expect(renderObject.geometry!.layoutExtent, endHeight);
+      expect(renderObject.geometry!.paintExtent, endHeight);
+      expect(renderObject.geometry!.scrollExtent, endHeight);
 
       await tester.pumpWidget(animatedPaintExtent(
         key: key,
         boxHeight: startHeight,
         animationDuration: duration,
       ));
-      expect(renderObject.geometry.layoutExtent, endHeight);
-      expect(renderObject.geometry.paintExtent, endHeight);
-      expect(renderObject.geometry.scrollExtent, endHeight);
+      expect(renderObject.geometry!.layoutExtent, endHeight);
+      expect(renderObject.geometry!.paintExtent, endHeight);
+      expect(renderObject.geometry!.scrollExtent, endHeight);
       await tester.pump(const Duration(milliseconds: 100));
-      expect(renderObject.geometry.paintExtent, middleHeight);
-      expect(renderObject.geometry.layoutExtent, middleHeight);
-      expect(renderObject.geometry.scrollExtent, middleHeight);
+      expect(renderObject.geometry!.paintExtent, middleHeight);
+      expect(renderObject.geometry!.layoutExtent, middleHeight);
+      expect(renderObject.geometry!.scrollExtent, middleHeight);
       await tester.pump(const Duration(milliseconds: 100));
-      expect(renderObject.geometry.paintExtent, startHeight);
-      expect(renderObject.geometry.layoutExtent, startHeight);
-      expect(renderObject.geometry.scrollExtent, startHeight);
+      expect(renderObject.geometry!.paintExtent, startHeight);
+      expect(renderObject.geometry!.layoutExtent, startHeight);
+      expect(renderObject.geometry!.scrollExtent, startHeight);
     });
 
     testWidgets('animates child size increase with curve', (tester) async {
@@ -137,9 +138,9 @@ void main() {
       ));
       final renderObject = (tester.renderObject(find.byKey(key))
           as RenderSliverAnimatedPaintExtent);
-      expect(renderObject.geometry.layoutExtent, startHeight);
-      expect(renderObject.geometry.paintExtent, startHeight);
-      expect(renderObject.geometry.scrollExtent, startHeight);
+      expect(renderObject.geometry!.layoutExtent, startHeight);
+      expect(renderObject.geometry!.paintExtent, startHeight);
+      expect(renderObject.geometry!.scrollExtent, startHeight);
 
       await tester.pumpWidget(animatedPaintExtent(
         key: key,
@@ -147,17 +148,17 @@ void main() {
         animationDuration: duration,
         curve: curve,
       ));
-      expect(renderObject.geometry.layoutExtent, startHeight);
-      expect(renderObject.geometry.paintExtent, startHeight);
-      expect(renderObject.geometry.scrollExtent, startHeight);
+      expect(renderObject.geometry!.layoutExtent, startHeight);
+      expect(renderObject.geometry!.paintExtent, startHeight);
+      expect(renderObject.geometry!.scrollExtent, startHeight);
       await tester.pump(const Duration(milliseconds: 75));
-      expect(renderObject.geometry.paintExtent, middleHeight);
-      expect(renderObject.geometry.layoutExtent, middleHeight);
-      expect(renderObject.geometry.scrollExtent, middleHeight);
+      expect(renderObject.geometry!.paintExtent, middleHeight);
+      expect(renderObject.geometry!.layoutExtent, middleHeight);
+      expect(renderObject.geometry!.scrollExtent, middleHeight);
       await tester.pump(const Duration(milliseconds: 75));
-      expect(renderObject.geometry.layoutExtent, endHeight);
-      expect(renderObject.geometry.paintExtent, endHeight);
-      expect(renderObject.geometry.scrollExtent, endHeight);
+      expect(renderObject.geometry!.layoutExtent, endHeight);
+      expect(renderObject.geometry!.paintExtent, endHeight);
+      expect(renderObject.geometry!.scrollExtent, endHeight);
     });
   });
 }

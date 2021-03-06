@@ -37,7 +37,7 @@ class _MockPaintContext implements PaintingContext {
   @override
   dynamic noSuchMethod(Invocation invocation) {
     expect(invocation.memberName, const Symbol('paintChild'));
-    expect(invocation.positionalArguments[1] as Offset, expectedOffset);
+    expect(invocation.positionalArguments[1] as Offset?, expectedOffset);
   }
 }
 
@@ -73,7 +73,7 @@ void main() {
     test('passes updated constraints to child', () {
       var renderObject = setup();
       renderObject.layout(constraints, parentUsesSize: true);
-      expect(renderObject.child.constraints, constraints);
+      expect(renderObject.child!.constraints, constraints);
 
       const double crossAxisPosition = 214;
       const double _crossAxisExtent = crossAxisExtent - crossAxisPosition - 111;
@@ -83,7 +83,7 @@ void main() {
       );
       renderObject.layout(constraints, parentUsesSize: true);
       expect(
-        renderObject.child.constraints,
+        renderObject.child!.constraints,
         constraints.copyWith(crossAxisExtent: _crossAxisExtent),
       );
     });
@@ -92,7 +92,7 @@ void main() {
       var renderObject = setup();
       renderObject.layout(constraints, parentUsesSize: true);
       expect(
-        identical(renderObject.geometry, renderObject.child.geometry),
+        identical(renderObject.geometry, renderObject.child!.geometry),
         true,
         reason: 'geometry was not identical to the geometry of the child',
       );
@@ -105,11 +105,11 @@ void main() {
       );
       renderObject.layout(constraints, parentUsesSize: true);
       expect(
-        renderObject.child.constraints,
+        renderObject.child!.constraints,
         constraints.copyWith(crossAxisExtent: _crossAxisExtent),
       );
       expect(
-        identical(renderObject.geometry, renderObject.child.geometry),
+        identical(renderObject.geometry, renderObject.child!.geometry),
         true,
         reason: 'geometry was not identical to the geometry of the child',
       );
@@ -118,7 +118,7 @@ void main() {
     test('correctly calls paint', () {
       var renderObject = setup();
       renderObject.layout(constraints, parentUsesSize: true);
-      expect(renderObject.child.constraints, constraints);
+      expect(renderObject.child!.constraints, constraints);
       renderObject.paint(
         const _MockPaintContext(Offset.zero),
         Offset.zero,
@@ -132,7 +132,7 @@ void main() {
       );
       renderObject.layout(constraints, parentUsesSize: true);
       expect(
-        renderObject.child.constraints,
+        renderObject.child!.constraints,
         constraints.copyWith(crossAxisExtent: _crossAxisExtent),
       );
       renderObject.paint(
@@ -148,7 +148,7 @@ void main() {
         parentUsesSize: true,
       );
       expect(
-        renderObject.child.constraints,
+        renderObject.child!.constraints,
         constraints.copyWith(
           axisDirection: AxisDirection.right,
           crossAxisDirection: AxisDirection.down,

@@ -4,12 +4,13 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sliver_tools/sliver_tools.dart';
+import 'package:sliver_tools/src/rendering/sliver_clip.dart';
 
 import 'helpers/pinned_header.dart';
 
 void main() {
   group('SliverClip', () {
-    Widget box(Key key, {double size}) {
+    Widget box(Key? key, {required double size}) {
       return Container(
         key: key,
         alignment: Alignment.center,
@@ -63,27 +64,27 @@ void main() {
 
     void expectAllExtents(RenderSliver sliver, double expected) {
       expect(
-        sliver.geometry.scrollExtent,
+        sliver.geometry!.scrollExtent,
         expected,
         reason: 'scrollExtent is incorrect',
       );
       expect(
-        sliver.geometry.paintExtent,
+        sliver.geometry!.paintExtent,
         min(sliver.constraints.remainingPaintExtent, expected),
         reason: 'paintExtent is incorrect',
       );
       expect(
-        sliver.geometry.maxPaintExtent,
+        sliver.geometry!.maxPaintExtent,
         expected,
         reason: 'maxPaintExtent is incorrect',
       );
       expect(
-        sliver.geometry.layoutExtent,
+        sliver.geometry!.layoutExtent,
         min(sliver.constraints.remainingPaintExtent, expected),
         reason: 'layoutExtent is incorrect',
       );
       expect(
-        sliver.geometry.hitTestExtent,
+        sliver.geometry!.hitTestExtent,
         min(sliver.constraints.remainingPaintExtent, expected),
         reason: 'hitTestExtent is incorrect',
       );

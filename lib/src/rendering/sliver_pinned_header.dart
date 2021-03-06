@@ -5,14 +5,14 @@ import 'package:flutter/rendering.dart';
 class RenderSliverPinnedHeader extends RenderSliverSingleBoxAdapter {
   @override
   void performLayout() {
-    child.layout(constraints.asBoxConstraints(), parentUsesSize: true);
+    child!.layout(constraints.asBoxConstraints(), parentUsesSize: true);
     double childExtent;
     switch (constraints.axis) {
       case Axis.horizontal:
-        childExtent = child.size.width;
+        childExtent = child!.size.width;
         break;
       case Axis.vertical:
-        childExtent = child.size.height;
+        childExtent = child!.size.height;
         break;
     }
     final paintedChildExtent = min(

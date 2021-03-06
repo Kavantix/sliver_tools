@@ -2,7 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/rendering.dart';
 
 class _SliverCrossAxisPositionedParentData extends SliverPhysicalParentData {
-  double crossAxisPosition;
+  late double crossAxisPosition;
 }
 
 class SliverCrossAxisPositionedData {
@@ -10,8 +10,8 @@ class SliverCrossAxisPositionedData {
   final double crossAxisExtent;
 
   SliverCrossAxisPositionedData({
-    @required this.crossAxisPosition,
-    @required this.crossAxisExtent,
+    required this.crossAxisPosition,
+    required this.crossAxisExtent,
   });
 }
 
@@ -30,15 +30,15 @@ mixin RenderSliverCrossAxisPositionedMixin
   @visibleForTesting
   void performLayout() {
     final positionData = createCrossAxisPositionData(constraints);
-    child.layout(
+    child!.layout(
       constraints.copyWith(crossAxisExtent: positionData.crossAxisExtent),
       parentUsesSize: true,
     );
 
-    geometry = child.geometry;
-    if (geometry.scrollOffsetCorrection != null) return;
+    geometry = child!.geometry;
+    if (geometry!.scrollOffsetCorrection != null) return;
     final childParentData =
-        child.parentData as _SliverCrossAxisPositionedParentData;
+        child!.parentData as _SliverCrossAxisPositionedParentData;
     childParentData.crossAxisPosition = positionData.crossAxisPosition;
     switch (constraints.axis) {
       case Axis.vertical:
@@ -59,11 +59,11 @@ mixin RenderSliverCrossAxisPositionedMixin
 
   @override
   bool hitTestChildren(SliverHitTestResult result,
-      {@required double mainAxisPosition, @required double crossAxisPosition}) {
+      {required double mainAxisPosition, required double crossAxisPosition}) {
     if (child == null) return false;
     final childParentData =
-        child.parentData as _SliverCrossAxisPositionedParentData;
-    return child.hitTest(
+        child!.parentData as _SliverCrossAxisPositionedParentData;
+    return child!.hitTest(
       result,
       mainAxisPosition: mainAxisPosition,
       crossAxisPosition: crossAxisPosition - childParentData.crossAxisPosition,
@@ -72,7 +72,6 @@ mixin RenderSliverCrossAxisPositionedMixin
 
   @override
   double childCrossAxisPosition(RenderSliver child) {
-    assert(child != null);
     final childParentData =
         child.parentData as _SliverCrossAxisPositionedParentData;
     return childParentData.crossAxisPosition;
@@ -80,7 +79,6 @@ mixin RenderSliverCrossAxisPositionedMixin
 
   @override
   void applyPaintTransform(RenderObject child, Matrix4 transform) {
-    assert(child != null);
     assert(child == this.child);
     final childParentData = child.parentData as SliverPhysicalParentData;
     childParentData.applyPaintTransform(transform);
@@ -88,9 +86,9 @@ mixin RenderSliverCrossAxisPositionedMixin
 
   @override
   void paint(PaintingContext context, Offset offset) {
-    if (child != null && child.geometry.visible) {
-      final childParentData = child.parentData as SliverPhysicalParentData;
-      context.paintChild(child, offset + childParentData.paintOffset);
+    if (child != null && child!.geometry!.visible) {
+      final childParentData = child!.parentData as SliverPhysicalParentData;
+      context.paintChild(child!, offset + childParentData.paintOffset);
     }
   }
 
@@ -102,10 +100,10 @@ mixin RenderSliverCrossAxisPositionedMixin
         final parentSize = getAbsoluteSize();
         final outerRect = offset & parentSize;
         Size childSize;
-        Rect innerRect;
+        Rect? innerRect;
         if (child != null) {
-          childSize = child.getAbsoluteSize();
-          final childParentData = child.parentData as SliverPhysicalParentData;
+          childSize = child!.getAbsoluteSize();
+          final childParentData = child!.parentData as SliverPhysicalParentData;
           innerRect = (offset + childParentData.paintOffset) & childSize;
           assert(innerRect.top >= outerRect.top);
           assert(innerRect.left >= outerRect.left);

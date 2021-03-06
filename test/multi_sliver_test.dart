@@ -2,13 +2,14 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sliver_tools/sliver_tools.dart';
+import 'package:sliver_tools/src/rendering/multi_sliver.dart';
 import 'helpers/pinned_header.dart';
 
 class _UnconstrainedScollPhysics extends ScrollPhysics {
   const _UnconstrainedScollPhysics();
 
   @override
-  ScrollPhysics applyTo(ScrollPhysics ancestor) {
+  ScrollPhysics applyTo(ScrollPhysics? ancestor) {
     return this;
   }
 
@@ -18,7 +19,7 @@ class _UnconstrainedScollPhysics extends ScrollPhysics {
 
 void main() {
   group('MultiSliver', () {
-    Widget box(Key key, String title, {@required double height}) {
+    Widget box(Key? key, String title, {required double height}) {
       return Container(
         key: key,
         alignment: Alignment.center,
@@ -40,7 +41,7 @@ void main() {
       WidgetTester tester, {
       int childCount = 2,
       bool includePinned = false,
-      ScrollController controller,
+      ScrollController? controller,
     }) async {
       await tester.pumpWidget(
         Directionality(
@@ -93,7 +94,7 @@ void main() {
           tester.renderObject(find.byKey(groupKey)), isA<RenderMultiSliver>());
       final multiSliver =
           tester.renderObject(find.byKey(groupKey)) as RenderMultiSliver;
-      expect(multiSliver.geometry.scrollExtent, totalSize);
+      expect(multiSliver.geometry!.scrollExtent, totalSize);
     });
 
     testWidgets('correctly sets maxPaintExtent and paintOrigin',
@@ -108,57 +109,57 @@ void main() {
       final multiSliver =
           tester.renderObject(find.byKey(groupKey)) as RenderMultiSliver;
       expect(
-        multiSliver.geometry.maxPaintExtent,
+        multiSliver.geometry!.maxPaintExtent,
         totalSize,
       );
 
       totalSize = await setupMultiSliver(tester, childCount: 20);
-      expect(multiSliver.geometry.maxPaintExtent, totalSize);
-      expect(multiSliver.geometry.paintOrigin, 0);
+      expect(multiSliver.geometry!.maxPaintExtent, totalSize);
+      expect(multiSliver.geometry!.paintOrigin, 0);
       await tester.dragFrom(const Offset(400, 300), const Offset(0, -200));
       await tester.pump();
       expect(
-        multiSliver.geometry.maxPaintExtent,
+        multiSliver.geometry!.maxPaintExtent,
         totalSize,
         reason: 'maxPaintExtent incorrect when scrolled past leading edge',
       );
       expect(
-        multiSliver.geometry.paintOrigin,
+        multiSliver.geometry!.paintOrigin,
         0,
         reason: 'paintOrigin incorrect when scrolled past leading edge',
       );
       await tester.dragFrom(const Offset(400, 300), const Offset(0, 400));
       await tester.pump();
       expect(
-        multiSliver.geometry.maxPaintExtent,
+        multiSliver.geometry!.maxPaintExtent,
         totalSize,
         reason: 'maxPaintExtent incorrect when overscrolling leading edge',
       );
       expect(
-        multiSliver.geometry.paintOrigin,
+        multiSliver.geometry!.paintOrigin,
         0,
         reason: 'paintOrigin incorrect when overscrolling leading edge',
       );
       await tester.dragFrom(const Offset(400, 300), const Offset(0, -200));
       await tester.pump();
-      expect(multiSliver.geometry.maxPaintExtent, totalSize);
-      expect(multiSliver.geometry.paintOrigin, 0);
+      expect(multiSliver.geometry!.maxPaintExtent, totalSize);
+      expect(multiSliver.geometry!.paintOrigin, 0);
 
       // test pinned
       totalSize =
           await setupMultiSliver(tester, childCount: 20, includePinned: true);
-      expect(multiSliver.geometry.maxPaintExtent, totalSize);
-      expect(multiSliver.geometry.paintOrigin, 0);
+      expect(multiSliver.geometry!.maxPaintExtent, totalSize);
+      expect(multiSliver.geometry!.paintOrigin, 0);
       await tester.dragFrom(const Offset(400, 300), const Offset(0, -200));
       await tester.pump();
       expect(
-        multiSliver.geometry.maxPaintExtent,
+        multiSliver.geometry!.maxPaintExtent,
         totalSize,
         reason:
             'maxPaintExtent incorrect with pinned when scrolled past leading edge',
       );
       expect(
-        multiSliver.geometry.paintOrigin,
+        multiSliver.geometry!.paintOrigin,
         0,
         reason:
             'paintOrigin incorrect with pinned when overscrolling leading edge',
@@ -166,26 +167,26 @@ void main() {
       await tester.dragFrom(const Offset(400, 300), const Offset(0, 400));
       await tester.pump();
       expect(
-        multiSliver.geometry.maxPaintExtent,
+        multiSliver.geometry!.maxPaintExtent,
         totalSize + 200,
         reason:
             'maxPaintExtent incorrect with pinned when overscrolling leading edge',
       );
       expect(
-        multiSliver.geometry.paintOrigin,
+        multiSliver.geometry!.paintOrigin,
         -200,
         reason:
             'paintOrigin incorrect with pinned when overscrolling leading edge',
       );
       await tester.dragFrom(const Offset(400, 300), const Offset(0, -200));
       await tester.pump();
-      expect(multiSliver.geometry.maxPaintExtent, totalSize);
-      expect(multiSliver.geometry.paintOrigin, 0);
+      expect(multiSliver.geometry!.maxPaintExtent, totalSize);
+      expect(multiSliver.geometry!.paintOrigin, 0);
     });
 
     testWidgets('correctly sets childScrollOffset', (tester) async {
       final controller = ScrollController();
-      double totalSize = await setupMultiSliver(
+      await setupMultiSliver(
         tester,
         controller: controller,
       );

@@ -2,7 +2,10 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sliver_tools/sliver_tools.dart';
+import 'package:sliver_tools/src/rendering/sliver_cross_axis_padded.dart';
 import 'package:sliver_tools/src/rendering/sliver_cross_axis_positioned.dart';
+
+import 'helpers/empty_build_context.dart';
 
 void main() {
   group('SliverCrossAxisPadded', () {
@@ -46,21 +49,21 @@ void main() {
           paddingEnd: paddingEnd,
           textDirection: textDirection,
         );
-        return widget.createRenderObject(null);
+        return widget.createRenderObject(EmptyBuildContext());
       }
 
       SliverCrossAxisPositionedData positionedDataForUpdatedWidget({
-        @required RenderSliverCrossAxisPadded renderObject,
-        @required double paddingStart,
-        @required double paddingEnd,
-        @required TextDirection textDirection,
-        SliverConstraints updatedConstraints,
+        required RenderSliverCrossAxisPadded renderObject,
+        required double paddingStart,
+        required double paddingEnd,
+        required TextDirection textDirection,
+        SliverConstraints? updatedConstraints,
       }) {
         createWidget(
           paddingStart: paddingStart,
           paddingEnd: paddingEnd,
           textDirection: textDirection,
-        ).updateRenderObject(null, renderObject);
+        ).updateRenderObject(EmptyBuildContext(), renderObject);
         return renderObject
             .createCrossAxisPositionData(updatedConstraints ?? constraints);
       }

@@ -1,10 +1,18 @@
-## [0.1.10+1] - 2020-12-10
+## [0.2.0] - 2021-03-06
 
-Further improved `childScrollOffset` of [MultiSliver]
+BREAKING:
+- Migrated to nullsafety
+- All render objects are now part of the private api.
+  *If you want to depend on them as public API, please open an issue.*
+
+## [0.1.10] - 2020-12-10
+
+Further improved `childScrollOffset` of [MultiSliver].
+[MultiSliver] now correctly passes the incoming `precedingScrollExtent` to the children.
 
 ## [0.1.9] - 2020-11-11
 
-Fixed edge cases for `applyPaintTransform` and `childScrollOffset` of [MultiSliver]
+Fixed edge cases for `applyPaintTransform` and `childScrollOffset` of [MultiSliver].
 
 ## [0.1.8] - 2020-10-26
 
