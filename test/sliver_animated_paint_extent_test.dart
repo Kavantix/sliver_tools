@@ -1,6 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sliver_tools/sliver_tools.dart';
+import 'package:sliver_tools/src/rendering/sliver_animated_paint_extent.dart';
 
 void main() {
   group('SliverAnimatedPaintExtent', () {
