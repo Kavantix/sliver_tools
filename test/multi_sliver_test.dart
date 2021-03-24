@@ -50,9 +50,7 @@ void multiSliverTests() {
                       size: pinnedSize,
                       boxKey: pinnedKey,
                     ),
-                  SliverToBoxAdapter(
-                    child: box(box1Key, '1', height: 150),
-                  ),
+                  box(box1Key, '1', height: 150),
                   SliverList(
                     key: listKey,
                     delegate: SliverChildBuilderDelegate(
@@ -194,18 +192,55 @@ void multiSliverTests() {
     });
 
     testWidgets('accepts RenderBox children', (tester) async {
+      const boxKey = Key('box');
       await tester.pumpWidget(Directionality(
         textDirection: TextDirection.ltr,
         child: CustomScrollView(
           slivers: [
             MultiSliver(
               children: [
-                Container(height: 50),
+                box(boxKey, 'Title', height: 200),
               ],
             ),
           ],
         ),
       ));
+      expect(find.byKey(boxKey), findsOneWidget);
+      expect(find.text('Title'), findsOneWidget);
+    });
+
+    testWidgets('correctly draws boxChild when scrolled off screen',
+        (tester) async {
+      const boxKey = Key('box');
+      final controller = ScrollController();
+      await tester.pumpWidget(Directionality(
+        textDirection: TextDirection.ltr,
+        child: CustomScrollView(
+          controller: controller,
+          physics: const UnconstrainedScollPhysics(),
+          slivers: [
+            MultiSliver(
+              children: [
+                box(boxKey, 'Title', height: 200),
+              ],
+            ),
+          ],
+        ),
+      ));
+      expect(find.byKey(boxKey), findsOneWidget);
+      expect(find.text('Title'), findsOneWidget);
+      Rect boxRect() => tester.getRect(find.byKey(boxKey));
+      final boxWidth = boxRect().width;
+      expect(boxRect(), Rect.fromLTWH(0, 0, boxWidth, 200));
+      controller.jumpTo(100);
+      await tester.pump();
+      expect(boxRect(), Rect.fromLTWH(0, -100, boxWidth, 200));
+      controller.jumpTo(199);
+      await tester.pump();
+      expect(boxRect(), Rect.fromLTWH(0, -199, boxWidth, 200));
+      controller.jumpTo(300);
+      await tester.pump();
+      expect(find.byKey(boxKey), findsNothing);
     });
   });
 }
