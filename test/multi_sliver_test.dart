@@ -3,21 +3,13 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sliver_tools/sliver_tools.dart';
 import 'package:sliver_tools/src/rendering/multi_sliver.dart';
+
 import 'helpers/pinned_header.dart';
+import 'helpers/unconstrained_scroll_physics.dart';
 
-class _UnconstrainedScollPhysics extends ScrollPhysics {
-  const _UnconstrainedScollPhysics();
+void main() => multiSliverTests();
 
-  @override
-  ScrollPhysics applyTo(ScrollPhysics? ancestor) {
-    return this;
-  }
-
-  @override
-  bool shouldAcceptUserOffset(ScrollMetrics _) => true;
-}
-
-void main() {
+void multiSliverTests() {
   group('MultiSliver', () {
     Widget box(Key? key, String title, {required double height}) {
       return Container(
@@ -48,7 +40,7 @@ void main() {
           textDirection: TextDirection.ltr,
           child: CustomScrollView(
             controller: controller,
-            physics: const _UnconstrainedScollPhysics(),
+            physics: const UnconstrainedScollPhysics(),
             slivers: [
               MultiSliver(
                 key: groupKey,

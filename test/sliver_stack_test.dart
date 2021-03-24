@@ -21,7 +21,9 @@ class _UnconstrainedScollPhysics extends ScrollPhysics {
   bool shouldAcceptUserOffset(ScrollMetrics _) => true;
 }
 
-void main() {
+void main() => sliverStackTests();
+
+void sliverStackTests() {
   group('SliverStack', () {
     Widget box(Key? key, {double? size}) {
       return Container(
