@@ -32,10 +32,10 @@ void main() {
         TextDirection textDirection = TextDirection.ltr,
       }) {
         return SliverCrossAxisPadded(
-          child: const SizedBox.shrink(),
           textDirection: textDirection,
           paddingStart: paddingStart,
           paddingEnd: paddingEnd,
+          child: const SizedBox.shrink(),
         );
       }
 
