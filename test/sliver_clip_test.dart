@@ -7,8 +7,11 @@ import 'package:sliver_tools/sliver_tools.dart';
 import 'package:sliver_tools/src/rendering/sliver_clip.dart';
 
 import 'helpers/pinned_header.dart';
+import 'helpers/unconstrained_scroll_physics.dart';
 
-void main() {
+void main() => sliverClipTests();
+
+void sliverClipTests() {
   group('SliverClip', () {
     Widget box(Key? key, {required double size}) {
       return Container(
@@ -30,6 +33,7 @@ void main() {
           textDirection: TextDirection.ltr,
           child: CustomScrollView(
             reverse: reverse,
+            physics: const UnconstrainedScollPhysics(),
             scrollDirection: scrollDirection,
             slivers: [
               const PinnedHeader(
