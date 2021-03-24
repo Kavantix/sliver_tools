@@ -192,5 +192,20 @@ void multiSliverTests() {
       await tester.pump();
       expect(multiSliver.childScrollOffset(list), 150);
     });
+
+    testWidgets('accepts RenderBox children', (tester) async {
+      await tester.pumpWidget(Directionality(
+        textDirection: TextDirection.ltr,
+        child: CustomScrollView(
+          slivers: [
+            MultiSliver(
+              children: [
+                Container(height: 50),
+              ],
+            ),
+          ],
+        ),
+      ));
+    });
   });
 }
