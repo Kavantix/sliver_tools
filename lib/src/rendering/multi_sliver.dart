@@ -389,8 +389,7 @@ class RenderMultiSliver extends RenderSliver
     }
   }
 
-  double _computeChildMainAxisPosition(
-      RenderObject child, double parentMainAxisPosition) {
+  double _computeChildMainAxisPosition(RenderObject child) {
     final childParentData = child.parentData as MultiSliverParentData;
     switch (constraints.axis) {
       case Axis.vertical:
@@ -409,19 +408,20 @@ class RenderMultiSliver extends RenderSliver
     for (final child in _children.where(
         (c) => (c.parentData as MultiSliverParentData).geometry.visible)) {
       if (child is RenderSliver) {
+        final childMainAxisPosition = _computeChildMainAxisPosition(child);
         final hit = child.hitTest(
           result,
-          mainAxisPosition:
-              _computeChildMainAxisPosition(child, mainAxisPosition),
+          mainAxisPosition: mainAxisPosition - childMainAxisPosition,
           crossAxisPosition: crossAxisPosition,
         );
         if (hit) return true;
       } else if (child is RenderBox) {
-        final childMainAxisPosition =
-            _computeChildMainAxisPosition(child, mainAxisPosition);
-        final hit = hitTestBoxChild(BoxHitTestResult.wrap(result), child,
-            mainAxisPosition: childMainAxisPosition,
-            crossAxisPosition: crossAxisPosition);
+        final hit = hitTestBoxChild(
+          BoxHitTestResult.wrap(result),
+          child,
+          mainAxisPosition: mainAxisPosition,
+          crossAxisPosition: crossAxisPosition,
+        );
         if (hit) return true;
       }
     }
@@ -503,7 +503,7 @@ class RenderMultiSliver extends RenderSliver
 
   @override
   double childMainAxisPosition(covariant RenderObject child) {
-    return _computeChildMainAxisPosition(child, constraints.scrollOffset);
+    return _computeChildMainAxisPosition(child);
   }
 }
 
