@@ -302,7 +302,51 @@ void multiSliverTests() {
       expect(boxGeometry().hasVisualOverflow, false);
     });
 
-    testWidgets('can hit boxchild', (tester) async {
+    testWidgets('can hit sliver child', (tester) async {
+      const boxKey = Key('box');
+      final controller = ScrollController();
+      var taps = 0;
+      await tester.pumpWidget(Directionality(
+        textDirection: TextDirection.ltr,
+        child: CustomScrollView(
+          controller: controller,
+          physics: const UnconstrainedScollPhysics(),
+          slivers: [
+            MultiSliver(
+              children: [
+                box(UniqueKey(), 'Title', height: 100),
+                SliverList(
+                  delegate: SliverChildListDelegate(
+                    [
+                      const SizedBox(height: 100),
+                      GestureDetector(
+                        behavior: HitTestBehavior.opaque,
+                        onTap: () => taps++,
+                        child: const SizedBox(
+                          key: boxKey,
+                          height: 1,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ));
+      expect(taps, 0);
+      final thebox = find.byKey(boxKey);
+      print('tapping sliver');
+      await tester.tap(thebox);
+      expect(taps, 1);
+      controller.jumpTo(100);
+      await tester.pump();
+      controller.jumpTo(300);
+      await tester.pump();
+    });
+
+    testWidgets('can hit box child', (tester) async {
       const boxKey = Key('box');
       final controller = ScrollController();
       var taps = 0;
@@ -318,7 +362,7 @@ void multiSliverTests() {
                 GestureDetector(
                   behavior: HitTestBehavior.opaque,
                   onTap: () => taps++,
-                  child: box(boxKey, 'Title', height: 200),
+                  child: box(boxKey, 'Title', height: 1),
                 ),
               ],
             ),
@@ -329,12 +373,41 @@ void multiSliverTests() {
       final thebox = find.byKey(boxKey);
       await tester.tap(thebox);
       expect(taps, 1);
-      controller.jumpTo(100);
-      await tester.pump();
-      controller.jumpTo(199);
-      await tester.pump();
-      controller.jumpTo(300);
-      await tester.pump();
+    });
+
+    testWidgets('box child does not get hit when tapping outside',
+        (tester) async {
+      const boxKey = Key('box');
+      final controller = ScrollController();
+      var taps = 0;
+      await tester.pumpWidget(Directionality(
+        textDirection: TextDirection.ltr,
+        child: CustomScrollView(
+          controller: controller,
+          physics: const UnconstrainedScollPhysics(),
+          slivers: [
+            MultiSliver(
+              children: [
+                GestureDetector(
+                  behavior: HitTestBehavior.opaque,
+                  onTap: () => taps++,
+                  child: box(UniqueKey(), 'Title', height: 200),
+                ),
+                const SliverToBoxAdapter(
+                  child: SizedBox(
+                    key: boxKey,
+                    height: 1,
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ));
+      expect(taps, 0);
+      final thebox = find.byKey(boxKey);
+      await tester.tap(thebox);
+      expect(taps, 0);
     });
   });
 }
