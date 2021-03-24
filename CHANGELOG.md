@@ -1,6 +1,10 @@
 # 0.2.1
 
-- Fixed floating point rounding error that happens in debug mode
+This version essentially makes the `SliverToBoxAdapter` widget obsolete.
+MultiSliver now accepts `RenderBox` children directly!🎉
+
+- Accept box children of MultiSliver.
+- Fixed floating point rounding error that happens in debug mode.
 
 # 0.2.0
 
