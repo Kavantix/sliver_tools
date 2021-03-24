@@ -46,8 +46,8 @@ class _SliverAnimatedPaintExtentState extends State<SliverAnimatedPaintExtent>
     return _SliverAnimatedPaintExtent(
       controller: _controller,
       duration: widget.duration,
-      child: widget.child,
       curve: widget.curve,
+      child: widget.child,
     );
   }
 }
