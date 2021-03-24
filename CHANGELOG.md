@@ -1,3 +1,8 @@
+## [0.2.1-rc] - 2021-03-06
+
+This version essentially makes the `SliverToBoxAdapter` widget obsolete.
+MultiSliver now accepts `RenderBox` children directly!🎉
+
 ## [0.2.0] - 2021-03-06
 
 BREAKING:
