@@ -234,16 +234,6 @@ class RenderMultiSliver extends RenderSliver
       final parentData = child.parentData as MultiSliverParentData;
       _updateChildPaintOffset(
           child, parentData.mainAxisPosition - minPaintOrigin!);
-      // switch (constraints.axis) {
-      //   case Axis.horizontal:
-      //     // parentData.paintOffset =
-      //     //     Offset(parentData.mainAxisPosition - minPaintOrigin!, 0);
-      //     break;
-      //   case Axis.vertical:
-      //     parentData.paintOffset =
-      //         Offset(0, parentData.mainAxisPosition - minPaintOrigin!);
-      //     break;
-      // }
     }
 
     if (containing) {
@@ -327,8 +317,9 @@ class RenderMultiSliver extends RenderSliver
         cacheExtent: cacheExtent,
         maxPaintExtent: childExtent,
         hitTestExtent: paintedChildSize,
-        hasVisualOverflow: childExtent > constraints.remainingPaintExtent ||
-            constraints.scrollOffset > 0.0,
+        hasVisualOverflow: paintedChildSize > 0 &&
+            (childExtent > constraints.remainingPaintExtent ||
+                constraints.scrollOffset > 0.0),
       );
       setBoxChildParentData(child, constraints, childParentData.geometry);
     } else {
@@ -405,9 +396,9 @@ class RenderMultiSliver extends RenderSliver
     final childParentData = child.parentData as MultiSliverParentData;
     switch (constraints.axis) {
       case Axis.vertical:
-        return parentMainAxisPosition - childParentData.paintOffset.dy;
+        return childParentData.paintOffset.dy;
       case Axis.horizontal:
-        return parentMainAxisPosition - childParentData.paintOffset.dx;
+        return childParentData.paintOffset.dx;
     }
   }
 
@@ -428,9 +419,10 @@ class RenderMultiSliver extends RenderSliver
         );
         if (hit) return true;
       } else if (child is RenderBox) {
+        final childMainAxisPosition =
+            _computeChildMainAxisPosition(child, mainAxisPosition);
         final hit = hitTestBoxChild(BoxHitTestResult.wrap(result), child,
-            mainAxisPosition:
-                _computeChildMainAxisPosition(child, mainAxisPosition),
+            mainAxisPosition: childMainAxisPosition,
             crossAxisPosition: crossAxisPosition);
         if (hit) return true;
       }
