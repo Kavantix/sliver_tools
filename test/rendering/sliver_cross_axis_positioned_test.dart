@@ -56,7 +56,9 @@ class _MockCrossAxisPositionedSliver extends RenderSliver
   }
 }
 
-void main() {
+void main() => crossAxisPositionedTests();
+
+void crossAxisPositionedTests() {
   RenderSliverCrossAxisPositionedMixin setup({
     double crossAxisPosition = 0,
     double crossAxisExtent = crossAxisExtent,

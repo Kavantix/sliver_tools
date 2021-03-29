@@ -7,7 +7,9 @@ import 'package:sliver_tools/src/rendering/sliver_cross_axis_positioned.dart';
 
 import 'helpers/empty_build_context.dart';
 
-void main() {
+void main() => crossAxisPaddedTests();
+
+void crossAxisPaddedTests() {
   group('SliverCrossAxisPadded', () {
     group('SliverCrossAxisPositionData', () {
       const double crossAxisExtent = 800;
@@ -173,18 +175,17 @@ void main() {
         expect(positionData.crossAxisPosition, paddingStart);
       });
 
-      test(
+      testWidgets(
           'throws assertion error if total padding is more than crossAxisExtent',
-          () {
+          (tester) async {
         final renderObject = setup(
             paddingStart: crossAxisExtent / 2 + 1,
             paddingEnd: crossAxisExtent / 2);
 
-        // Make sure errors caught by flutter bubble up
-        FlutterError.onError = (error) => throw error.exception;
+        renderObject.layout(constraints, parentUsesSize: true);
         expect(
-          () => renderObject.layout(constraints, parentUsesSize: true),
-          throwsAssertionError,
+          tester.takeException(),
+          isAssertionError,
         );
       });
     });

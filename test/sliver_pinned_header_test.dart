@@ -24,7 +24,9 @@ const constraints = SliverConstraints(
 const double childHeight = 234;
 const double childWidth = 342;
 
-void main() {
+void main() => pinnedHeaderTests();
+
+void pinnedHeaderTests() {
   group('SliverPinnedHeader', () {
     SliverPinnedHeader createWidget() {
       return const SliverPinnedHeader(
