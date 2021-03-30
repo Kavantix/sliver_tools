@@ -260,9 +260,11 @@ class RenderMultiSliver extends RenderSliver
         .toDouble();
     assert(() {
       const fraction = 0.000001;
-      // Round the totalPaintExtent to prevent the warning that is otherwise possible
-      totalPaintExtent =
-          (totalPaintExtent / fraction).floorToDouble() * fraction;
+      // Round the remainingPaintExtent to prevent the warning that is otherwise possible
+      final remainingPaintExtent =
+          (constraints.remainingPaintExtent / fraction).floorToDouble() *
+              fraction;
+      totalPaintExtent = totalPaintExtent.clamp(0.0, remainingPaintExtent);
       return true;
     }());
     final layoutExtent =

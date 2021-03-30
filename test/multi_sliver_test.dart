@@ -192,5 +192,23 @@ void multiSliverTests() {
       await tester.pump();
       expect(multiSliver.childScrollOffset(list), 150);
     });
+
+    testWidgets('rounding error does not occur', (tester) async {
+      final controller = ScrollController();
+      await setupMultiSliver(
+        tester,
+        controller: controller,
+        childCount: 20,
+      );
+      expect(
+          tester.renderObject(find.byKey(groupKey)), isA<RenderMultiSliver>());
+      final multiSliver =
+          tester.renderObject(find.byKey(groupKey)) as RenderMultiSliver;
+      final list = tester.renderObject(find.byKey(listKey)) as RenderSliver;
+      expect(multiSliver.childScrollOffset(list), 150);
+      controller.jumpTo(-44.5333330000001);
+      await tester.pump();
+      expect(tester.takeException(), isNull);
+    });
   });
 }

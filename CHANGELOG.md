@@ -1,68 +1,72 @@
-## [0.2.0] - 2021-03-06
+# 0.2.1
+
+- Fixed floating point rounding error that happens in debug mode
+
+# 0.2.0
 
 BREAKING:
 - Migrated to nullsafety
 - All render objects are now part of the private api.
   *If you want to depend on them as public API, please open an issue.*
 
-## [0.1.10] - 2020-12-10
+# 0.1.10
 
 Further improved `childScrollOffset` of [MultiSliver].
 [MultiSliver] now correctly passes the incoming `precedingScrollExtent` to the children.
 
-## [0.1.9] - 2020-11-11
+# 0.1.9
 
 Fixed edge cases for `applyPaintTransform` and `childScrollOffset` of [MultiSliver].
 
-## [0.1.8] - 2020-10-26
+# 0.1.8
 
 Improved hit testing of positioned children in [SliverStack].
 
-## [0.1.7] - 2020-10-09
+# 0.1.7
 
 Fixed issue where hit testing of positioned children in [SliverStack] failed.
 
-## [0.1.6] - 2020-10-05
+# 0.1.6
 
 Fixed issue where hit testing of a pinned [SliverPinnedHeader] failed.
 
-## [0.1.5] - 2020-09-19
+# 0.1.5
 
 Added [SliverPinnedHeader]
 
-## [0.1.4+1] - 2020-09-19
+# 0.1.4+1
 
 Fixes small layoutExtent issue in [MultiSliver]
 
-## [0.1.4] - 2020-09-19
+# 0.1.4
 
 Added [SliverCrossAxisPadded]
 
-## [0.1.3] - 2020-09-11
+# 0.1.3
 
 Added [SliverCrossAxisConstrained] with thanks to @remonh87
 
-## [0.1.2+3] - 2020-09-07
+# 0.1.2+3
 
 - Improved handling of reverse scroll direction
 - Added `insetOnOverlap` parameter to [SliverStack]
 
-## [0.1.2+2] - 2020-09-07
+# 0.1.2+2
 
 Fixed a small analysis issue
 
-## [0.1.2] - 2020-09-07
+# 0.1.2
 
 Added the following widgets:
 - [SliverStack]
 - [SliverClip]
 - [SliverAnimatedSwitcher]
 
-## [0.1.1] - 2020-09-03
+# 0.1.1
 
 Updated readme and changelog links
 
-## [0.1.0] - 2020-09-03
+# 0.1.0
 
 Initial release including:
 - [MultiSliver]

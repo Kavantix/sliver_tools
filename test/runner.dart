@@ -22,7 +22,7 @@ Future<void> main() async {
   final logger = l.Logger('runner');
   log('test', name: 'runner');
   logger.finest('ola');
-  await runApp(
+  runApp(
     TestRunner(main: testAll, child: Container()),
   );
 }
