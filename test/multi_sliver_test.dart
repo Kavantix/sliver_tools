@@ -261,7 +261,8 @@ void multiSliverTests() {
       expect(find.byKey(boxKey), findsNothing);
     });
 
-    testWidgets('correctly draws boxChild when scrolled off screen',
+    testWidgets(
+        'correctly sets hasVisualOverflow of boxChild when scrolled off screen',
         (tester) async {
       const boxKey = Key('box');
       final controller = ScrollController();
@@ -337,13 +338,12 @@ void multiSliverTests() {
       ));
       expect(taps, 0);
       final thebox = find.byKey(boxKey);
-      print('tapping sliver');
       await tester.tap(thebox);
       expect(taps, 1);
       controller.jumpTo(100);
       await tester.pump();
-      controller.jumpTo(300);
-      await tester.pump();
+      await tester.tap(thebox);
+      expect(taps, 2);
     });
 
     testWidgets('can hit box child', (tester) async {
