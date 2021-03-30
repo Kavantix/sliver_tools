@@ -45,7 +45,7 @@ void crossAxisConstrainedTests() {
         await tester.pumpWidget(sut);
         await tester.pumpAndSettle();
 
-        final width = await tester
+        final width = tester
             .renderObject(find.byType(SliverToBoxAdapter))
             .paintBounds
             .width;
@@ -65,7 +65,7 @@ void crossAxisConstrainedTests() {
         await tester.pumpAndSettle();
 
         final renderObject =
-            await tester.renderObject(find.byType(SliverToBoxAdapter));
+            tester.renderObject(find.byType(SliverToBoxAdapter));
 
         expect(renderObject.paintBounds.width, maxCrossAxisExtent);
       });

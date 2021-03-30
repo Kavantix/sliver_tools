@@ -324,15 +324,15 @@ void sliverStackTests() {
             ignoreOverlap: ignoreOverlap,
             topPositionedBuilder: (child) => SliverPositioned(
               key: key,
+              left: left,
+              top: top,
+              right: right,
+              bottom: bottom,
               child: GestureDetector(
                 behavior: HitTestBehavior.opaque,
                 onTap: () => tapped++,
                 child: child,
               ),
-              left: left,
-              top: top,
-              right: right,
-              bottom: bottom,
             ),
           );
           final renderStack =
