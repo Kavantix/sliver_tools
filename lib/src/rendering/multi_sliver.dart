@@ -91,7 +91,6 @@ class RenderMultiSliver extends RenderSliver
       child: firstChild,
       scrollOffset: constraints.scrollOffset,
       overlap: constraints.overlap,
-      layoutOffset: 0.0,
       remainingPaintExtent: constraints.remainingPaintExtent,
       mainAxisExtent: constraints.viewportMainAxisExtent,
       crossAxisExtent: constraints.crossAxisExtent,
@@ -113,7 +112,6 @@ class RenderMultiSliver extends RenderSliver
     required RenderObject? child,
     required double scrollOffset,
     required double overlap,
-    required double layoutOffset,
     required double remainingPaintExtent,
     required double mainAxisExtent,
     required double crossAxisExtent,
@@ -124,11 +122,12 @@ class RenderMultiSliver extends RenderSliver
   }) {
     assert(scrollOffset.isFinite);
     assert(scrollOffset >= 0.0);
-    final double initialLayoutOffset = layoutOffset;
+    const double initialLayoutOffset = 0.0;
     final ScrollDirection adjustedUserScrollDirection =
         applyGrowthDirectionToScrollDirection(
             constraints.userScrollDirection, growthDirection);
-    double maxPaintOffset = layoutOffset + overlap;
+    double layoutOffset = initialLayoutOffset;
+    double maxPaintOffset = min(0, overlap);
     double maxPaintExtent = 0;
     double maxHitTestExtent = 0;
     double scrollExtent = 0;
@@ -159,7 +158,7 @@ class RenderMultiSliver extends RenderSliver
           userScrollDirection: adjustedUserScrollDirection,
           scrollOffset: sliverScrollOffset,
           precedingScrollExtent: precedingScrollExtent,
-          overlap: maxPaintOffset - layoutOffset,
+          overlap: max(overlap, maxPaintOffset) - layoutOffset,
           remainingPaintExtent: max(
               0.0, remainingPaintExtent - layoutOffset + initialLayoutOffset),
           crossAxisExtent: crossAxisExtent,
