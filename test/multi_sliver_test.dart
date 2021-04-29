@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -408,6 +409,35 @@ void multiSliverTests() {
       final thebox = find.byKey(boxKey);
       await tester.tap(thebox);
       expect(taps, 0);
+    });
+
+    testWidgets('paintExtent is not larger than maxPaintExtent',
+        (tester) async {
+      final controller = ScrollController();
+      await tester.pumpWidget(Directionality(
+        textDirection: TextDirection.ltr,
+        child: CustomScrollView(
+          controller: controller,
+          physics: const UnconstrainedScollPhysics(),
+          slivers: [
+            const SliverPinnedHeader(child: SizedBox(height: 56)),
+            MultiSliver(children: const [
+              // This height being smaller than the pinned height caused an exception before 0.2.2
+              SizedBox(height: 30),
+            ]),
+            SliverList(
+              delegate: SliverChildBuilderDelegate(
+                (context, index) =>
+                    const SizedBox(height: 50, width: double.infinity),
+                childCount: 20,
+              ),
+            ),
+          ],
+        ),
+      ));
+      controller.jumpTo(60);
+      await tester.pump();
+      // Throws exception if it fails
     });
   });
 }
