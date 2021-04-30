@@ -1,3 +1,8 @@
+# 0.2.2
+
+Fixed issue where small content of a `MultiSliver` would cause an exception when
+the overlap it got was larger.
+
 # 0.2.1
 
 This version essentially makes the `SliverToBoxAdapter` widget obsolete.
