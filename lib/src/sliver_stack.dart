@@ -85,7 +85,7 @@ class SliverPositioned extends ParentDataWidget<SliverStackParentData> {
     this.width,
     this.height,
     required Widget child,
-  })   : assert(left == null || right == null || width == null),
+  })  : assert(left == null || right == null || width == null),
         assert(top == null || bottom == null || height == null),
         super(key: key, child: child);
 
@@ -98,7 +98,7 @@ class SliverPositioned extends ParentDataWidget<SliverStackParentData> {
     Key? key,
     required Rect rect,
     required Widget child,
-  })   : left = rect.left,
+  })  : left = rect.left,
         top = rect.top,
         width = rect.width,
         height = rect.height,
@@ -114,7 +114,7 @@ class SliverPositioned extends ParentDataWidget<SliverStackParentData> {
     Key? key,
     required RelativeRect rect,
     required Widget child,
-  })   : left = rect.left,
+  })  : left = rect.left,
         top = rect.top,
         right = rect.right,
         bottom = rect.bottom,
@@ -131,7 +131,7 @@ class SliverPositioned extends ParentDataWidget<SliverStackParentData> {
     this.right = 0.0,
     this.bottom = 0.0,
     required Widget child,
-  })   : width = null,
+  })  : width = null,
         height = null,
         super(key: key, child: child);
 

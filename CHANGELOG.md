@@ -1,3 +1,7 @@
+# 0.2.4
+
+Fixed formatting for pub analysis.
+
 # 0.2.3
 
 Fixed dev_dependency for pub analysis.
