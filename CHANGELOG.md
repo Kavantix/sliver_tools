@@ -1,3 +1,7 @@
+# 0.2.3
+
+Fixed dev_dependency for pub analysis.
+
 # 0.2.2
 
 Fixed issue where small content of a `MultiSliver` would cause an exception when
