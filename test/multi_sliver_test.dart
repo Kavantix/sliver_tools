@@ -13,6 +13,7 @@ void main() => multiSliverTests();
 Widget box(Key? key, String title, {required double height}) {
   return Container(
     key: key,
+    color: const Color(0xFF000000),
     alignment: Alignment.center,
     height: height,
     width: double.infinity,
@@ -322,10 +323,10 @@ void multiSliverTests() {
                     [
                       const SizedBox(height: 100),
                       GestureDetector(
-                        behavior: HitTestBehavior.opaque,
                         onTap: () => taps++,
-                        child: const SizedBox(
+                        child: Container(
                           key: boxKey,
+                          color: const Color(0xFF000000),
                           height: 1,
                         ),
                       ),
@@ -361,7 +362,6 @@ void multiSliverTests() {
               children: [
                 const SliverToBoxAdapter(child: SizedBox(height: 400)),
                 GestureDetector(
-                  behavior: HitTestBehavior.opaque,
                   onTap: () => taps++,
                   child: box(boxKey, 'Title', height: 1),
                 ),
@@ -390,7 +390,6 @@ void multiSliverTests() {
             MultiSliver(
               children: [
                 GestureDetector(
-                  behavior: HitTestBehavior.opaque,
                   onTap: () => taps++,
                   child: box(UniqueKey(), 'Title', height: 200),
                 ),
@@ -407,7 +406,7 @@ void multiSliverTests() {
       ));
       expect(taps, 0);
       final thebox = find.byKey(boxKey);
-      await tester.tap(thebox);
+      await tester.tap(thebox, warnIfMissed: false);
       expect(taps, 0);
     });
 
