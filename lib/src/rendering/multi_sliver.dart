@@ -200,7 +200,7 @@ class RenderMultiSliver extends RenderSliver
           maxPaintOffset);
       maxPaintExtent = max(
         maxPaintExtent,
-        layoutOffset +
+        effectiveLayoutOffset +
             childParentData.geometry.maxPaintExtent +
             constraints.scrollOffset -
             childParentData.constraints.scrollOffset,

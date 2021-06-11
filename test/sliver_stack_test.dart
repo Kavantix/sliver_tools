@@ -28,6 +28,7 @@ void sliverStackTests() {
     Widget box(Key? key, {double? size}) {
       return Container(
         key: key,
+        color: const Color(0xFF000000),
         height: size,
         width: size,
       );
@@ -329,7 +330,6 @@ void sliverStackTests() {
               right: right,
               bottom: bottom,
               child: GestureDetector(
-                behavior: HitTestBehavior.opaque,
                 onTap: () => tapped++,
                 child: child,
               ),

@@ -1,3 +1,7 @@
+# 0.2.5
+
+Fixed issue where the `maxPaintExtent` was not calculated correctly in some rare cases.
+
 # 0.2.4
 
 Fixed formatting for pub analysis.
