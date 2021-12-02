@@ -382,4 +382,86 @@ class RenderSliverStack extends RenderSliver
     }
     return false;
   }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(DiagnosticsProperty<AlignmentGeometry>(
+      'positionedAlignment',
+      positionedAlignment,
+      defaultValue: Alignment.center,
+    ));
+    properties.add(EnumProperty<TextDirection>('textDirection', textDirection));
+    properties.add(FlagProperty(
+      'insetOnOverlap',
+      value: insetOnOverlap,
+      defaultValue: false,
+    ));
+  }
+}
+
+class RenderSliverIndexedStack extends RenderSliverStack {
+  int? get index => _index;
+  int? _index;
+  set index(int? value) {
+    if (_index != value) {
+      _index = value;
+      markNeedsLayout();
+    }
+  }
+
+  RenderObject? _findCurrentChild() {
+    final index = this.index;
+    if (index == null) return null;
+    final children = _children.take(index + 1).toList();
+    if (children.length >= index) return null;
+    return children[index];
+  }
+
+  @override
+  void visitChildrenForSemantics(RenderObjectVisitor visitor) {
+    _findCurrentChild()?.visitChildrenForSemantics(visitor);
+  }
+
+  @override
+  void paint(PaintingContext context, Offset offset) {
+    final child = _findCurrentChild();
+    if (child == null) return;
+    if (child is RenderSliver && child.geometry!.visible ||
+        child is RenderBox) {
+      final parentData = child.parentData as SliverStackParentData;
+      context.paintChild(child, offset + parentData.paintOffset);
+    }
+  }
+
+  @override
+  bool hitTestChildren(
+    SliverHitTestResult result, {
+    required double mainAxisPosition,
+    required double crossAxisPosition,
+  }) {
+    final child = _findCurrentChild();
+    if (child == null) return false;
+    if (child is RenderSliver && child.geometry!.visible) {
+      return child.hitTest(
+        result,
+        mainAxisPosition:
+            _computeChildMainAxisPosition(child, mainAxisPosition),
+        crossAxisPosition: crossAxisPosition,
+      );
+    } else if (child is RenderBox) {
+      final boxResult = BoxHitTestResult.wrap(result);
+      return hitTestBoxChild(boxResult, child,
+          mainAxisPosition: mainAxisPosition,
+          crossAxisPosition: crossAxisPosition);
+    } else {
+      return false;
+    }
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(IntProperty('index', index));
+  }
 }

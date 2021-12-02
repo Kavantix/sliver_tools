@@ -10,6 +10,11 @@ import 'rendering/sliver_stack.dart';
 /// using [SliverPositioned] with at least one of its values not null
 /// This means that only the sliver children have an effect on the size of
 /// of this sliver and the box children are meant to follow the slivers
+///
+/// See also:
+///
+/// * [SliverIndexedStack], a variant of [SliverStack] where only the child
+///   at a given index is dipslayed.
 class SliverStack extends MultiChildRenderObjectWidget {
   SliverStack({
     Key? key,
@@ -40,10 +45,9 @@ class SliverStack extends MultiChildRenderObjectWidget {
 
   @override
   RenderSliverStack createRenderObject(BuildContext context) {
-    return RenderSliverStack()
-      ..positionedAlignment = positionedAlignment
-      ..textDirection = textDirection ?? Directionality.of(context)
-      ..insetOnOverlap = insetOnOverlap;
+    final renderObject = RenderSliverStack();
+    updateRenderObject(context, renderObject);
+    return renderObject;
   }
 
   @override
@@ -53,6 +57,22 @@ class SliverStack extends MultiChildRenderObjectWidget {
       ..positionedAlignment = positionedAlignment
       ..textDirection = textDirection ?? Directionality.of(context)
       ..insetOnOverlap = insetOnOverlap;
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(DiagnosticsProperty<AlignmentGeometry>(
+      'positionedAlignment',
+      positionedAlignment,
+      defaultValue: Alignment.center,
+    ));
+    properties.add(EnumProperty<TextDirection>('textDirection', textDirection));
+    properties.add(FlagProperty(
+      'insetOnOverlap',
+      value: insetOnOverlap,
+      defaultValue: false,
+    ));
   }
 }
 
@@ -297,4 +317,74 @@ class SliverPositioned extends ParentDataWidget<SliverStackParentData> {
 
   @override
   Type get debugTypicalAncestorWidgetClass => SliverStack;
+}
+
+/// A [SliverStack] that shows a single child from a list of children.
+///
+/// The displayed child is the one with the given [index]. The stack is
+/// always as big as the largest child.
+/// This also means that all children are always layed out meaning there
+/// is a performance impact for every child.
+///
+/// If value is null, then nothing is displayed.
+///
+/// See also:
+///
+/// * [SliverStack], for more details about how the SliverStack works
+class SliverIndexedStack extends MultiChildRenderObjectWidget {
+  SliverIndexedStack({
+    Key? key,
+    required List<Widget> children,
+    this.index = 0,
+    this.textDirection,
+    this.positionedAlignment = Alignment.center,
+    this.insetOnOverlap = false,
+  })  : assert(index == null || (index >= 0 && index < children.length),
+            'Index should be a valid index into the list of children'),
+        super(key: key, children: children);
+
+  /// The index of the child to show.
+  final int? index;
+
+  /// The alignment to use on any positioned children that are only partially
+  /// positioned
+  ///
+  /// Defaults to [Alignment.center]
+  final AlignmentGeometry positionedAlignment;
+
+  /// The text direction with which to resolve [positionedAlignment].
+  ///
+  /// Defaults to the ambient [Directionality].
+  final TextDirection? textDirection;
+
+  /// Whether the positioned children should be inset (made smaller) when the sliver has overlap.
+  ///
+  /// This is very useful and most likely what you want when using a pinned [SliverPersistentHeader]
+  /// as child of the stack
+  ///
+  /// Defaults to false
+  final bool insetOnOverlap;
+
+  @override
+  RenderSliverIndexedStack createRenderObject(BuildContext context) {
+    final renderObject = RenderSliverIndexedStack();
+    updateRenderObject(context, renderObject);
+    return renderObject;
+  }
+
+  @override
+  void updateRenderObject(
+      BuildContext context, covariant RenderSliverIndexedStack renderObject) {
+    renderObject
+      ..positionedAlignment = positionedAlignment
+      ..textDirection = textDirection ?? Directionality.of(context)
+      ..insetOnOverlap = insetOnOverlap
+      ..index = index;
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(IntProperty('index', index));
+  }
 }

@@ -1,3 +1,7 @@
+# 0.2.7
+
+Added [SliverIndexedStack], a version of [SliverStack] that only shows the child at a specific index.
+
 # 0.2.6
 
 Added `alignment` property to [SliverCrossAxisConstrained].
