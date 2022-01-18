@@ -3,6 +3,8 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:sliver_tools/sliver_tools.dart';
 import 'package:sliver_tools/src/rendering/sliver_animated_paint_extent.dart';
 
+import 'helpers/unconstrained_scroll_physics.dart';
+
 void main() => animatedPaintExtentTests();
 
 void animatedPaintExtentTests() {
@@ -23,6 +25,7 @@ void animatedPaintExtentTests() {
       return Directionality(
         textDirection: TextDirection.ltr,
         child: CustomScrollView(
+          scrollBehavior: NoScrollbarScrollBehaviour(),
           slivers: [
             SliverAnimatedPaintExtent(
               key: key,

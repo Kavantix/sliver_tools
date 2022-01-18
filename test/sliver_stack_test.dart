@@ -8,6 +8,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:sliver_tools/sliver_tools.dart';
 import 'package:sliver_tools/src/rendering/sliver_stack.dart';
 import 'helpers/pinned_header.dart';
+import 'helpers/unconstrained_scroll_physics.dart';
 
 class _UnconstrainedScollPhysics extends ScrollPhysics {
   const _UnconstrainedScollPhysics();
@@ -58,6 +59,7 @@ void sliverStackTests() {
         Directionality(
           textDirection: TextDirection.ltr,
           child: CustomScrollView(
+            scrollBehavior: NoScrollbarScrollBehaviour(),
             physics: const _UnconstrainedScollPhysics(),
             dragStartBehavior: DragStartBehavior.start,
             reverse: reverse,

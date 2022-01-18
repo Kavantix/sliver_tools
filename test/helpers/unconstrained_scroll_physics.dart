@@ -11,3 +11,11 @@ class UnconstrainedScollPhysics extends ScrollPhysics {
   @override
   bool shouldAcceptUserOffset(ScrollMetrics _) => true;
 }
+
+class NoScrollbarScrollBehaviour extends ScrollBehavior {
+  @override
+  Widget buildScrollbar(
+      BuildContext context, Widget child, ScrollableDetails details) {
+    return child;
+  }
+}

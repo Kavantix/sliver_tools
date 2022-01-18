@@ -41,6 +41,7 @@ void multiSliverTests() {
         Directionality(
           textDirection: TextDirection.ltr,
           child: CustomScrollView(
+            scrollBehavior: NoScrollbarScrollBehaviour(),
             controller: controller,
             physics: const UnconstrainedScollPhysics(),
             slivers: [
@@ -216,6 +217,7 @@ void multiSliverTests() {
       await tester.pumpWidget(Directionality(
         textDirection: TextDirection.ltr,
         child: CustomScrollView(
+          scrollBehavior: NoScrollbarScrollBehaviour(),
           slivers: [
             MultiSliver(
               children: [
@@ -236,6 +238,7 @@ void multiSliverTests() {
       await tester.pumpWidget(Directionality(
         textDirection: TextDirection.ltr,
         child: CustomScrollView(
+          scrollBehavior: NoScrollbarScrollBehaviour(),
           controller: controller,
           physics: const UnconstrainedScollPhysics(),
           slivers: [
@@ -271,6 +274,7 @@ void multiSliverTests() {
       await tester.pumpWidget(Directionality(
         textDirection: TextDirection.ltr,
         child: CustomScrollView(
+          scrollBehavior: NoScrollbarScrollBehaviour(),
           controller: controller,
           physics: const UnconstrainedScollPhysics(),
           slivers: [
@@ -312,6 +316,7 @@ void multiSliverTests() {
       await tester.pumpWidget(Directionality(
         textDirection: TextDirection.ltr,
         child: CustomScrollView(
+          scrollBehavior: NoScrollbarScrollBehaviour(),
           controller: controller,
           physics: const UnconstrainedScollPhysics(),
           slivers: [
@@ -355,6 +360,7 @@ void multiSliverTests() {
       await tester.pumpWidget(Directionality(
         textDirection: TextDirection.ltr,
         child: CustomScrollView(
+          scrollBehavior: NoScrollbarScrollBehaviour(),
           controller: controller,
           physics: const UnconstrainedScollPhysics(),
           slivers: [
@@ -384,6 +390,7 @@ void multiSliverTests() {
       await tester.pumpWidget(Directionality(
         textDirection: TextDirection.ltr,
         child: CustomScrollView(
+          scrollBehavior: NoScrollbarScrollBehaviour(),
           controller: controller,
           physics: const UnconstrainedScollPhysics(),
           slivers: [
@@ -416,6 +423,7 @@ void multiSliverTests() {
       await tester.pumpWidget(Directionality(
         textDirection: TextDirection.ltr,
         child: CustomScrollView(
+          scrollBehavior: NoScrollbarScrollBehaviour(),
           controller: controller,
           physics: const UnconstrainedScollPhysics(),
           slivers: [

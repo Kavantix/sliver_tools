@@ -2,6 +2,8 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sliver_tools/sliver_tools.dart';
 
+import 'helpers/unconstrained_scroll_physics.dart';
+
 void main() => crossAxisConstrainedTests();
 
 void crossAxisConstrainedTests() {
@@ -9,6 +11,7 @@ void crossAxisConstrainedTests() {
     return Directionality(
       textDirection: TextDirection.ltr,
       child: CustomScrollView(
+        scrollBehavior: NoScrollbarScrollBehaviour(),
         slivers: [
           SliverCrossAxisConstrained(
             maxCrossAxisExtent: maxCrossAxisExtend,

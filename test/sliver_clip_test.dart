@@ -32,6 +32,7 @@ void sliverClipTests() {
         Directionality(
           textDirection: TextDirection.ltr,
           child: CustomScrollView(
+            scrollBehavior: NoScrollbarScrollBehaviour(),
             reverse: reverse,
             physics: const UnconstrainedScollPhysics(),
             scrollDirection: scrollDirection,
