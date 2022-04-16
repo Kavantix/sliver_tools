@@ -44,11 +44,11 @@ class NewsPage extends StatelessWidget {
 }
 ```
 
+
 ## [MultiSliver]
 
 The [MultiSliver] widget allows for grouping of multiple slivers together such that they can be returned as a single widget.
 For instance when one wants to wrap a few slivers with some padding or an inherited widget.
-
 
 ### Example
 ```dart
@@ -67,6 +67,7 @@ class WidgetThatReturnsASliver extends StatelessWidget {
 ```
 
 The `pushPinnedChildren` parameter allows for achieving a 'sticky header' effect by simply using pinned `SliverPersistentHeader` widgets (or any custom sliver that paints beyond its layoutExtent).
+
 
 ## [SliverStack](https://github.com/Kavantix/sliver_tools/blob/master/lib/src/sliver_stack.dart)
 
@@ -106,6 +107,7 @@ class WidgetThatReturnsASliver extends StatelessWidget {
 
 The `insetOnOverlap` handles whether the positioned children should be inset (made smaller) when the sliver has overlap from a previous sliver.
 
+
 ## [SliverClip]
 
 The [SliverClip] widget will add a clip around its child from the child's paintOrigin to its paintExtent.
@@ -133,7 +135,6 @@ This can be useful when one has a SliverPersitentHeader above a SliverList and d
 The [SliverAnimatedPaintExtent] widget allows for having a smooth transition when a sliver changes the space it will occupy inside the viewport.
 For instance when using a SliverList with a button below it that loads the next few items.
 
-
 ### Example
 ```dart
 class WidgetThatReturnsASliver extends StatelessWidget {
@@ -147,6 +148,7 @@ class WidgetThatReturnsASliver extends StatelessWidget {
 }
 ```
 
+
 ## [SliverAnimatedSwitcher]
 
 The [SliverAnimatedSwitcher] widget is simply a pre-configured `AnimatedSwitcher` widget.
@@ -157,7 +159,6 @@ If one needs more options than supplied by this widget a regular `AnimatedSwitch
 
 The [SliverCrossAxisConstrained] widget allows for limiting the cross axis extent of a sliver to a maximum value given by the `maxCrossAxisExtent`.
 For instance a long list of text items on an iPad would be too wide to read so one can wrap the SliverList in a [SliverCrossAxisConstrained] and limit its width to something more reasonable.
-
 
 ### Example
 ```dart
@@ -171,6 +172,7 @@ class WidgetThatReturnsASliver extends StatelessWidget {
   }
 }
 ```
+
 
 ## [SliverCrossAxisPadded]
 
@@ -200,7 +202,57 @@ The [SliverPinnedHeader] widget allows for easily making a pinned header.
 It will size itself to the size of the child and when it reaches the leading edge of the viewport stay there instead of scrolling off the screen.
 
 
+## [SliverCrossAxisPadded]
 
+The [SliverCrossAxisPadded] widget allows for adding padding to the cross axis of a sliver.
+This can be done either by passing a `paddingStart` and/or `paddingEnd` or by using the `symmetric` constructor which takes a single padding value.
+When using `paddingStart` and `paddingEnd` in a vertical sliver it will depend on the `TextDirection` whether start is left or right.
+
+### Example
+```dart
+class WidgetThatReturnsASliver extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return SliverCrossAxisPadded(
+      paddingStart: 24,
+      paddingEnd: 48,
+      textDirection: TextDirection.ltr, // optional, defaults to the Directionality specified by the context
+      child: SliverList(...),
+    );
+  }
+}
+```
+
+
+## [SliverAlign]
+
+The [SliverAlign] widget sets its scroll extent as a fraction of its child's scroll extent and aligns the child within itself as specified by the `alignment` parameter along the scroll axis.
+
+### Example
+```dart
+class StateThatReturnsASliver extends State with SingleTickerProviderStateMixin {
+  ...
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedBuilder(
+      animation: _heightFactor,
+      builder: (context, child) => SliverClip(
+        child: SliverAlign(
+          alignment: AlognmentSliver.center,
+          mainAxisFactor: _heightFactor.value,
+          child: child,
+        ),
+      ),
+      child: MultiSliver(
+        children: ... // Nested Slivers
+      ),
+    );
+  }
+}
+```
+
+The example above sketches how this widget may, in combination with [SliverClip] and [MultiSliver], be used for building list tiles with an expandable nested list of slivers.
 
 
 [MultiSliver]: https://github.com/Kavantix/sliver_tools/blob/master/lib/src/multi_sliver.dart
@@ -211,6 +263,7 @@ It will size itself to the size of the child and when it reaches the leading edg
 [SliverCrossAxisConstrained]: https://github.com/Kavantix/sliver_tools/blob/master/lib/src/sliver_cross_axis_constrained.dart
 [SliverCrossAxisPadded]: https://github.com/Kavantix/sliver_tools/blob/master/lib/src/sliver_cross_axis_padded.dart
 [SliverPinnedHeader]: https://github.com/Kavantix/sliver_tools/blob/master/lib/src/sliver_pinned_header.dart
+[SliverAlign]: https://github.com/Kavantix/sliver_tools/blob/master/lib/src/sliver_align.dart
 
 
 ## Buy me a coffee ☕️
