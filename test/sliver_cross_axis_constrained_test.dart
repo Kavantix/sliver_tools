@@ -16,6 +16,7 @@ void crossAxisConstrainedTests() {
       textDirection: TextDirection.ltr,
       child: CustomScrollView(
         scrollBehavior: NoScrollbarScrollBehaviour(),
+        scrollDirection: Axis.vertical,
         slivers: [
           SliverCrossAxisConstrained(
             maxCrossAxisExtent: maxCrossAxisExtend,
@@ -49,6 +50,7 @@ void crossAxisConstrainedTests() {
       });
       testWidgets('It sizes sliver to available space', (tester) async {
         tester.binding.window.physicalSizeTestValue = windowSize;
+        tester.binding.window.devicePixelRatioTestValue = 1;
         await tester.pumpWidget(sut);
         await tester.pumpAndSettle();
 
@@ -68,6 +70,7 @@ void crossAxisConstrainedTests() {
 
       testWidgets('It sizes sliver to max extent', (tester) async {
         tester.binding.window.physicalSizeTestValue = windowSize;
+        tester.binding.window.devicePixelRatioTestValue = 1;
         await tester.pumpWidget(sut);
         await tester.pumpAndSettle();
 
@@ -79,6 +82,7 @@ void crossAxisConstrainedTests() {
       testWidgets('it aligns correctly using the alignment parameter',
           (tester) async {
         tester.binding.window.physicalSizeTestValue = windowSize;
+        tester.binding.window.devicePixelRatioTestValue = 1;
         await tester.pumpWidget(_createSut(maxCrossAxisExtent));
 
         final renderObject =
