@@ -200,7 +200,35 @@ The [SliverPinnedHeader] widget allows for easily making a pinned header.
 It will size itself to the size of the child and when it reaches the leading edge of the viewport stay there instead of scrolling off the screen.
 
 
+## [SliverAlign]
 
+The [SliverAlign] widget sets its scroll extent as a fraction of that of its child and then aligns the child within itself along the scroll axis as specified by the `alignment` parameter.
+
+### Example
+```dart
+class StateThatReturnsASliver extends State with SingleTickerProviderStateMixin {
+  ...
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedBuilder(
+      animation: _heightFactor,
+      builder: (context, child) => SliverClip(
+        child: SliverAlign(
+          alignment: SliverAlignment.center,
+          mainAxisFactor: _heightFactor.value,
+          child: child,
+        ),
+      ),
+      child: MultiSliver(
+        children: ... // Nested Slivers
+      ),
+    );
+  }
+}
+```
+
+The example above outlines how this widget may, in combination with [SliverClip] and [MultiSliver], be used for building list tiles with an expandable nested list of slivers.
 
 
 [MultiSliver]: https://github.com/Kavantix/sliver_tools/blob/master/lib/src/multi_sliver.dart
@@ -211,6 +239,7 @@ It will size itself to the size of the child and when it reaches the leading edg
 [SliverCrossAxisConstrained]: https://github.com/Kavantix/sliver_tools/blob/master/lib/src/sliver_cross_axis_constrained.dart
 [SliverCrossAxisPadded]: https://github.com/Kavantix/sliver_tools/blob/master/lib/src/sliver_cross_axis_padded.dart
 [SliverPinnedHeader]: https://github.com/Kavantix/sliver_tools/blob/master/lib/src/sliver_pinned_header.dart
+[SliverAlign]: https://github.com/Kavantix/sliver_tools/blob/master/lib/src/sliver_align.dart
 
 
 ## Buy me a coffee ☕️
