@@ -1,3 +1,7 @@
+# 0.2.6
+
+Added `alignment` property to [SliverCrossAxisConstrained].
+
 # 0.2.5
 
 Fixed issue where the `maxPaintExtent` was not calculated correctly in some rare cases.

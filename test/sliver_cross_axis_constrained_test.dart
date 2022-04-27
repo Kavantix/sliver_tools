@@ -1,3 +1,4 @@
+import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sliver_tools/sliver_tools.dart';
@@ -7,7 +8,10 @@ import 'helpers/unconstrained_scroll_physics.dart';
 void main() => crossAxisConstrainedTests();
 
 void crossAxisConstrainedTests() {
-  Widget _createSut(Widget sliver, double maxCrossAxisExtend) {
+  Widget _createSut(
+    double maxCrossAxisExtend, {
+    double alignment = 0,
+  }) {
     return Directionality(
       textDirection: TextDirection.ltr,
       child: CustomScrollView(
@@ -15,7 +19,13 @@ void crossAxisConstrainedTests() {
         slivers: [
           SliverCrossAxisConstrained(
             maxCrossAxisExtent: maxCrossAxisExtend,
-            child: sliver,
+            alignment: alignment,
+            child: const SliverToBoxAdapter(
+              child: SizedBox(
+                width: double.infinity,
+                height: 100,
+              ),
+            ),
           ),
         ],
       ),
@@ -29,12 +39,6 @@ void crossAxisConstrainedTests() {
     setUp(() {
       maxCrossAxisExtent = 300;
       sut = _createSut(
-        const SliverToBoxAdapter(
-          child: SizedBox(
-            width: double.infinity,
-            height: 100,
-          ),
-        ),
         maxCrossAxisExtent,
       );
     });
@@ -62,7 +66,7 @@ void crossAxisConstrainedTests() {
         windowSize = const Size(1200, 400);
       });
 
-      testWidgets('It sizes sliver tto max extent', (tester) async {
+      testWidgets('It sizes sliver to max extent', (tester) async {
         tester.binding.window.physicalSizeTestValue = windowSize;
         await tester.pumpWidget(sut);
         await tester.pumpAndSettle();
@@ -71,6 +75,37 @@ void crossAxisConstrainedTests() {
             tester.renderObject(find.byType(SliverToBoxAdapter));
 
         expect(renderObject.paintBounds.width, maxCrossAxisExtent);
+      });
+      testWidgets('it aligns correctly using the alignment parameter',
+          (tester) async {
+        tester.binding.window.physicalSizeTestValue = windowSize;
+        await tester.pumpWidget(_createSut(maxCrossAxisExtent));
+
+        final renderObject =
+            tester.renderObject(find.byType(SliverToBoxAdapter));
+
+        expect(renderObject.paintBounds.width, maxCrossAxisExtent);
+        expect(
+          (renderObject.parentData as SliverPhysicalParentData).paintOffset.dx,
+          (1200 - maxCrossAxisExtent) / 2,
+          reason: 'center alignment is off',
+        );
+
+        await tester.pumpWidget(_createSut(maxCrossAxisExtent, alignment: -1));
+        expect(renderObject.paintBounds.width, maxCrossAxisExtent);
+        expect(
+          (renderObject.parentData as SliverPhysicalParentData).paintOffset.dx,
+          0,
+          reason: 'left alignment is off',
+        );
+
+        await tester.pumpWidget(_createSut(maxCrossAxisExtent, alignment: 1));
+        expect(renderObject.paintBounds.width, maxCrossAxisExtent);
+        expect(
+          (renderObject.parentData as SliverPhysicalParentData).paintOffset.dx,
+          (1200 - maxCrossAxisExtent),
+          reason: 'right alignment is off',
+        );
       });
     });
   });

@@ -19,6 +19,19 @@ class RenderSliverCrossAxisConstrained extends RenderSliver
     }
   }
 
+  /// How to align the sliver in the cross axis
+  /// 0 means center -1 means to the left +1 means to the right
+  double get alignment => _alignment!;
+  double? _alignment;
+  set alignment(double value) {
+    assert(value >= -1.0);
+    assert(value <= 1.0);
+    if (_alignment != value) {
+      _alignment = value;
+      markNeedsLayout();
+    }
+  }
+
   @override
   SliverCrossAxisPositionedData createCrossAxisPositionData(
     SliverConstraints constraints,
@@ -29,7 +42,8 @@ class RenderSliverCrossAxisConstrained extends RenderSliver
     );
     return SliverCrossAxisPositionedData(
       crossAxisExtent: crossAxisExtent,
-      crossAxisPosition: (constraints.crossAxisExtent - crossAxisExtent) / 2,
+      crossAxisPosition: (alignment + 1) *
+          ((constraints.crossAxisExtent - crossAxisExtent) / 2),
     );
   }
 
