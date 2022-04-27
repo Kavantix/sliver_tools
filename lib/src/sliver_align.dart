@@ -1,10 +1,10 @@
 import 'package:flutter/widgets.dart';
 
-import 'types/alignment_sliver.dart';
+import 'types/sliver_alignment.dart';
 import 'rendering/sliver_align.dart';
 
 /// A widget which sizes itself relative to its child's scrollExtent (i.e. main
-/// axis size) and positions its child according to an [AlignmentSliver].
+/// axis size) and positions its child according to an [SliverAlignment].
 /// 
 /// {@tool snippet}
 /// The following example creates a list where each list-tile has a nested,
@@ -19,7 +19,7 @@ import 'rendering/sliver_align.dart';
 ///         animation: _heightFactor,
 ///         builder: (context, child) => SliverClip(
 ///           child: SliverAlign(
-///           alignment: AlignmentSliver.center,
+///           alignment: SliverAlignment.center,
 ///           mainAxisFactor: _heightFactor.value,
 ///           child: child,
 ///         ),
@@ -35,10 +35,10 @@ import 'rendering/sliver_align.dart';
 class SliverAlign extends SingleChildRenderObjectWidget {
   /// Creates an alignment widget.
   ///
-  /// The alignment defaults to [AlignmentSliver.center].
+  /// The alignment defaults to [SliverAlignment.center].
   const SliverAlign({
     Key? key,
-    this.alignment = AlignmentSliver.center,
+    this.alignment = SliverAlignment.center,
     this.mainAxisFactor,
     Widget? child,
   }) : super(key: key, child: child);
@@ -52,7 +52,7 @@ class SliverAlign extends SingleChildRenderObjectWidget {
   /// the traling edge of the parent. Other values interpolate (and extrapolate)
   /// linearly. For example, a value of 0.0 means that the center of the child
   /// is aligned with the center of the parent.
-  final AlignmentSliver alignment;
+  final SliverAlignment alignment;
 
   /// If non-null, sets its scrollExtent to the child's scrollExtent multiplied
   /// by this factor.

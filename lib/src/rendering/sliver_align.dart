@@ -3,11 +3,11 @@ import 'dart:math' as math;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/rendering.dart';
 
-import '../types/alignment_sliver.dart';
+import '../types/sliver_alignment.dart';
 
 class RenderSliverAlign extends RenderSliver with RenderObjectWithChildMixin<RenderSliver> {
   RenderSliverAlign({
-    AlignmentSliver alignment = AlignmentSliver.center,
+    SliverAlignment alignment = SliverAlignment.center,
     double? mainAxisFactor,
   }) : _alignment = alignment,
        _mainAxisFactor = mainAxisFactor;
@@ -21,9 +21,9 @@ class RenderSliverAlign extends RenderSliver with RenderObjectWithChildMixin<Ren
   /// the traling edge of the parent. Other values interpolate (and extrapolate)
   /// linearly. For example, a value of 0.0 means that the center of the child
   /// is aligned with the center of the parent.
-  AlignmentSliver get alignment => _alignment;
-  AlignmentSliver _alignment;
-  set alignment(AlignmentSliver value) {
+  SliverAlignment get alignment => _alignment;
+  SliverAlignment _alignment;
+  set alignment(SliverAlignment value) {
     if (_alignment == value) return;
     _alignment = value;
     markNeedsLayout();
@@ -119,7 +119,7 @@ class RenderSliverAlign extends RenderSliver with RenderObjectWithChildMixin<Ren
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(DiagnosticsProperty<AlignmentSliver>('alignment', alignment));
+    properties.add(DiagnosticsProperty<SliverAlignment>('alignment', alignment));
     properties.add(DoubleProperty('mainAxisFactor', mainAxisFactor, defaultValue: null));
   }
 
