@@ -166,6 +166,7 @@ class WidgetThatReturnsASliver extends StatelessWidget {
   Widget build(BuildContext context) {
     return SliverCrossAxisConstrained(
       maxCrossAxisExtent: 700,
+      alignment: 0, // between -1.0 (left) and 1.0 (right)
       child: SliverList(...),
     );
   }
