@@ -202,6 +202,28 @@ The [SliverPinnedHeader] widget allows for easily making a pinned header.
 It will size itself to the size of the child and when it reaches the leading edge of the viewport stay there instead of scrolling off the screen.
 
 
+## [SliverCrossAxisPadded]
+
+The [SliverCrossAxisPadded] widget allows for adding padding to the cross axis of a sliver.
+This can be done either by passing a `paddingStart` and/or `paddingEnd` or by using the `symmetric` constructor which takes a single padding value.
+When using `paddingStart` and `paddingEnd` in a vertical sliver it will depend on the `TextDirection` whether start is left or right.
+
+### Example
+```dart
+class WidgetThatReturnsASliver extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return SliverCrossAxisPadded(
+      paddingStart: 24,
+      paddingEnd: 48,
+      textDirection: TextDirection.ltr, // optional, defaults to the Directionality specified by the context
+      child: SliverList(...),
+    );
+  }
+}
+```
+
+
 ## [SliverAlign]
 
 The [SliverAlign] widget sets its scroll extent as a fraction of its child's scroll extent and aligns the child within itself as specified by the `alignment` parameter along the scroll axis.
