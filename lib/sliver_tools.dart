@@ -7,3 +7,5 @@ export 'src/sliver_cross_axis_constrained.dart';
 export 'src/sliver_cross_axis_padded.dart';
 export 'src/sliver_pinned_header.dart';
 export 'src/sliver_stack.dart';
+
+export 'src/types/sliver_alignment.dart';
