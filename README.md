@@ -106,6 +106,47 @@ class WidgetThatReturnsASliver extends StatelessWidget {
 
 The `insetOnOverlap` handles whether the positioned children should be inset (made smaller) when the sliver has overlap from a previous sliver.
 
+## [SliverIndexedStack](https://github.com/Kavantix/sliver_tools/blob/master/lib/src/sliver_stack.dart)
+
+The [SliverIndexedStack] behaves the same as a normal [SliverStack] except that one can select one child to be visible.
+The displayed child is the one with the given `index`. The stack is
+always as big as the largest child.
+This also means that all children are always layed out meaning there
+is a performance impact for every child.
+
+### Example
+```dart
+class WidgetThatReturnsASliver extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return SliverIndexedStack(
+      insetOnOverlap: false, // defaults to false
+      index: 1,
+      children: <Widget>[
+        SliverPositioned.fill(
+          child: Container(
+            decoration: BoxDecoration(
+              color: Colors.white,
+              boxShadow: const <BoxShadow>[
+                BoxShadow(
+                  offset: Offset(0, 4),
+                  blurRadius: 8,
+                  color: Colors.black26,
+                )
+              ],
+              borderRadius: BorderRadius.circular(8),
+            ),
+          ),
+        )
+        SliverList(...),
+      ],
+    );
+  }
+}
+```
+
+The `insetOnOverlap` handles whether the positioned children should be inset (made smaller) when the sliver has overlap from a previous sliver.
+
 ## [SliverClip]
 
 The [SliverClip] widget will add a clip around its child from the child's paintOrigin to its paintExtent.
