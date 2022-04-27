@@ -1,6 +1,6 @@
 name: sliver_tools
 description: A set of useful sliver tools that are missing from the flutter framework
-version: 0.2.5
+version: 0.2.6
 homepage: https://github.com/Kavantix
 repository: https://github.com/Kavantix/sliver_tools
 issue_tracker: https://github.com/Kavantix/sliver_tools/issues
