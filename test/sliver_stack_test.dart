@@ -52,6 +52,7 @@ void sliverStackTests() {
       bool ignoreOverlap = false,
       bool includePinned = false,
       int childCount = 2,
+      int? index = null,
       SliverPositioned Function(Widget child)? topPositionedBuilder,
       ScrollController? controller,
     }) async {
@@ -71,33 +72,63 @@ void sliverStackTests() {
                   size: pinnedSize,
                   boxKey: pinnedKey,
                 ),
-              SliverStack(
-                key: stackKey,
-                insetOnOverlap: !ignoreOverlap,
-                children: <Widget>[
-                  if (topPositionedBuilder == null)
-                    SliverPositioned.fill(
-                      child: box(positionedKey),
+              if (index != null)
+                SliverIndexedStack(
+                  key: stackKey,
+                  index: index,
+                  insetOnOverlap: !ignoreOverlap,
+                  children: <Widget>[
+                    if (topPositionedBuilder == null)
+                      SliverPositioned.fill(
+                        child: box(positionedKey),
+                      ),
+                    SliverToBoxAdapter(
+                      child: box(box1Key, size: 150),
                     ),
-                  SliverToBoxAdapter(
-                    child: box(box1Key, size: 150),
-                  ),
-                  SliverList(
-                    delegate: SliverChildBuilderDelegate(
-                      (context, index) {
-                        return box(
-                          index == 0 ? boxInListKey : null,
-                          size: childSize,
-                        );
-                      },
-                      childCount: childCount,
+                    SliverList(
+                      delegate: SliverChildBuilderDelegate(
+                        (context, index) {
+                          return box(
+                            index == 0 ? boxInListKey : null,
+                            size: childSize,
+                          );
+                        },
+                        childCount: childCount,
+                      ),
                     ),
-                  ),
-                  if (topPositionedBuilder != null)
-                    topPositionedBuilder(
-                        box(topPositionedKey, size: topPositionedSize)),
-                ],
-              ),
+                    if (topPositionedBuilder != null)
+                      topPositionedBuilder(
+                          box(topPositionedKey, size: topPositionedSize)),
+                  ],
+                )
+              else
+                SliverStack(
+                  key: stackKey,
+                  insetOnOverlap: !ignoreOverlap,
+                  children: <Widget>[
+                    if (topPositionedBuilder == null)
+                      SliverPositioned.fill(
+                        child: box(positionedKey),
+                      ),
+                    SliverToBoxAdapter(
+                      child: box(box1Key, size: 150),
+                    ),
+                    SliverList(
+                      delegate: SliverChildBuilderDelegate(
+                        (context, index) {
+                          return box(
+                            index == 0 ? boxInListKey : null,
+                            size: childSize,
+                          );
+                        },
+                        childCount: childCount,
+                      ),
+                    ),
+                    if (topPositionedBuilder != null)
+                      topPositionedBuilder(
+                          box(topPositionedKey, size: topPositionedSize)),
+                  ],
+                ),
               const SliverToBoxAdapter(
                 child: SizedBox(height: 800, width: 800),
               ),
@@ -516,5 +547,58 @@ void sliverStackTests() {
     //   expect(stackSliver.geometry.paintExtent, 350);
     //   expect(stackSliver.geometry.layoutExtent, 350);
     // });
+    group('SliverIndexedStack', () {
+      testWidgets('shows only selected child', (tester) async {
+        await () async {
+          await setupStack(tester, index: 0);
+          expect(tester.getRect(find.byKey(box1Key)),
+              const Rect.fromLTWH(0, 0, 800, 150));
+          expect(tester.getRect(find.byKey(boxInListKey)),
+              const Rect.fromLTWH(0, 0, 800, 300));
+          final box1RenderObject = tester.renderObject(find.byKey(box1Key));
+          final boxInListRenderObject =
+              tester.renderObject(find.byKey(boxInListKey));
+          expect(box1RenderObject.debugNeedsPaint, true);
+          expect(boxInListRenderObject.debugNeedsPaint, true);
+        }();
+        await () async {
+          await tester.pumpWidget(Container());
+          await setupStack(tester, index: 1);
+          final box1RenderObject = tester.renderObject(find.byKey(box1Key));
+          final boxInListRenderObject =
+              tester.renderObject(find.byKey(boxInListKey));
+          expect(tester.getRect(find.byKey(box1Key)),
+              const Rect.fromLTWH(0, 0, 800, 150));
+          expect(tester.getRect(find.byKey(boxInListKey)),
+              const Rect.fromLTWH(0, 0, 800, 300));
+          expect(box1RenderObject.debugNeedsPaint, false);
+          expect(boxInListRenderObject.debugNeedsPaint, true);
+        }();
+        await () async {
+          await tester.pumpWidget(Container());
+          await setupStack(tester, index: 2);
+          expect(tester.getRect(find.byKey(box1Key)),
+              const Rect.fromLTWH(0, 0, 800, 150));
+          expect(tester.getRect(find.byKey(boxInListKey)),
+              const Rect.fromLTWH(0, 0, 800, 300));
+          final box1RenderObject = tester.renderObject(find.byKey(box1Key));
+          final boxInListRenderObject =
+              tester.renderObject(find.byKey(boxInListKey));
+          expect(box1RenderObject.debugNeedsPaint, true);
+          expect(boxInListRenderObject.debugNeedsPaint, false);
+        }();
+      });
+
+      testWidgets('takes size of biggest child', (tester) async {
+        await setupStack(tester, index: 0);
+        final renderObject = tester.renderObject(find.byKey(stackKey))
+            as RenderSliverIndexedStack;
+        expect(renderObject.geometry!.paintExtent, 600);
+        await setupStack(tester, index: 1);
+        expect(renderObject.geometry!.paintExtent, 600);
+        await setupStack(tester, index: 2);
+        expect(renderObject.geometry!.paintExtent, 600);
+      });
+    });
   });
 }

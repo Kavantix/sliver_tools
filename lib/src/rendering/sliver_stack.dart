@@ -395,6 +395,7 @@ class RenderSliverStack extends RenderSliver
     properties.add(FlagProperty(
       'insetOnOverlap',
       value: insetOnOverlap,
+      ifTrue: '',
       defaultValue: false,
     ));
   }
@@ -414,7 +415,7 @@ class RenderSliverIndexedStack extends RenderSliverStack {
     final index = this.index;
     if (index == null) return null;
     final children = _children.take(index + 1).toList();
-    if (children.length >= index) return null;
+    if (children.length <= index) return null;
     return children[index];
   }
 
