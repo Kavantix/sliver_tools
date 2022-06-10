@@ -94,7 +94,7 @@ class RenderMultiSliver extends RenderSliver
       remainingPaintExtent: constraints.remainingPaintExtent,
       mainAxisExtent: constraints.viewportMainAxisExtent,
       crossAxisExtent: constraints.crossAxisExtent,
-      growthDirection: GrowthDirection.forward,
+      growthDirection: constraints.growthDirection,
       advance: childAfter,
       remainingCacheExtent: constraints.remainingCacheExtent,
       cacheOrigin: constraints.cacheOrigin,
@@ -336,9 +336,9 @@ class RenderMultiSliver extends RenderSliver
         constraints.axisDirection, constraints.growthDirection)) {
       case AxisDirection.up:
         childParentData.boxPaintOffset = Offset(
-            0.0,
-            -(geometry.scrollExtent -
-                (geometry.paintExtent + constraints.scrollOffset)));
+          0.0,
+          geometry.scrollExtent - geometry.paintExtent,
+        );
         break;
       case AxisDirection.right:
         childParentData.boxPaintOffset = Offset(-constraints.scrollOffset, 0.0);
@@ -348,9 +348,9 @@ class RenderMultiSliver extends RenderSliver
         break;
       case AxisDirection.left:
         childParentData.boxPaintOffset = Offset(
-            -(geometry.scrollExtent -
-                (geometry.paintExtent + constraints.scrollOffset)),
-            0.0);
+          geometry.scrollExtent - geometry.paintExtent,
+          0.0,
+        );
         break;
     }
   }
@@ -431,68 +431,55 @@ class RenderMultiSliver extends RenderSliver
 
   @override
   void paint(PaintingContext context, Offset offset) {
+    final effectiveAxisDirection = applyGrowthDirectionToAxisDirection(
+      constraints.axisDirection,
+      constraints.growthDirection,
+    );
     for (final child in _childrenInPaintOrder) {
       final childParentData = child.parentData as MultiSliverParentData;
       final childGeometry = childParentData.geometry;
       if (childGeometry.visible) {
-        final childPaintOffset = childParentData.paintOffset;
-        switch (applyGrowthDirectionToAxisDirection(
-            constraints.axisDirection, constraints.growthDirection)) {
-          case AxisDirection.down:
-          case AxisDirection.right:
-            context.paintChild(child, offset + childPaintOffset);
-            break;
-          case AxisDirection.up:
-            context.paintChild(
-              child,
-              offset +
-                  Offset(0, geometry!.paintExtent - childGeometry.paintExtent) -
-                  childPaintOffset,
-            );
-            break;
-          case AxisDirection.left:
-            context.paintChild(
-              child,
-              offset +
-                  Offset(geometry!.paintExtent - childGeometry.paintExtent, 0) -
-                  childPaintOffset,
-            );
-            break;
-        }
+        final childPaintOffset =
+            _finalPaintOffsetForChild(child, effectiveAxisDirection);
+        context.paintChild(child, offset + childPaintOffset);
       }
     }
   }
 
   @override
   void applyPaintTransform(covariant RenderObject child, Matrix4 transform) {
+    final effectiveAxisDirection = applyGrowthDirectionToAxisDirection(
+      constraints.axisDirection,
+      constraints.growthDirection,
+    );
+    final childPaintOffset =
+        _finalPaintOffsetForChild(child, effectiveAxisDirection);
+    transform.translate(childPaintOffset.dx, childPaintOffset.dy);
+  }
+
+  Offset _finalPaintOffsetForChild(
+      RenderObject child, AxisDirection effectiveAxisDirection) {
     final childParentData = child.parentData as MultiSliverParentData;
     final childGeometry = childParentData.geometry;
     final childPaintOffset = childParentData.paintOffset;
-    switch (applyGrowthDirectionToAxisDirection(
-        constraints.axisDirection, constraints.growthDirection)) {
+    switch (effectiveAxisDirection) {
       case AxisDirection.down:
       case AxisDirection.right:
-        transform.translate(
-          childPaintOffset.dx,
-          childPaintOffset.dy,
-        );
-        break;
+        return childPaintOffset;
       case AxisDirection.up:
-        transform.translate(
+        return Offset(
           childPaintOffset.dx,
           geometry!.paintExtent -
               childGeometry.paintExtent -
               childPaintOffset.dy,
         );
-        break;
       case AxisDirection.left:
-        transform.translate(
+        return Offset(
           geometry!.paintExtent -
               childGeometry.paintExtent -
               childPaintOffset.dx,
           childPaintOffset.dy,
         );
-        break;
     }
   }
 
