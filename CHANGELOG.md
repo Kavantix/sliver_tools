@@ -1,3 +1,7 @@
+# 0.2.7
+
+Fixed issue when using a `center` key in the CustomScrollView when using `MultiSliver`.
+
 # 0.2.6
 
 Added `alignment` property to [SliverCrossAxisConstrained].

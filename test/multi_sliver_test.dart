@@ -446,5 +446,101 @@ void multiSliverTests() {
       await tester.pump();
       // Throws exception if it fails
     });
+
+    testWidgets('correctly handles slivers before the centerKey',
+        (tester) async {
+      final bottom = List<int>.generate(10, (i) => i + 1);
+      const Key centerKey = ValueKey('second-sliver-list');
+      final controller = ScrollController();
+      int taps = 0;
+      await tester.pumpWidget(Directionality(
+        textDirection: TextDirection.ltr,
+        child: CustomScrollView(
+          controller: controller,
+          scrollBehavior: NoScrollbarScrollBehaviour(),
+          physics: const UnconstrainedScollPhysics(),
+          center: centerKey,
+          slivers: <Widget>[
+            MultiSliver(
+              children: [
+                SliverList(
+                  delegate: SliverChildListDelegate([
+                    GestureDetector(
+                      behavior: HitTestBehavior.opaque,
+                      onTap: () => taps += 1,
+                      child: const SizedBox(
+                        height: 30,
+                        key: ValueKey('Item 0'),
+                      ),
+                    ),
+                    const SizedBox(height: 20, key: ValueKey('Item -1')),
+                    const SizedBox(height: 20, key: ValueKey('Item -2')),
+                  ]),
+                ),
+                const SizedBox(height: 20, key: ValueKey('Item -3')),
+                const SizedBox(height: 20, key: ValueKey('Item -4')),
+              ],
+            ),
+            MultiSliver(
+              key: centerKey,
+              children: [
+                for (final index in bottom)
+                  SizedBox(height: 20, key: ValueKey('Item $index')),
+              ],
+            ),
+          ],
+        ),
+      ));
+      controller.jumpTo(-110.0);
+      await tester.pumpAndSettle();
+      expect(find.byType(SizedBox), findsNWidgets(5 + bottom.length));
+      expect(
+        tester.getRect(find.byKey(const ValueKey('Item 0'))).bottom,
+        110,
+      );
+      final RenderBox renderObject2 =
+          tester.renderObject(find.byKey(const ValueKey('Item -2')));
+      expect(
+        renderObject2.localToGlobal(Offset.zero).dy,
+        40,
+      );
+      final RenderBox renderObject1 =
+          tester.renderObject(find.byKey(const ValueKey('Item -1')));
+      expect(
+        renderObject1.localToGlobal(Offset.zero).dy,
+        60,
+      );
+      final RenderBox renderObject0 =
+          tester.renderObject(find.byKey(const ValueKey('Item 0')));
+      expect(
+        renderObject0.localToGlobal(Offset.zero).dy,
+        80,
+      );
+      final RenderBox renderObject3 =
+          tester.renderObject(find.byKey(const ValueKey('Item -3')));
+      expect(
+        renderObject3.localToGlobal(Offset.zero).dy,
+        20,
+      );
+      final RenderBox renderObject4 =
+          tester.renderObject(find.byKey(const ValueKey('Item -4')));
+      expect(
+        renderObject4.localToGlobal(Offset.zero).dy,
+        0,
+      );
+      expect(taps, 0);
+      await tester.tapAt(const Offset(0, 80 + 15));
+      expect(taps, 1);
+      controller.jumpTo(-100);
+      await tester.pumpAndSettle();
+      expect(
+        renderObject2.localToGlobal(Offset.zero).dy,
+        30,
+      );
+      expect(
+        renderObject4.localToGlobal(Offset.zero).dy,
+        -10,
+      );
+    });
   });
 }
