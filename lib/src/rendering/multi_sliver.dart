@@ -213,7 +213,7 @@ class RenderMultiSliver extends RenderSliver
       layoutOffset += childParentData.geometry.layoutExtent;
       hasVisualOverflow =
           hasVisualOverflow || childParentData.geometry.hasVisualOverflow;
-      maxScrollObstructionExtent =
+      maxScrollObstructionExtent +=
           childParentData.geometry.maxScrollObstructionExtent;
       visible = visible || childParentData.geometry.visible;
       if (childParentData.geometry.cacheExtent != 0.0) {
