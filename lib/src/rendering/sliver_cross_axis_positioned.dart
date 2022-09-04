@@ -34,6 +34,10 @@ mixin RenderSliverCrossAxisPositionedMixin
       constraints.copyWith(crossAxisExtent: positionData.crossAxisExtent),
       parentUsesSize: true,
     );
+    assert(
+      child!.geometry != null,
+      'Sliver child $child did not set its geometry',
+    );
 
     geometry = child!.geometry;
     if (geometry!.scrollOffsetCorrection != null) return;

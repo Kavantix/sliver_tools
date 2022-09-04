@@ -290,6 +290,10 @@ class RenderMultiSliver extends RenderSliver
     childParentData.constraints = constraints;
     if (child is RenderSliver) {
       child.layout(constraints, parentUsesSize: parentUsesSize);
+      assert(
+        child.geometry != null,
+        'Sliver child $child did not set its geometry',
+      );
       childParentData.geometry = child.geometry!;
     } else if (child is RenderBox) {
       child.layout(constraints.asBoxConstraints(),
