@@ -45,6 +45,10 @@ class RenderSliverAnimatedPaintExtent extends RenderProxySliver {
   void performLayout() {
     _lastValue = controller.value;
     child!.layout(constraints, parentUsesSize: true);
+    assert(
+      child!.geometry != null,
+      'Sliver child $child did not set its geometry',
+    );
     final extentTween = _paintExtentTween ??= Tween<double>(
         begin: child!.geometry!.maxPaintExtent,
         end: child!.geometry!.maxPaintExtent);
