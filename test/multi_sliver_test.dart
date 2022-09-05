@@ -543,4 +543,44 @@ void multiSliverTests() {
       );
     });
   });
+
+  testWidgets(
+      'maxScrollObstructionExtent should be the sum of all maxScrollObstructionExtent children',
+      (tester) async {
+    final multiSliverKey = GlobalKey();
+
+    const headerHeight = 46.0;
+    const nbPinned = 2;
+
+    const totalPinnedHeight = nbPinned * headerHeight;
+
+    await tester.pumpWidget(
+      Directionality(
+          textDirection: TextDirection.ltr,
+          child: CustomScrollView(
+            slivers: <Widget>[
+              MultiSliver(
+                key: multiSliverKey,
+                children: [
+                  for (int i = 0; i < nbPinned; i++)
+                    SliverPinnedHeader(
+                        child: SizedBox(
+                            height: headerHeight, child: Text('Pinned $i'))),
+                ],
+              ),
+              const SliverToBoxAdapter(child: Text('Content'))
+            ],
+          )),
+    );
+
+    final multiSliverFinder = find.byKey(multiSliverKey);
+
+    expect(multiSliverFinder, findsOneWidget);
+
+    final RenderSliver renderMultiSliver =
+        tester.renderObject(multiSliverFinder);
+
+    expect(renderMultiSliver.geometry!.maxScrollObstructionExtent,
+        totalPinnedHeight);
+  });
 }
