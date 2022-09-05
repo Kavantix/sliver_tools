@@ -1,3 +1,8 @@
+# 0.2.8
+
+- Fixed #56 by accounting for maxScrollObstructionExtent with thanks to @manu-sncf
+- Added some asserts to validate layout of children
+
 # 0.2.7
 
 Fixed issue when using a `center` key in the CustomScrollView when using `MultiSliver`.
