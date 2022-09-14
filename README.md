@@ -96,7 +96,7 @@ class WidgetThatReturnsASliver extends StatelessWidget {
               borderRadius: BorderRadius.circular(8),
             ),
           ),
-        )
+        ),
         SliverList(...),
       ],
     );
