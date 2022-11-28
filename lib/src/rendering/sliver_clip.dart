@@ -69,6 +69,7 @@ class RenderSliverClip extends RenderProxySliver {
       {required double mainAxisPosition, required double crossAxisPosition}) {
     final double overlapCorrection = (clipOverlap ? constraints.overlap : 0);
     return child != null &&
+        clipRect != null &&
         child!.geometry!.hitTestExtent > 0 &&
         mainAxisPosition > (geometry!.paintOrigin + overlapCorrection) &&
         mainAxisPosition <
