@@ -1,3 +1,8 @@
+# 0.2.9
+
+* Fixed #70 by using a specific hit test method with thanks to @knopp
+* Fixed an edge case where `SliverClipRect` could have a null dereference with thanks to @siqwin
+
 # 0.2.8
 
 - Fixed #56 by accounting for maxScrollObstructionExtent with thanks to @manu-sncf
