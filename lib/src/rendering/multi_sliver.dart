@@ -413,11 +413,16 @@ class RenderMultiSliver extends RenderSliver
     for (final child in _children.where(
         (c) => (c.parentData as MultiSliverParentData).geometry.visible)) {
       if (child is RenderSliver) {
-        final childMainAxisPosition = _computeChildMainAxisPosition(child);
-        final hit = child.hitTest(
-          result,
-          mainAxisPosition: mainAxisPosition - childMainAxisPosition,
+        final paintOffset =
+            (child.parentData as MultiSliverParentData).paintOffset;
+        final mainAxisOffset = _computeChildMainAxisPosition(child);
+        final hit = result.addWithAxisOffset(
+          paintOffset: paintOffset,
+          mainAxisOffset: mainAxisOffset,
+          crossAxisOffset: 0,
+          mainAxisPosition: mainAxisPosition,
           crossAxisPosition: crossAxisPosition,
+          hitTest: child.hitTest,
         );
         if (hit) return true;
       } else if (child is RenderBox) {
