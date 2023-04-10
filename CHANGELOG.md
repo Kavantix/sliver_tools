@@ -1,3 +1,7 @@
+# 0.2.10
+
+Fixed issue with hit testing of [SliverCrossAxisConstrained].
+
 # 0.2.9
 
 * Fixed #70 by using a specific hit test method with thanks to @knopp

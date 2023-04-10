@@ -67,10 +67,13 @@ mixin RenderSliverCrossAxisPositionedMixin
     if (child == null) return false;
     final childParentData =
         child!.parentData as _SliverCrossAxisPositionedParentData;
-    return child!.hitTest(
-      result,
+    return result.addWithAxisOffset(
+      paintOffset: childParentData.paintOffset,
+      mainAxisOffset: 0,
+      crossAxisOffset: childCrossAxisPosition(child!),
       mainAxisPosition: mainAxisPosition,
-      crossAxisPosition: crossAxisPosition - childParentData.crossAxisPosition,
+      crossAxisPosition: crossAxisPosition,
+      hitTest: child!.hitTest,
     );
   }
 
