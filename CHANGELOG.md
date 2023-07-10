@@ -1,3 +1,7 @@
+# 0.2.11
+
+Added `reverseDuration`, `switchInCurve` and `switchOutCurve` to [SliverAnimatedSwitcher]
+
 # 0.2.10
 
 Fixed issue with hit testing of [SliverCrossAxisConstrained].
