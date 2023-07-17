@@ -17,9 +17,10 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   pedantic:
-  hottie:
-    git: https://github.com/Kavantix/hottie.git
+  # hottie:
+  #   git: https://github.com/Kavantix/hottie.git
   logging:
+  lints: ^2.1.1
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
