@@ -1,3 +1,7 @@
+# 0.2.12
+
+Revert `SliverStack` and `MultiSliver` back to have non const constructors for backwards compatibility
+
 # 0.2.11
 
 * Added `reverseDuration`, `switchInCurve` and `switchOutCurve` to [SliverAnimatedSwitcher]

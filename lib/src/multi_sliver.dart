@@ -4,7 +4,9 @@ import 'rendering/multi_sliver.dart';
 
 /// [MultiSliver] allows for returning multiple slivers from a single build method
 class MultiSliver extends MultiChildRenderObjectWidget {
-  const MultiSliver({
+  // flutter pre 3.13 does not allow the constructor to be const
+  // ignore: prefer_const_constructors_in_immutables
+  MultiSliver({
     Key? key,
     required List<Widget> children,
     this.pushPinnedChildren = false,
