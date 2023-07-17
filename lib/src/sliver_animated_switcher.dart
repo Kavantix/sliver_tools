@@ -15,10 +15,22 @@ class SliverAnimatedSwitcher extends StatelessWidget {
   /// The duration to pass to the [AnimatedSwitcher]
   final Duration duration;
 
+  /// The reverse duration to pass to the [AnimatedSwitcher]
+  final Duration? reverseDuration;
+
+  /// The switch in curve to pass to the [AnimatedSwitcher]
+  final Curve switchInCurve;
+
+  /// The switch out curve to pass to the [AnimatedSwitcher]
+  final Curve switchOutCurve;
+
   const SliverAnimatedSwitcher({
     Key? key,
     required this.child,
     required this.duration,
+    this.reverseDuration,
+    this.switchInCurve = Curves.linear,
+    this.switchOutCurve = Curves.linear,
   }) : super(key: key);
 
   static Widget defaultLayoutBuilder(
@@ -39,6 +51,9 @@ class SliverAnimatedSwitcher extends StatelessWidget {
   Widget build(BuildContext context) {
     return AnimatedSwitcher(
       duration: duration,
+      reverseDuration: reverseDuration,
+      switchInCurve: switchInCurve,
+      switchOutCurve: switchOutCurve,
       layoutBuilder: defaultLayoutBuilder,
       transitionBuilder: defaultTransitionBuilder,
       child: child,
