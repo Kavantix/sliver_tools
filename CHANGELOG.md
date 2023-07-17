@@ -1,6 +1,7 @@
 # 0.2.11
 
-Added `reverseDuration`, `switchInCurve` and `switchOutCurve` to [SliverAnimatedSwitcher]
+* Added `reverseDuration`, `switchInCurve` and `switchOutCurve` to [SliverAnimatedSwitcher]
+* Fixed compatibility with flutter 3.13 and onward
 
 # 0.2.10
 

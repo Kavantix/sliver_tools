@@ -8,9 +8,9 @@ class _SimpleSliverStackParentData extends StackParentData {
 
   _SimpleSliverStackParentData(this.onOffsetUpdated);
   @override
-  set offset(Offset _offset) {
-    super.offset = _offset;
-    onOffsetUpdated(_offset);
+  set offset(Offset newOffset) {
+    super.offset = newOffset;
+    onOffsetUpdated(newOffset);
   }
 }
 
@@ -81,7 +81,7 @@ class SliverStackParentData extends ParentData
     return values.join('; ');
   }
 
-  _SimpleSliverStackParentData get simpleStackParentData =>
+  _SimpleSliverStackParentData get _simpleStackParentData =>
       _SimpleSliverStackParentData((value) => paintOffset = value)
         ..top = top
         ..right = right
@@ -271,7 +271,7 @@ class RenderSliverStack extends RenderSliver
       assert(parentData.isPositioned,
           'All non sliver children of SliverStack should be positioned');
       if (!parentData.isPositioned) return;
-      child.parentData = parentData.simpleStackParentData;
+      child.parentData = parentData._simpleStackParentData;
       final overflows = RenderStack.layoutPositionedChild(
         child,
         child.parentData as StackParentData,

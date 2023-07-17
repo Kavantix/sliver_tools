@@ -21,7 +21,7 @@ class SliverAnimatedPaintExtent extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _SliverAnimatedPaintExtentState createState() =>
+  State<SliverAnimatedPaintExtent> createState() =>
       _SliverAnimatedPaintExtentState();
 }
 

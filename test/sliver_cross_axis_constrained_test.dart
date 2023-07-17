@@ -7,32 +7,32 @@ import 'helpers/unconstrained_scroll_physics.dart';
 
 void main() => crossAxisConstrainedTests();
 
-void crossAxisConstrainedTests() {
-  Widget _createSut(
-    double maxCrossAxisExtend, {
-    double alignment = 0,
-  }) {
-    return Directionality(
-      textDirection: TextDirection.ltr,
-      child: CustomScrollView(
-        scrollBehavior: NoScrollbarScrollBehaviour(),
-        scrollDirection: Axis.vertical,
-        slivers: [
-          SliverCrossAxisConstrained(
-            maxCrossAxisExtent: maxCrossAxisExtend,
-            alignment: alignment,
-            child: const SliverToBoxAdapter(
-              child: SizedBox(
-                width: double.infinity,
-                height: 100,
-              ),
+Widget _createSut(
+  double maxCrossAxisExtend, {
+  double alignment = 0,
+}) {
+  return Directionality(
+    textDirection: TextDirection.ltr,
+    child: CustomScrollView(
+      scrollBehavior: NoScrollbarScrollBehaviour(),
+      scrollDirection: Axis.vertical,
+      slivers: [
+        SliverCrossAxisConstrained(
+          maxCrossAxisExtent: maxCrossAxisExtend,
+          alignment: alignment,
+          child: const SliverToBoxAdapter(
+            child: SizedBox(
+              width: double.infinity,
+              height: 100,
             ),
           ),
-        ],
-      ),
-    );
-  }
+        ),
+      ],
+    ),
+  );
+}
 
+void crossAxisConstrainedTests() {
   group('SliverCrossAxisConstrained', () {
     late double maxCrossAxisExtent;
     late Widget sut;
@@ -49,8 +49,8 @@ void crossAxisConstrainedTests() {
         windowSize = const Size(200, 400);
       });
       testWidgets('It sizes sliver to available space', (tester) async {
-        tester.binding.window.physicalSizeTestValue = windowSize;
-        tester.binding.window.devicePixelRatioTestValue = 1;
+        tester.view.physicalSize = windowSize;
+        tester.view.devicePixelRatio = 1;
         await tester.pumpWidget(sut);
         await tester.pumpAndSettle();
 
@@ -69,8 +69,8 @@ void crossAxisConstrainedTests() {
       });
 
       testWidgets('It sizes sliver to max extent', (tester) async {
-        tester.binding.window.physicalSizeTestValue = windowSize;
-        tester.binding.window.devicePixelRatioTestValue = 1;
+        tester.view.physicalSize = windowSize;
+        tester.view.devicePixelRatio = 1;
         await tester.pumpWidget(sut);
         await tester.pumpAndSettle();
 
@@ -81,8 +81,8 @@ void crossAxisConstrainedTests() {
       });
       testWidgets('it aligns correctly using the alignment parameter',
           (tester) async {
-        tester.binding.window.physicalSizeTestValue = windowSize;
-        tester.binding.window.devicePixelRatioTestValue = 1;
+        tester.view.physicalSize = windowSize;
+        tester.view.devicePixelRatio = 1;
         await tester.pumpWidget(_createSut(maxCrossAxisExtent));
 
         final renderObject =

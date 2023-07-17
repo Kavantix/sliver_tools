@@ -1,10 +1,6 @@
-include: package:pedantic/analysis_options.yaml
+include: package:lints/recommended.yaml
 
 analyzer:
-  strong-mode:
-    implicit-casts: false
-    implicit-dynamic: false
- 
   errors:
     missing_required_param: error
     missing_enum_constant_in_switch: error
@@ -90,4 +86,3 @@ linter:
     - prefer_interpolation_to_compose_strings
     - prefer_const_declarations
     - avoid_positional_boolean_parameters
-

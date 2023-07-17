@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 
@@ -11,7 +10,7 @@ import 'rendering/sliver_stack.dart';
 /// This means that only the sliver children have an effect on the size of
 /// of this sliver and the box children are meant to follow the slivers
 class SliverStack extends MultiChildRenderObjectWidget {
-  SliverStack({
+  const SliverStack({
     Key? key,
     required List<Widget> children,
     this.textDirection,
@@ -279,7 +278,7 @@ class SliverPositioned extends ParentDataWidget<SliverStackParentData> {
     }
 
     if (needsLayout) {
-      final AbstractNode? targetParent = renderObject.parent;
+      final Object? targetParent = renderObject.parent;
       if (targetParent is RenderObject) targetParent.markNeedsLayout();
     }
   }

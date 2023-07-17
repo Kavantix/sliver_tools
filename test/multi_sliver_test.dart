@@ -462,7 +462,7 @@ void multiSliverTests() {
           physics: const UnconstrainedScollPhysics(),
           slivers: [
             const SliverPinnedHeader(child: SizedBox(height: 56)),
-            MultiSliver(children: const [
+            const MultiSliver(children: [
               // This height being smaller than the pinned height caused an exception before 0.2.2
               SizedBox(height: 30),
             ]),

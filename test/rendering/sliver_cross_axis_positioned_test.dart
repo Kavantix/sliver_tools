@@ -2,14 +2,14 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sliver_tools/src/rendering/sliver_cross_axis_positioned.dart';
 
-const double crossAxisExtent = 800;
+const double windowCrossAxisExtent = 800;
 const constraints = SliverConstraints(
   overlap: 0,
   cacheOrigin: 0,
   scrollOffset: 0,
   axisDirection: AxisDirection.down,
   growthDirection: GrowthDirection.forward,
-  crossAxisExtent: crossAxisExtent,
+  crossAxisExtent: windowCrossAxisExtent,
   crossAxisDirection: AxisDirection.right,
   userScrollDirection: ScrollDirection.idle,
   remainingPaintExtent: 800,
@@ -61,7 +61,7 @@ void main() => crossAxisPositionedTests();
 void crossAxisPositionedTests() {
   RenderSliverCrossAxisPositionedMixin setup({
     double crossAxisPosition = 0,
-    double crossAxisExtent = crossAxisExtent,
+    double crossAxisExtent = windowCrossAxisExtent,
   }) {
     return _MockCrossAxisPositionedSliver(
       SliverCrossAxisPositionedData(
@@ -78,15 +78,16 @@ void crossAxisPositionedTests() {
       expect(renderObject.child!.constraints, constraints);
 
       const double crossAxisPosition = 214;
-      const double _crossAxisExtent = crossAxisExtent - crossAxisPosition - 111;
+      const double crossAxisExtent =
+          windowCrossAxisExtent - crossAxisPosition - 111;
       renderObject = setup(
         crossAxisPosition: crossAxisPosition,
-        crossAxisExtent: _crossAxisExtent,
+        crossAxisExtent: crossAxisExtent,
       );
       renderObject.layout(constraints, parentUsesSize: true);
       expect(
         renderObject.child!.constraints,
-        constraints.copyWith(crossAxisExtent: _crossAxisExtent),
+        constraints.copyWith(crossAxisExtent: crossAxisExtent),
       );
     });
 
@@ -100,15 +101,16 @@ void crossAxisPositionedTests() {
       );
 
       const double crossAxisPosition = 214;
-      const double _crossAxisExtent = crossAxisExtent - crossAxisPosition - 111;
+      const double crossAxisExtent0 =
+          windowCrossAxisExtent - crossAxisPosition - 111;
       renderObject = setup(
         crossAxisPosition: crossAxisPosition,
-        crossAxisExtent: _crossAxisExtent,
+        crossAxisExtent: crossAxisExtent0,
       );
       renderObject.layout(constraints, parentUsesSize: true);
       expect(
         renderObject.child!.constraints,
-        constraints.copyWith(crossAxisExtent: _crossAxisExtent),
+        constraints.copyWith(crossAxisExtent: crossAxisExtent0),
       );
       expect(
         identical(renderObject.geometry, renderObject.child!.geometry),
@@ -127,15 +129,16 @@ void crossAxisPositionedTests() {
       );
 
       const double crossAxisPosition = 214;
-      const double _crossAxisExtent = crossAxisExtent - crossAxisPosition - 111;
+      const double crossAxisExtent1 =
+          windowCrossAxisExtent - crossAxisPosition - 111;
       renderObject = setup(
         crossAxisPosition: crossAxisPosition,
-        crossAxisExtent: _crossAxisExtent,
+        crossAxisExtent: crossAxisExtent1,
       );
       renderObject.layout(constraints, parentUsesSize: true);
       expect(
         renderObject.child!.constraints,
-        constraints.copyWith(crossAxisExtent: _crossAxisExtent),
+        constraints.copyWith(crossAxisExtent: crossAxisExtent1),
       );
       renderObject.paint(
         const _MockPaintContext(Offset(crossAxisPosition, 0)),
@@ -154,7 +157,7 @@ void crossAxisPositionedTests() {
         constraints.copyWith(
           axisDirection: AxisDirection.right,
           crossAxisDirection: AxisDirection.down,
-          crossAxisExtent: _crossAxisExtent,
+          crossAxisExtent: crossAxisExtent1,
         ),
       );
       renderObject.paint(
