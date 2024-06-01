@@ -7,7 +7,7 @@ import 'rendering/sliver_stack.dart';
 ///
 /// Its children can either be slivers or box children that are positioned
 /// using [SliverPositioned] with at least one of its values not null
-/// This means that only the sliver children have an effect on the size of
+/// This means that only the sliver children have an effect on the size
 /// of this sliver and the box children are meant to follow the slivers
 class SliverStack extends MultiChildRenderObjectWidget {
   // flutter pre 3.13 does not allow the constructor to be const
